@@ -1,0 +1,115 @@
+import Link from 'next/link'
+import { Plus, Pencil } from 'lucide-react'
+import { formatGNF } from '@/lib/utils'
+import Badge from '@/components/ui/Badge'
+import { MOCK_PRODUCTS } from '@/lib/mockData'
+
+export default function AdminProduitsPage() {
+  const products = MOCK_PRODUCTS
+
+  const typeLabel: Record<string, string> = {
+    synthetique: 'Synthétique',
+    'semi-synthetique': 'Semi-Synt.',
+    mineral: 'Minérale',
+  }
+
+  return (
+    <div className="p-8">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-black text-brand-cream mb-1">Produits</h1>
+          <p className="text-zinc-400 text-sm">
+            {products.length} produit(s) dans le catalogue
+          </p>
+        </div>
+        <Link href="/admin/produits/new" className="btn-primary text-sm py-2">
+          <Plus className="w-4 h-4" />
+          Nouveau produit
+        </Link>
+      </div>
+
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-zinc-800 bg-zinc-950">
+                <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Produit</th>
+                <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Catégorie</th>
+                <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Viscosité / Type</th>
+                <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Conditionnements</th>
+                <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Prix affiché</th>
+                <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Statut</th>
+                <th className="text-right px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr
+                  key={product.id}
+                  className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors"
+                >
+                  <td className="px-6 py-4">
+                    <p className="text-brand-cream text-sm font-semibold">{product.name}</p>
+                    {product.description && (
+                      <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1 max-w-xs">
+                        {product.description}
+                      </p>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    <Badge variant={product.category === 'automobile' ? 'gold' : 'blue'}>
+                      {product.category}
+                    </Badge>
+                  </td>
+                  <td className="px-6 py-4">
+                    <p className="text-zinc-300 text-sm font-mono">{product.viscosity || '—'}</p>
+                    {product.type && (
+                      <p className="text-zinc-500 text-xs mt-0.5">
+                        {typeLabel[product.type] || product.type}
+                      </p>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-wrap gap-1">
+                      {(product.packagings || []).map((pkg) => (
+                        <span
+                          key={pkg.id}
+                          className="text-xs bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded font-mono"
+                        >
+                          {pkg.volume_liters}L
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    {product.show_price && product.packagings && product.packagings.length > 0 ? (
+                      <span className="text-brand-gold text-xs font-semibold">
+                        À partir de {formatGNF(Math.min(...product.packagings.map((p) => p.price_gnf)))}
+                      </span>
+                    ) : (
+                      <span className="text-zinc-500 text-xs">Sur demande</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    <Badge variant={product.is_active ? 'green' : 'red'}>
+                      {product.is_active ? 'Actif' : 'Inactif'}
+                    </Badge>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <Link
+                      href={`/admin/produits/${product.id}`}
+                      className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium"
+                    >
+                      <Pencil className="w-4 h-4" />
+                      Modifier
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
