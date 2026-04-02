@@ -20,6 +20,7 @@ export default function AdminCommandeDetailPage() {
   const [successMsg, setSuccessMsg] = useState('')
   const [error] = useState('')
     const [loading] = useState(false)
+    const [generatingInvoice] = useState(false)
 
   const handleSave = () => {
     setSaving(true)
