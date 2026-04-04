@@ -108,14 +108,14 @@ export default function AdminProductEditPage() {
 
   if (loading) {
     return (
-      <div className="p-8 flex items-center justify-center">
+      <div className="p-4 sm:p-8 flex items-center justify-center">
         <p className="text-zinc-400">Chargement...</p>
       </div>
     )
   }
 
   return (
-    <div className="p-8 max-w-3xl">
+    <div className="p-4 sm:p-8 max-w-3xl">
       <div className="flex items-center gap-4 mb-8">
         <Link
           href="/admin/produits"

@@ -32,8 +32,8 @@ export function Hero() {
       </div>
 
       {/* Two-column layout */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[calc(100vh-8rem)]">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-12 sm:pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[calc(100vh-8rem)]">
 
           {/* LEFT — Text content */}
           <div className="flex flex-col justify-center">
@@ -46,7 +46,7 @@ export function Hero() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.05] mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.05] mb-6">
               L&apos;Huile Moteur
               <br />
               <span className="text-brand-gold">Synthétique</span>
@@ -104,11 +104,11 @@ export function Hero() {
             </div>
           </div>
 
-          {/* RIGHT — Product images */}
-          <div className="flex flex-col items-center justify-center gap-6">
+          {/* RIGHT — Product images (hidden on small mobile, shown sm+) */}
+          <div className="hidden sm:flex flex-col items-center justify-center gap-6">
             {/* Three bottles row */}
-            <div className="flex items-end justify-center gap-5 w-full">
-              <div className="relative w-52 h-72 rounded-3xl overflow-hidden border border-brand-gold/20 shadow-2xl rotate-[-4deg] translate-y-6 shrink-0">
+            <div className="flex items-end justify-center gap-3 sm:gap-5 w-full">
+              <div className="relative w-36 sm:w-52 h-52 sm:h-72 rounded-3xl overflow-hidden border border-brand-gold/20 shadow-2xl rotate-[-4deg] translate-y-6 shrink-0">
                 <Image
                   src={PRODUCT_IMAGES['5w30']}
                   alt="Super M7 5W30"
@@ -121,7 +121,7 @@ export function Hero() {
                 </div>
               </div>
 
-              <div className="relative w-56 h-80 rounded-3xl overflow-hidden border-2 border-brand-gold/40 shadow-[0_0_40px_rgba(200,149,42,0.2)] z-10 shrink-0">
+              <div className="relative w-40 sm:w-56 h-60 sm:h-80 rounded-3xl overflow-hidden border-2 border-brand-gold/40 shadow-[0_0_40px_rgba(200,149,42,0.2)] z-10 shrink-0">
                 <Image
                   src={PRODUCT_IMAGES['5w40']}
                   alt="Super M7 5W40"
@@ -134,7 +134,7 @@ export function Hero() {
                 </div>
               </div>
 
-              <div className="relative w-52 h-72 rounded-3xl overflow-hidden border border-brand-gold/20 shadow-2xl rotate-[4deg] translate-y-6 shrink-0">
+              <div className="relative w-36 sm:w-52 h-52 sm:h-72 rounded-3xl overflow-hidden border border-brand-gold/20 shadow-2xl rotate-[4deg] translate-y-6 shrink-0">
                 <Image
                   src={PRODUCT_IMAGES['5w20']}
                   alt="Super M7 5W20"

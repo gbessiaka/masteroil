@@ -170,7 +170,7 @@ export function Footer() {
               © 2026 Master Oil Guinée. Tous droits réservés.
             </p>
             <p className="text-gray-600 text-xs">
-              Distributeur exclusif de Master Oil Canada en Guinée en Guinée
+              Distributeur exclusif de Master Oil Canada en Guinée
             </p>
           </div>
         </div>

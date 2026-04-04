@@ -36,7 +36,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-brand-black">
       {/* Hero */}
-      <section className="relative pt-32 pb-20 bg-zinc-950 overflow-hidden">
+      <section className="relative pt-28 sm:pt-32 pb-12 sm:pb-20 bg-zinc-950 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div
             className="absolute inset-0"
@@ -50,7 +50,7 @@ export default function AboutPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="section-subtitle">Notre histoire</p>
-            <h1 className="section-title text-5xl md:text-6xl">
+            <h1 className="section-title text-3xl sm:text-5xl md:text-6xl">
               Master Oil Guinée
             </h1>
             <div className="gold-line mb-6" />
@@ -67,7 +67,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="py-20 bg-brand-black">
+      <section className="py-12 sm:py-20 bg-brand-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
@@ -116,7 +116,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-zinc-950">
+      <section className="py-12 sm:py-20 bg-zinc-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="section-subtitle">Nos engagements</p>
@@ -141,7 +141,7 @@ export default function AboutPage() {
       </section>
 
       {/* Exclusivity section */}
-      <section className="py-20 bg-brand-black">
+      <section className="py-12 sm:py-20 bg-brand-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <p className="section-subtitle">Distributeur officiel</p>

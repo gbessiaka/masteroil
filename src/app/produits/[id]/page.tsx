@@ -46,7 +46,7 @@ export default function ProductDetailPage({ params }: Props) {
           Retour au catalogue
         </Link>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* Image */}
           <div className="w-full aspect-square bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl overflow-hidden relative flex items-center justify-center border border-zinc-700">
             {product.image_url ? (

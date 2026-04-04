@@ -24,7 +24,7 @@ const steps = [
 
 export default function HowToOrder() {
   return (
-    <section className="py-20 bg-brand-black">
+    <section className="py-14 sm:py-20 bg-brand-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <p className="section-subtitle">Simple et rapide</p>

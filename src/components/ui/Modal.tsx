@@ -50,7 +50,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md', className
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? 'modal-title' : undefined}
@@ -66,21 +66,21 @@ export function Modal({ isOpen, onClose, title, children, size = 'md', className
       {/* Modal panel */}
       <div
         className={cn(
-          'relative z-10 w-full bg-white rounded-2xl shadow-2xl',
-          'animate-fade-in',
+          'relative z-10 w-full bg-zinc-900 border border-zinc-700 shadow-2xl',
+          'rounded-t-2xl sm:rounded-2xl animate-fade-in',
           sizeClasses[size],
           className
         )}
       >
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-            <h2 id="modal-title" className="text-lg font-semibold text-gray-900">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-700">
+            <h2 id="modal-title" className="text-base font-semibold text-brand-cream">
               {title}
             </h2>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
               aria-label="Fermer"
             >
               <X size={18} />
@@ -91,7 +91,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md', className
         {!title && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors z-10"
+            className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors z-10"
             aria-label="Fermer"
           >
             <X size={18} />
@@ -99,7 +99,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md', className
         )}
 
         {/* Content */}
-        <div className={cn(!title && 'pt-10')}>{children}</div>
+        <div className={cn('p-5', !title && 'pt-10')}>{children}</div>
       </div>
     </div>
   )

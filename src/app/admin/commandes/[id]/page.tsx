@@ -47,7 +47,7 @@ export default function AdminCommandeDetailPage() {
 
   if (loading) {
     return (
-      <div className="p-8 flex items-center justify-center">
+      <div className="p-4 sm:p-8 flex items-center justify-center">
         <p className="text-zinc-400">Chargement...</p>
       </div>
     )
@@ -55,7 +55,7 @@ export default function AdminCommandeDetailPage() {
 
   if (!order) {
     return (
-      <div className="p-8">
+      <div className="p-4 sm:p-8">
         <p className="text-red-400">{error || 'Commande non trouvée'}</p>
         <Link href="/admin/commandes" className="text-brand-gold mt-4 inline-block">
           Retour aux commandes
@@ -65,7 +65,7 @@ export default function AdminCommandeDetailPage() {
   }
 
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="p-4 sm:p-8 max-w-4xl">
       <div className="flex items-center gap-4 mb-8">
         <Link
           href="/admin/commandes"

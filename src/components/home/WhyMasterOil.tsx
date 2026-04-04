@@ -37,10 +37,10 @@ const reasons = [
 
 export function WhyMasterOil() {
   return (
-    <section className="py-20 bg-brand-black">
+    <section className="py-14 sm:py-20 bg-brand-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-10 sm:mb-14">
           <span className="inline-block text-brand-gold text-sm font-semibold uppercase tracking-widest mb-3">
             Pourquoi nous choisir
           </span>
@@ -54,7 +54,7 @@ export function WhyMasterOil() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {reasons.map((reason) => {
             const Icon = reason.icon
             return (
