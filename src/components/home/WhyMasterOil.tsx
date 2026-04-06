@@ -4,81 +4,69 @@ const reasons = [
   {
     icon: Shield,
     title: 'Qualité Canadienne Certifiée',
-    description:
-      'Nos huiles Super M7 sont fabriquées selon les normes les plus strictes de l\'industrie canadienne. Certifiées API et ACEA, elles garantissent une protection optimale de votre moteur.',
-    color: 'text-blue-400',
-    bgColor: 'bg-blue-400/10',
+    description: "Nos huiles Super M7 sont fabriquées selon les normes les plus strictes de l'industrie canadienne. Certifiées API et ACEA.",
+    color: 'text-blue-500',
+    bg: 'bg-blue-50',
+    border: 'border-blue-100',
   },
   {
     icon: Thermometer,
     title: 'Résistance Extrême à la Chaleur',
-    description:
-      'Formulée pour résister aux températures élevées caractéristiques du climat guinéen. Notre huile synthétique maintient sa viscosité même en conditions de chaleur intense.',
-    color: 'text-red-400',
-    bgColor: 'bg-red-400/10',
+    description: 'Formulée pour résister aux températures élevées caractéristiques du climat guinéen. Viscosité maintenue même en chaleur intense.',
+    color: 'text-red-500',
+    bg: 'bg-red-50',
+    border: 'border-red-100',
   },
   {
     icon: MapPin,
     title: 'Disponible à Conakry',
-    description:
-      'En stock permanent à Conakry avec livraison rapide. Fini les ruptures de stock d\'huiles de qualité. Votre commande est traitée sous 24h.',
-    color: 'text-green-400',
-    bgColor: 'bg-green-400/10',
+    description: 'En stock permanent à Conakry avec livraison rapide. Votre commande est traitée sous 24h.',
+    color: 'text-green-500',
+    bg: 'bg-green-50',
+    border: 'border-green-100',
   },
   {
     icon: Handshake,
     title: 'Service B2B Dédié',
-    description:
-      'Tarifs spéciaux pour les garages, flottes et entreprises. Facturation professionnelle, livraison régulière et support commercial personnalisé pour vos besoins.',
+    description: 'Tarifs spéciaux pour les garages, flottes et entreprises. Facturation professionnelle et support commercial personnalisé.',
     color: 'text-brand-gold',
-    bgColor: 'bg-brand-gold/10',
+    bg: 'bg-amber-50',
+    border: 'border-amber-100',
   },
 ]
 
-export function WhyMasterOil() {
+export default function WhyMasterOil() {
   return (
-    <section className="py-14 sm:py-20 bg-brand-black">
+    <section className="py-14 sm:py-20 bg-[#F0EDE8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
         <div className="text-center mb-10 sm:mb-14">
           <span className="inline-block text-brand-gold text-sm font-semibold uppercase tracking-widest mb-3">
             Pourquoi nous choisir
           </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-black text-gray-900 mb-4">
             Pourquoi choisir Master Oil Guinée ?
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto">
             Nous sommes plus qu&apos;un distributeur. Nous sommes votre partenaire pour la
             longévité de vos véhicules et équipements.
           </p>
         </div>
 
-        {/* Cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {reasons.map((reason) => {
             const Icon = reason.icon
             return (
               <div
                 key={reason.title}
-                className="group relative p-6 rounded-2xl border border-white/10 bg-white/5 hover:border-brand-gold/40 hover:bg-brand-gold/5 transition-all duration-300"
+                className={`group relative p-6 rounded-2xl border bg-white hover:border-brand-gold/40 hover:shadow-md transition-all duration-300 shadow-sm`}
               >
-                {/* Gold left accent */}
-                <div className="absolute left-0 top-6 bottom-6 w-0.5 bg-brand-gold/0 group-hover:bg-brand-gold/60 transition-all duration-300 rounded-full" />
-
-                {/* Icon */}
-                <div
-                  className={`w-12 h-12 rounded-xl ${reason.bgColor} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}
-                >
+                <div className={`w-12 h-12 rounded-xl ${reason.bg} border ${reason.border} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
                   <Icon size={24} className={reason.color} />
                 </div>
-
-                {/* Content */}
-                <h3 className="text-white font-bold text-base mb-3 group-hover:text-brand-gold transition-colors duration-200">
+                <h3 className="text-gray-900 font-bold text-base mb-3 group-hover:text-brand-gold transition-colors duration-200">
                   {reason.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {reason.description}
-                </p>
+                <p className="text-gray-500 text-sm leading-relaxed">{reason.description}</p>
               </div>
             )
           })}
@@ -88,4 +76,3 @@ export function WhyMasterOil() {
   )
 }
 
-export default WhyMasterOil

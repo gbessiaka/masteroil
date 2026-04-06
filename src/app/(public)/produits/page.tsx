@@ -12,13 +12,13 @@ export default function ProduitsPage() {
   const products = MOCK_PRODUCTS
 
   return (
-    <div className="min-h-screen bg-brand-black pt-24 pb-16">
+    <div className="min-h-screen bg-[#FAFAF8] pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10">
           <p className="section-subtitle">Notre gamme</p>
           <h1 className="section-title">Catalogue de produits</h1>
           <div className="gold-line mb-4" />
-          <p className="text-zinc-400 max-w-xl">
+          <p className="text-gray-500 max-w-xl">
             Huiles moteur synthétiques canadiennes Super M7, importées directement,
             disponibles à Conakry.
           </p>

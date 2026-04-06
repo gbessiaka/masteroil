@@ -91,9 +91,9 @@ const b2bSegments = [
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-brand-black">
+    <div className="min-h-screen bg-[#FAFAF8]">
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-zinc-950 relative overflow-hidden">
+      <section className="pt-32 pb-20 bg-[#F0EDE8] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
@@ -102,7 +102,7 @@ export default function ServicesPage() {
               Nos services
             </h1>
             <div className="gold-line mb-6" />
-            <p className="text-xl text-zinc-300 leading-relaxed">
+            <p className="text-xl text-gray-700 leading-relaxed">
               De l&apos;importation à la livraison, Master Oil Guinée vous offre une solution
               complète pour vos besoins en huiles moteur synthétiques de qualité canadienne.
             </p>
@@ -111,7 +111,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Services grid */}
-      <section className="py-20 bg-brand-black">
+      <section className="py-20 bg-[#FAFAF8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((s, i) => (
@@ -121,13 +121,13 @@ export default function ServicesPage() {
                     <s.icon className="w-6 h-6 text-brand-gold" />
                   </div>
                   <div>
-                    <h3 className="text-brand-cream font-black text-xl mb-2">{s.title}</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed">{s.desc}</p>
+                    <h3 className="text-gray-900 font-black text-xl mb-2">{s.title}</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
                   </div>
                 </div>
                 <ul className="space-y-2">
                   {s.points.map((point, j) => (
-                    <li key={j} className="flex items-center gap-2 text-zinc-300 text-sm">
+                    <li key={j} className="flex items-center gap-2 text-gray-700 text-sm">
                       <CheckCircle2 className="w-4 h-4 text-brand-gold flex-shrink-0" />
                       {point}
                     </li>
@@ -140,13 +140,13 @@ export default function ServicesPage() {
       </section>
 
       {/* B2B section */}
-      <section className="py-20 bg-zinc-950">
+      <section className="py-20 bg-[#F0EDE8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="section-subtitle">Offres professionnelles</p>
             <h2 className="section-title">Solutions B2B</h2>
             <div className="gold-line mx-auto mb-6" />
-            <p className="text-zinc-400 max-w-2xl mx-auto">
+            <p className="text-gray-500 max-w-2xl mx-auto">
               Master Oil Guinée propose des offres spécifiques pour chaque segment
               professionnel. Contactez-nous pour discuter d&apos;un partenariat adapté à
               votre activité.
@@ -156,15 +156,15 @@ export default function ServicesPage() {
             {b2bSegments.map((seg, i) => (
               <div
                 key={i}
-                className="bg-zinc-900 border border-zinc-800 hover:border-brand-gold/30 rounded-xl p-5 transition-colors group"
+                className="bg-white border border-gray-200 hover:border-brand-gold/30 rounded-xl p-5 transition-colors group"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 rounded-lg bg-brand-gold/10 flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors">
                     <seg.icon className="w-5 h-5 text-brand-gold" />
                   </div>
-                  <h3 className="text-brand-cream font-bold">{seg.title}</h3>
+                  <h3 className="text-gray-900 font-bold">{seg.title}</h3>
                 </div>
-                <p className="text-zinc-400 text-sm leading-relaxed">{seg.desc}</p>
+                <p className="text-gray-500 text-sm leading-relaxed">{seg.desc}</p>
               </div>
             ))}
           </div>
@@ -172,10 +172,10 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-brand-black">
+      <section className="py-20 bg-[#FAFAF8]">
         <div className="max-w-3xl mx-auto text-center px-4">
           <h2 className="section-title">Prêt à démarrer un partenariat ?</h2>
-          <p className="text-zinc-400 mb-8 leading-relaxed">
+          <p className="text-gray-500 mb-8 leading-relaxed">
             Que vous ayez besoin d&apos;un devis ponctuel ou d&apos;un contrat de fourniture
             à long terme, notre équipe est disponible pour vous répondre rapidement.
           </p>

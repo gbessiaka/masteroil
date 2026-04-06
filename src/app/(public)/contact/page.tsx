@@ -47,14 +47,14 @@ export default function ContactPage() {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '224620000000'
 
   return (
-    <div className="min-h-screen bg-brand-black pt-24 pb-16">
+    <div className="min-h-screen bg-[#FAFAF8] pt-24 pb-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12">
           <p className="section-subtitle">Prenons contact</p>
           <h1 className="section-title">Contactez-nous</h1>
           <div className="gold-line mb-4" />
-          <p className="text-zinc-400 max-w-xl">
+          <p className="text-gray-500 max-w-xl">
             Demande de devis, renseignements sur nos produits, partenariat. Nous répondons
             rapidement, généralement sous 24h.
           </p>
@@ -66,10 +66,10 @@ export default function ContactPage() {
             {success ? (
               <div className="card-dark border-green-800 bg-green-900/10 text-center py-12">
                 <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-4" />
-                <h2 className="text-brand-cream font-black text-2xl mb-3">
+                <h2 className="text-gray-900 font-black text-2xl mb-3">
                   Message envoyé !
                 </h2>
-                <p className="text-zinc-400 mb-6">
+                <p className="text-gray-500 mb-6">
                   Nous avons bien reçu votre message et vous répondrons dans les plus brefs
                   délais. Pour une réponse immédiate, contactez-nous sur WhatsApp.
                 </p>
@@ -109,7 +109,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="Mamadou Diallo"
-                      className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
+                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -126,7 +126,7 @@ export default function ContactPage() {
                       value={form.phone}
                       onChange={handleChange}
                       placeholder="+224 6XX XXX XXX"
-                      className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
+                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -145,7 +145,7 @@ export default function ContactPage() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="exemple@email.com"
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
+                    className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -161,7 +161,7 @@ export default function ContactPage() {
                     name="request_type"
                     value={form.request_type}
                     onChange={handleChange}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream focus:border-brand-gold focus:outline-none transition-colors"
+                    className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:border-brand-gold focus:outline-none transition-colors"
                   >
                     <option value="particulier">Particulier</option>
                     <option value="garage">Garage / Atelier mécanique</option>
@@ -184,7 +184,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     placeholder="Décrivez votre besoin : produit souhaité, quantité, fréquence de commande..."
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors resize-none"
+                    className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors resize-none"
                   />
                 </div>
 
@@ -216,8 +216,8 @@ export default function ContactPage() {
           <div className="space-y-6">
             {/* WhatsApp */}
             <div className="card-dark">
-              <h3 className="text-brand-cream font-bold mb-4">Réponse immédiate</h3>
-              <p className="text-zinc-400 text-sm mb-4">
+              <h3 className="text-gray-900 font-bold mb-4">Réponse immédiate</h3>
+              <p className="text-gray-500 text-sm mb-4">
                 Pour une réponse rapide, contactez-nous directement sur WhatsApp. Nous
                 répondons généralement en moins d&apos;une heure.
               </p>
@@ -234,21 +234,21 @@ export default function ContactPage() {
 
             {/* Contact info */}
             <div className="card-dark space-y-4">
-              <h3 className="text-brand-cream font-bold mb-4">Nos coordonnées</h3>
+              <h3 className="text-gray-900 font-bold mb-4">Nos coordonnées</h3>
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-brand-gold mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-brand-cream text-sm font-medium">Adresse</p>
-                  <p className="text-zinc-400 text-sm">Conakry, République de Guinée</p>
+                  <p className="text-gray-900 text-sm font-medium">Adresse</p>
+                  <p className="text-gray-500 text-sm">Conakry, République de Guinée</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-brand-gold mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-brand-cream text-sm font-medium">Téléphone / WhatsApp</p>
+                  <p className="text-gray-900 text-sm font-medium">Téléphone / WhatsApp</p>
                   <a
                     href={`tel:+${whatsappNumber}`}
-                    className="text-zinc-400 text-sm hover:text-brand-gold transition-colors"
+                    className="text-gray-500 text-sm hover:text-brand-gold transition-colors"
                   >
                     +{whatsappNumber}
                   </a>
@@ -258,18 +258,18 @@ export default function ContactPage() {
 
             {/* Hours */}
             <div className="card-dark">
-              <h3 className="text-brand-cream font-bold mb-4">Horaires</h3>
+              <h3 className="text-gray-900 font-bold mb-4">Horaires</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-400">Lundi au Vendredi</span>
-                  <span className="text-brand-cream">08h à 18h</span>
+                  <span className="text-gray-500">Lundi au Vendredi</span>
+                  <span className="text-gray-900">08h à 18h</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-400">Samedi</span>
-                  <span className="text-brand-cream">08h à 13h</span>
+                  <span className="text-gray-500">Samedi</span>
+                  <span className="text-gray-900">08h à 13h</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-400">Dimanche</span>
+                  <span className="text-gray-500">Dimanche</span>
                   <span className="text-zinc-500">Fermé</span>
                 </div>
               </div>

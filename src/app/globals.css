@@ -19,17 +19,16 @@ html {
 }
 
 body {
-  background-color: var(--brand-black);
-  color: var(--brand-cream);
+  background-color: #FAFAF8;
+  color: #0A0A0A;
   font-family: 'Inter', sans-serif;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #F0EDE8;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--brand-gold);
@@ -38,19 +37,22 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply bg-brand-gold hover:bg-brand-gold-light text-brand-black font-bold py-3 px-6 rounded-lg transition-all duration-200 inline-flex items-center gap-2 whitespace-nowrap;
+    @apply bg-brand-gold hover:bg-brand-gold-light text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 inline-flex items-center gap-2 whitespace-nowrap;
   }
   .btn-secondary {
-    @apply border-2 border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-brand-black font-bold py-3 px-6 rounded-lg transition-all duration-200 inline-flex items-center gap-2 whitespace-nowrap;
+    @apply border-2 border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 inline-flex items-center gap-2 whitespace-nowrap;
   }
   .section-title {
-    @apply text-3xl md:text-4xl font-black text-brand-cream mb-4;
+    @apply text-3xl md:text-4xl font-black text-gray-900 mb-4;
   }
   .section-subtitle {
     @apply text-brand-gold font-semibold text-sm uppercase tracking-widest mb-3;
   }
+  .card-light {
+    @apply bg-white border border-gray-200 rounded-2xl p-6 shadow-sm;
+  }
   .card-dark {
-    @apply bg-zinc-900 border border-zinc-800 rounded-2xl p-6;
+    @apply bg-white border border-gray-200 rounded-2xl p-6 shadow-sm;
   }
   .gold-line {
     @apply w-12 h-1 bg-brand-gold rounded-full;

@@ -34,9 +34,9 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-brand-black">
+    <div className="min-h-screen bg-[#FAFAF8]">
       {/* Hero */}
-      <section className="relative pt-28 sm:pt-32 pb-12 sm:pb-20 bg-zinc-950 overflow-hidden">
+      <section className="relative pt-28 sm:pt-32 pb-12 sm:pb-20 bg-[#F0EDE8] overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div
             className="absolute inset-0"
@@ -54,7 +54,7 @@ export default function AboutPage() {
               Master Oil Guinée
             </h1>
             <div className="gold-line mb-6" />
-            <p className="text-xl text-zinc-300 leading-relaxed">
+            <p className="text-xl text-gray-700 leading-relaxed">
               Fondée à Conakry, Master Oil Guinée est née d&apos;une conviction simple :{' '}
               <span className="text-brand-gold font-semibold">
                 les moteurs guinéens méritent la meilleure protection possible
@@ -67,15 +67,15 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="py-12 sm:py-20 bg-brand-black">
+      <section className="py-12 sm:py-20 bg-[#FAFAF8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
               <p className="section-subtitle">Notre mission</p>
-              <h2 className="text-3xl font-black text-brand-cream mb-6">
+              <h2 className="text-3xl font-black text-gray-900 mb-6">
                 Protéger les moteurs guinéens
               </h2>
-              <div className="space-y-4 text-zinc-400 leading-relaxed">
+              <div className="space-y-4 text-gray-500 leading-relaxed">
                 <p>
                   En Guinée, les conditions climatiques (chaleur extrême, routes difficiles,
                   démarrages fréquents) soumettent les moteurs à des contraintes bien
@@ -96,10 +96,10 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="bg-gradient-to-br from-brand-gold/10 to-transparent border border-brand-gold/20 rounded-2xl p-8">
-              <h3 className="text-brand-cream font-black text-2xl mb-6">
+              <h3 className="text-gray-900 font-black text-2xl mb-6">
                 Notre vision
               </h3>
-              <p className="text-zinc-300 leading-relaxed mb-6">
+              <p className="text-gray-700 leading-relaxed mb-6">
                 Devenir la référence incontournable en matière de lubrifiants moteur en
                 République de Guinée, et contribuer au développement d&apos;un parc
                 automobile mieux entretenu et plus fiable.
@@ -108,7 +108,7 @@ export default function AboutPage() {
                 <p className="text-brand-gold font-bold text-lg mb-1">
                   &ldquo;Fiabilité. Performance. Disponibilité.&rdquo;
                 </p>
-                <p className="text-zinc-500 text-sm">— La promesse Master Oil Guinée</p>
+                <p className="text-gray-400 text-sm">— La promesse Master Oil Guinée</p>
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="py-12 sm:py-20 bg-zinc-950">
+      <section className="py-12 sm:py-20 bg-[#F0EDE8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="section-subtitle">Nos engagements</p>
@@ -132,8 +132,8 @@ export default function AboutPage() {
                 <div className="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center mb-4 group-hover:bg-brand-gold/20 transition-colors">
                   <v.icon className="w-6 h-6 text-brand-gold" />
                 </div>
-                <h3 className="text-brand-cream font-bold text-lg mb-3">{v.title}</h3>
-                <p className="text-zinc-400 text-sm leading-relaxed">{v.desc}</p>
+                <h3 className="text-gray-900 font-bold text-lg mb-3">{v.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>
@@ -141,13 +141,13 @@ export default function AboutPage() {
       </section>
 
       {/* Exclusivity section */}
-      <section className="py-12 sm:py-20 bg-brand-black">
+      <section className="py-12 sm:py-20 bg-[#FAFAF8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <p className="section-subtitle">Distributeur officiel</p>
             <h2 className="section-title">Partenaire exclusif Super M7 en Guinée</h2>
             <div className="gold-line mx-auto mb-6" />
-            <p className="text-zinc-400 leading-relaxed mb-8">
+            <p className="text-gray-500 leading-relaxed mb-8">
               Master Oil Guinée est le distributeur exclusif autorisé par{' '}
               <a
                 href="https://canadamasteroil.com"

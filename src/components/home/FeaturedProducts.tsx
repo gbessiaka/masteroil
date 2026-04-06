@@ -36,7 +36,7 @@ const products = [
 
 export default function FeaturedProducts() {
   return (
-    <section className="py-14 sm:py-20 bg-zinc-950">
+    <section className="py-14 sm:py-20 bg-[#FAFAF8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
           <div>
@@ -44,30 +44,26 @@ export default function FeaturedProducts() {
             <h2 className="section-title mb-0">Produits phares</h2>
             <div className="gold-line mt-3" />
           </div>
-          <Link
-            href="/produits"
-            className="text-brand-gold hover:text-brand-gold-light font-semibold flex items-center gap-2 transition-colors"
-          >
+          <Link href="/produits" className="text-brand-gold hover:text-brand-gold-dark font-semibold flex items-center gap-2 transition-colors text-sm">
             Voir tout le catalogue <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {products.map((p) => (
-            <div
-              key={p.id}
-              className="card-dark border-l-4 border-l-brand-gold hover:bg-zinc-800 transition-colors group flex flex-col"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <span className="bg-brand-gold/10 text-brand-gold text-xs font-bold px-3 py-1 rounded-full border border-brand-gold/20">
+            <div key={p.id} className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md hover:border-brand-gold/30 transition-all group flex flex-col overflow-hidden">
+              {/* Badge row */}
+              <div className="flex justify-between items-center px-5 pt-5 mb-3">
+                <span className="bg-amber-50 text-brand-gold text-xs font-bold px-3 py-1 rounded-full border border-brand-gold/20">
                   {p.badge}
                 </span>
-                <span className="text-zinc-500 text-xs font-mono border border-zinc-700 px-2 py-1 rounded">
+                <span className="text-gray-400 text-xs font-mono border border-gray-200 px-2 py-1 rounded bg-gray-50">
                   {p.viscosity}
                 </span>
               </div>
 
-              {/* Product image */}
-              <div className="w-full h-44 rounded-xl mb-4 overflow-hidden relative bg-zinc-800 border border-zinc-700">
+              {/* Image */}
+              <div className="mx-5 h-44 rounded-xl mb-4 overflow-hidden relative bg-gray-50 border border-gray-100">
                 <Image
                   src={p.image}
                   alt={p.name}
@@ -76,21 +72,24 @@ export default function FeaturedProducts() {
                 />
               </div>
 
-              <h3 className="text-brand-cream font-black text-lg mb-1">{p.name}</h3>
-              <p className="text-brand-gold text-sm font-semibold mb-3">{p.type}</p>
-              <p className="text-zinc-400 text-sm leading-relaxed mb-6 flex-1">{p.desc}</p>
-              <div className="flex gap-3 mt-auto">
-                <a
-                  href={getWhatsAppLink(`Bonjour, je souhaite un devis pour l'huile ${p.name}`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 btn-primary text-sm py-2 justify-center"
-                >
-                  Devis WhatsApp
-                </a>
-                <Link href={`/produits/${p.id}`} className="btn-secondary text-sm py-2 px-4">
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+              {/* Content */}
+              <div className="px-5 pb-5 flex flex-col flex-1">
+                <h3 className="text-gray-900 font-black text-lg mb-1">{p.name}</h3>
+                <p className="text-brand-gold text-sm font-semibold mb-3">{p.type}</p>
+                <p className="text-gray-500 text-sm leading-relaxed mb-5 flex-1">{p.desc}</p>
+                <div className="flex gap-3 mt-auto">
+                  <a
+                    href={getWhatsAppLink(`Bonjour, je souhaite un devis pour l'huile ${p.name}`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 btn-primary text-sm py-2.5 justify-center"
+                  >
+                    Devis WhatsApp
+                  </a>
+                  <Link href={`/produits/${p.id}`} className="btn-secondary text-sm py-2.5 px-4">
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
