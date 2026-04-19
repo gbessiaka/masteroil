@@ -20,9 +20,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="card-dark hover:border-brand-gold/30 transition-all duration-300 group flex flex-col">
       {/* Image */}
-      <div className="w-full h-44 bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-zinc-700">
+      <div className="w-full h-52 bg-white rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-gray-200">
         {product.image_url ? (
-          <Image src={product.image_url} alt={product.name} fill className="object-cover" />
+          <Image src={product.image_url} alt={product.name} fill className="object-contain p-3" />
         ) : (
           <div className="text-center">
             <div className="text-5xl mb-2">🛢️</div>

@@ -103,37 +103,36 @@ export function Hero() {
 
           {/* RIGHT — Product images */}
           <div className="hidden sm:flex flex-col items-center justify-center gap-6">
-            <div className="flex items-end justify-center gap-3 sm:gap-5 w-full">
-              <div className="relative w-36 sm:w-52 h-52 sm:h-72 rounded-3xl overflow-hidden border border-gray-200 shadow-lg rotate-[-4deg] translate-y-6 shrink-0">
-                <Image src={PRODUCT_IMAGES['5w30']} alt="Super M7 5W30" fill className="object-cover" priority />
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-3">
-                  <p className="text-white text-sm font-black text-center">5W30</p>
+            <div className="flex items-end justify-center gap-2 sm:gap-4 w-full">
+              {/* Left canister */}
+              <div className="relative w-36 sm:w-48 h-52 sm:h-64 rounded-3xl overflow-hidden border border-gray-200 shadow-lg rotate-[-4deg] translate-y-6 shrink-0 bg-white">
+                <Image src={PRODUCT_IMAGES['5w30']} alt="Super M7 5W30" fill className="object-contain p-3" priority />
+                <div className="absolute bottom-0 inset-x-0 bg-brand-gold/90 p-2">
+                  <p className="text-white text-xs font-black text-center">5W-30</p>
                 </div>
               </div>
 
-              <div className="relative w-40 sm:w-56 h-60 sm:h-80 rounded-3xl overflow-hidden border-2 border-brand-gold/50 shadow-xl z-10 shrink-0" style={{ boxShadow: '0 20px 60px rgba(200,149,42,0.2)' }}>
-                <Image src={PRODUCT_IMAGES['5w40']} alt="Super M7 5W40" fill className="object-cover" priority />
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-3">
-                  <p className="text-white text-sm font-black text-center">5W40</p>
+              {/* Center canister — biggest */}
+              <div className="relative w-44 sm:w-60 h-64 sm:h-80 rounded-3xl overflow-hidden border-2 border-brand-gold/60 shadow-2xl z-10 shrink-0 bg-white" style={{ boxShadow: '0 20px 60px rgba(200,149,42,0.25)' }}>
+                <Image src={PRODUCT_IMAGES['5w40']} alt="Super M7 5W40" fill className="object-contain p-3" priority />
+                <div className="absolute bottom-0 inset-x-0 bg-brand-gold p-2">
+                  <p className="text-white text-sm font-black text-center">5W-40</p>
                 </div>
               </div>
 
-              <div className="relative w-36 sm:w-52 h-52 sm:h-72 rounded-3xl overflow-hidden border border-gray-200 shadow-lg rotate-[4deg] translate-y-6 shrink-0">
-                <Image src={PRODUCT_IMAGES['5w20']} alt="Super M7 5W20" fill className="object-cover" priority />
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-3">
-                  <p className="text-white text-sm font-black text-center">5W20</p>
+              {/* Right canister */}
+              <div className="relative w-36 sm:w-48 h-52 sm:h-64 rounded-3xl overflow-hidden border border-gray-200 shadow-lg rotate-[4deg] translate-y-6 shrink-0 bg-white">
+                <Image src={PRODUCT_IMAGES['5w20']} alt="Super M7 5W20" fill className="object-contain p-3" priority />
+                <div className="absolute bottom-0 inset-x-0 bg-brand-gold/90 p-2">
+                  <p className="text-white text-xs font-black text-center">5W-20</p>
                 </div>
               </div>
             </div>
 
             {/* Logo badge */}
-            <div className="bg-white border border-gray-200 shadow-sm rounded-2xl px-6 py-3 flex items-center gap-3">
-              <div className="relative w-10 h-10 shrink-0">
+            <div className="bg-white border border-gray-200 shadow-sm rounded-2xl p-3">
+              <div className="relative w-16 h-16">
                 <Image src={LOGO_URL} alt="Master Oil" fill className="object-contain" />
-              </div>
-              <div>
-                <p className="text-brand-gold text-sm font-black">SUPER M7</p>
-                <p className="text-gray-400 text-xs">Master Oil Canada · Guinée</p>
               </div>
             </div>
           </div>

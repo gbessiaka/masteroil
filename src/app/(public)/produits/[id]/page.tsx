@@ -48,9 +48,9 @@ export default function ProductDetailPage({ params }: Props) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* Image */}
-          <div className="w-full aspect-square bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl overflow-hidden relative flex items-center justify-center border border-zinc-700">
+          <div className="w-full aspect-square bg-white rounded-2xl overflow-hidden relative flex items-center justify-center border border-gray-200 shadow-sm">
             {product.image_url ? (
-              <Image src={product.image_url} alt={product.name} fill className="object-cover" />
+              <Image src={product.image_url} alt={product.name} fill className="object-contain p-6" />
             ) : (
               <div className="text-center">
                 <div className="text-8xl mb-4">🛢️</div>

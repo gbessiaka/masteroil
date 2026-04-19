@@ -1,11 +1,10 @@
 import { Product, Order, Client, Invoice, StockLevel } from '@/types'
 
-// Images officielles depuis canadamasteroil.com
 export const PRODUCT_IMAGES = {
-  '0w20': 'https://cdn.prod.website-files.com/687c617e655908a58fa3328d/687d7ce3bb39952d5c11d19e_0w-20.jpeg',
-  '5w20': 'https://cdn.prod.website-files.com/687c617e655908a58fa3328d/687d7ce78a0a65f393408406_5w-20.jpeg',
-  '5w30': 'https://cdn.prod.website-files.com/687c617e655908a58fa3328d/687d7cece234fd084d4a6f6d_5w-30.jpeg',
-  '5w40': 'https://cdn.prod.website-files.com/687c617e655908a58fa3328d/687d7cf0a5379c24ed1f4fa1_5w-40.jpeg',
+  '0w20': '/images/0w20.webp',
+  '5w20': '/images/5w20.jpeg',
+  '5w30': '/images/5w30.jpeg',
+  '5w40': '/images/5w40.jpeg',
 }
 
 export const LOGO_URL = 'https://cdn.prod.website-files.com/687c617d655908a58fa33213/687c6867a76c4ca17e574d50_logo-master-oil.avif'

@@ -63,12 +63,12 @@ export default function FeaturedProducts() {
               </div>
 
               {/* Image */}
-              <div className="mx-5 h-44 rounded-xl mb-4 overflow-hidden relative bg-gray-50 border border-gray-100">
+              <div className="mx-5 h-52 sm:h-56 rounded-xl mb-4 overflow-hidden relative bg-white border border-gray-100 flex items-center justify-center">
                 <Image
                   src={p.image}
                   alt={p.name}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-contain p-3 group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
 
