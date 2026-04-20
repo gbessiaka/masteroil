@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { LOGO_URL } from '@/lib/mockData'
 import { useAdminProfile, type AdminRole } from '@/hooks/useAdminProfile'
+import { useNewOrders } from '@/hooks/useNewOrders'
 import { createClient } from '@/lib/supabase/client'
 
 type NavItem = { href: string; label: string; icon: React.ElementType; roles: AdminRole[] }
@@ -34,6 +35,7 @@ export default function AdminSidebar() {
   const { profile } = useAdminProfile()
 
   const role = profile?.role ?? 'commercial'
+  const newOrdersCount = useNewOrders()
 
   const handleLogout = async () => {
     const supabase = createClient()
@@ -49,10 +51,21 @@ export default function AdminSidebar() {
 
   const currentPage = [...navItems, ...bottomNavItems].find((item) => isActive(item.href))?.label ?? 'Admin'
 
+  // Mise à jour du titre de l'onglet
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = newOrdersCount > 0
+        ? `(${newOrdersCount}) Admin — Master Oil Guinée`
+        : 'Admin — Master Oil Guinée'
+    }
+  }, [newOrdersCount])
+
   const NavLinks = ({ onClick }: { onClick?: () => void }) => (
     <div className="flex flex-col h-full">
       <div className="flex-1 space-y-0.5">
-        {visibleNav.map((item) => (
+        {visibleNav.map((item) => {
+          const showBadge = item.href === '/admin/commandes' && newOrdersCount > 0
+          return (
           <Link
             key={item.href}
             href={item.href}
@@ -64,9 +77,15 @@ export default function AdminSidebar() {
             }`}
           >
             <item.icon className="w-5 h-5 shrink-0" />
-            {item.label}
+            <span className="flex-1">{item.label}</span>
+            {showBadge && (
+              <span className="bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-none animate-pulse">
+                {newOrdersCount}
+              </span>
+            )}
           </Link>
-        ))}
+        )})}
+      </div>
       </div>
       <div className="border-t border-zinc-800 pt-2 mt-2 space-y-0.5">
         {visibleBottom.map((item) => (
@@ -135,10 +154,13 @@ export default function AdminSidebar() {
         </div>
         <button
           onClick={() => setDrawerOpen(true)}
-          className="p-2 text-zinc-400 hover:text-white transition-colors"
+          className="p-2 text-zinc-400 hover:text-white transition-colors relative"
           aria-label="Ouvrir le menu"
         >
           <Menu className="w-5 h-5" />
+          {newOrdersCount > 0 && (
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          )}
         </button>
       </div>
 
