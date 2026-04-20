@@ -1,8 +1,10 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Droplets, Eye, EyeOff } from 'lucide-react'
+import Image from 'next/image'
+import { Eye, EyeOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { LOGO_URL } from '@/lib/mockData'
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('')
@@ -23,8 +25,7 @@ export default function AdminLoginPage() {
       setError('Identifiants incorrects. Vérifiez votre email et mot de passe.')
       return
     }
-    router.push('/admin')
-    router.refresh()
+    window.location.href = '/admin'
   }
 
   return (
@@ -32,8 +33,10 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Droplets className="w-8 h-8 text-brand-gold" />
+          <div className="flex flex-col items-center gap-3 mb-3">
+            <div className="relative w-20 h-20">
+              <Image src={LOGO_URL} alt="Master Oil" fill className="object-contain" />
+            </div>
             <div>
               <span className="text-2xl font-black text-brand-gold">MASTER OIL</span>
               <span className="text-2xl font-black text-brand-cream"> GUINÉE</span>

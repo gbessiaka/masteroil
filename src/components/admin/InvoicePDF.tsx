@@ -1,6 +1,11 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
 import { Invoice, Order, Client, OrderItem } from '@/types'
-import { formatGNF, formatDate } from '@/lib/utils'
+import { formatDate } from '@/lib/utils'
+
+// Intl.NumberFormat('fr-FR') uses non-breaking space (\u00A0) which renders as "/" in @react-pdf/renderer
+function fmtGNF(amount: number): string {
+  return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' GNF'
+}
 
 const styles = StyleSheet.create({
   page: {
@@ -109,7 +114,7 @@ export default function InvoicePDF({ invoice, order }: InvoicePDFProps) {
             <Text style={styles.headerSmall}>Huiles moteur synthétiques</Text>
           </View>
           <View style={styles.invoiceInfo}>
-            <Text style={styles.invoiceNumber}>{invoice.invoice_number}</Text>
+            <Text style={styles.invoiceNumber}>Facture N° : {invoice.invoice_number}</Text>
             <Text
               style={{
                 color: '#888888',
@@ -190,9 +195,9 @@ export default function InvoicePDF({ invoice, order }: InvoicePDFProps) {
                   {item.packaging ? ` — ${item.packaging.volume_liters}L` : ''}
                 </Text>
                 <Text style={styles.col2}>{item.quantity}</Text>
-                <Text style={styles.col3}>{formatGNF(item.unit_price_gnf)}</Text>
+                <Text style={styles.col3}>{fmtGNF(item.unit_price_gnf)}</Text>
                 <Text style={styles.col4}>
-                  {formatGNF(item.quantity * item.unit_price_gnf)}
+                  {fmtGNF(item.quantity * item.unit_price_gnf)}
                 </Text>
               </View>
             ))}
@@ -204,7 +209,7 @@ export default function InvoicePDF({ invoice, order }: InvoicePDFProps) {
           <View style={styles.totalBox}>
             <View style={styles.totalRow}>
               <Text style={styles.grandTotalLabel}>TOTAL</Text>
-              <Text style={styles.grandTotalValue}>{formatGNF(order.total_gnf)}</Text>
+              <Text style={styles.grandTotalValue}>{fmtGNF(order.total_gnf)}</Text>
             </View>
           </View>
         </View>
@@ -214,7 +219,6 @@ export default function InvoicePDF({ invoice, order }: InvoicePDFProps) {
           <Text style={styles.footerText}>
             Master Oil Guinée · Conakry, République de Guinée · Distributeur exclusif de Master Oil Canada en Guinée
           </Text>
-          <Text style={[styles.footerText, { marginTop: 2 }]}>{invoice.invoice_number}</Text>
         </View>
       </Page>
     </Document>
