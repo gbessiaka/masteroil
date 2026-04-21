@@ -32,9 +32,9 @@ export default function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const { profile } = useAdminProfile()
-
-  const role = profile?.role ?? 'commercial'
+  const { profile, loading: profileLoading } = useAdminProfile()
+  // Tant que le profil n'est pas chargé, on affiche tout (évite une sidebar vide)
+  const role: AdminRole = profile?.role ?? 'super_admin'
   const newOrdersCount = useNewOrders()
 
   const handleLogout = async () => {
