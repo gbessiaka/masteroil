@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Plus, Minus, Trash2, Loader2, ShoppingCart, ChevronRight, ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { LOGO_URL } from '@/lib/mockData'
@@ -45,6 +46,14 @@ export default function CommandePage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    // Read synchronously before async fetch so the closure captures it even
+    // if sessionStorage is cleared by a concurrent effect (React Strict Mode)
+    let savedCartEntries: { packaging_id: string; quantity: number }[] = []
+    try {
+      const saved = sessionStorage.getItem('commande_cart')
+      if (saved) savedCartEntries = JSON.parse(saved)
+    } catch {}
+
     const supabase = createClient()
     supabase
       .from('packagings')
@@ -65,6 +74,19 @@ export default function CommandePage() {
           map[pkg.product_id].packagings.push(pkg)
         }
         setProductGroups(Object.values(map))
+
+        if (savedCartEntries.length > 0) {
+          const preCart: CartItem[] = []
+          for (const entry of savedCartEntries) {
+            const pkg = pkgs.find((p) => p.id === entry.packaging_id)
+            if (pkg && entry.quantity > 0) preCart.push({ packaging: pkg, quantity: entry.quantity })
+          }
+          if (preCart.length > 0) {
+            setCart(preCart)
+            sessionStorage.removeItem('commande_cart')
+          }
+        }
+
         setLoading(false)
       })
   }, [])
@@ -214,6 +236,9 @@ export default function CommandePage() {
             {/* Colonne produits */}
             <div className="flex-1 min-w-0">
               <div className="mb-6">
+                <Link href="/produits" className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-brand-cream text-sm mb-4 transition-colors">
+                  <ArrowLeft className="w-4 h-4" /> Retour au catalogue
+                </Link>
                 <h1 className="text-2xl sm:text-3xl font-black text-brand-cream">Passer une commande</h1>
                 <p className="text-zinc-400 text-sm mt-1">Sélectionnez vos produits et quantités</p>
               </div>

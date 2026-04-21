@@ -1,5 +1,5 @@
 import ProductCard from '@/components/products/ProductCard'
-import { MOCK_PRODUCTS } from '@/lib/mockData'
+import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -8,8 +8,15 @@ export const metadata: Metadata = {
     "Gamme complète d'huiles moteur synthétiques Super M7. Disponibles en 1L, 4L, 5L à Conakry.",
 }
 
-export default function ProduitsPage() {
-  const products = MOCK_PRODUCTS
+export default async function ProduitsPage() {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('products')
+    .select('*, packagings(*)')
+    .eq('is_active', true)
+    .order('created_at', { ascending: false })
+
+  const products = data ?? []
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] pt-24 pb-16">
@@ -23,7 +30,7 @@ export default function ProduitsPage() {
             disponibles à Conakry.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

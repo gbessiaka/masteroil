@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { MapPin, Phone, MessageCircle, Mail } from 'lucide-react'
 import { getWhatsAppLink } from '@/lib/utils'
 import { LOGO_URL } from '@/lib/mockData'
+import { createClient } from '@/lib/supabase/server'
 
 const quickLinks = [
   { href: '/', label: 'Accueil' },
@@ -12,14 +13,15 @@ const quickLinks = [
   { href: '/contact', label: 'Contact' },
 ]
 
-const productLinks = [
-  { href: '/produits/1', label: 'Super M7 5W-30' },
-  { href: '/produits/2', label: 'Super M7 5W-40' },
-  { href: '/produits/3', label: 'Super M7 5W-20' },
-  { href: '/produits/4', label: 'Super M7 0W-20' },
-]
-
-export function Footer() {
+export async function Footer() {
+  const supabase = createClient()
+  const { data } = await supabase
+    .from('products')
+    .select('id, name')
+    .eq('is_active', true)
+    .order('created_at', { ascending: false })
+    .limit(4)
+  const productLinks = (data ?? []).map((p) => ({ href: `/produits/${p.id}`, label: p.name }))
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '224620000000'
   const whatsappLink = getWhatsAppLink('Bonjour Master Oil Guinée, je voudrais avoir des informations.')
 

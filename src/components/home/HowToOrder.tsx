@@ -1,24 +1,21 @@
-import { MessageCircle, FileText, Truck } from 'lucide-react'
-import { getWhatsAppLink } from '@/lib/utils'
+import Link from 'next/link'
+import { ShoppingCart, ClipboardList, Truck } from 'lucide-react'
 
 const steps = [
   {
-    icon: MessageCircle,
-    num: '01',
-    title: 'Contactez-nous',
-    desc: 'Via WhatsApp, formulaire en ligne ou par téléphone. Décrivez vos besoins.',
+    icon: ShoppingCart,
+    title: 'Choisissez vos produits',
+    desc: 'Parcourez le catalogue, sélectionnez le format et la quantité qui vous convient.',
   },
   {
-    icon: FileText,
-    num: '02',
-    title: 'Recevez votre devis',
-    desc: 'Nous vous envoyons un devis détaillé sous 24h avec prix et disponibilité.',
+    icon: ClipboardList,
+    title: 'Remplissez vos infos',
+    desc: 'Saisissez votre nom et votre numéro de téléphone. Pas de compte, pas de mot de passe.',
   },
   {
     icon: Truck,
-    num: '03',
     title: 'Livraison à domicile',
-    desc: 'Livraison rapide à votre adresse à Conakry ou dans les villes secondaires.',
+    desc: 'On vous contacte pour confirmer et livrer rapidement à Conakry ou en région.',
   },
 ]
 
@@ -33,7 +30,7 @@ export default function HowToOrder() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative mb-12">
-          {/* Connecting line on desktop */}
+          {/* Ligne de connexion desktop */}
           <div className="hidden md:block absolute top-10 left-[calc(16.67%+2rem)] right-[calc(16.67%+2rem)] h-0.5 bg-gradient-to-r from-brand-gold/20 via-brand-gold/40 to-brand-gold/20" />
 
           {steps.map((s, i) => (
@@ -53,15 +50,10 @@ export default function HowToOrder() {
         </div>
 
         <div className="text-center">
-          <a
-            href={getWhatsAppLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary text-base py-4 px-10 shadow-sm"
-          >
-            <MessageCircle size={18} />
-            Démarrer ma commande
-          </a>
+          <Link href="/commande" className="btn-primary text-base py-4 px-10 shadow-sm">
+            <ShoppingCart size={18} />
+            Passer une commande
+          </Link>
         </div>
       </div>
     </section>
