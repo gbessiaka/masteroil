@@ -33,7 +33,7 @@ export async function Footer() {
           <div className="flex items-center justify-center gap-3">
             <div className="h-px flex-1 bg-brand-gold/30 max-w-32" />
             <span className="text-brand-gold text-sm font-semibold tracking-wide uppercase">
-              Distributeur exclusif de Master Oil Canada en Guinée
+              Distributeur exclusif · Master Oil Canada en Guinée
             </span>
             <div className="h-px flex-1 bg-brand-gold/30 max-w-32" />
           </div>

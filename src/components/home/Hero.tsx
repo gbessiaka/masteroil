@@ -39,7 +39,7 @@ export function Hero() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-gold/40 bg-amber-50 mb-8 w-fit">
               <CheckCircle2 size={14} className="text-brand-gold shrink-0" />
               <span className="text-brand-gold text-sm font-semibold">
-                Distributeur exclusif de Master Oil Canada en Guinée
+                Distributeur exclusif · Master Oil Canada
               </span>
             </div>
 

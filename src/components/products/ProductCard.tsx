@@ -153,9 +153,9 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Modal sélection format */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center sm:px-4"
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4"
           onClick={(e) => { if (e.target === e.currentTarget) setModalOpen(false) }}>
-          <div className="bg-white border border-gray-200 sm:rounded-2xl rounded-t-2xl p-6 w-full max-w-sm shadow-2xl">
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 w-full max-w-sm shadow-2xl">
             <div className="flex items-center justify-between mb-1">
               <h3 className="text-gray-900 font-black text-lg">{product.name}</h3>
               <button onClick={() => setModalOpen(false)} className="p-1.5 text-gray-400 hover:text-gray-700 transition-colors">
