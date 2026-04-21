@@ -314,8 +314,8 @@ export default function AdminCommandesPage() {
 
       {/* Modal nouvelle commande */}
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start justify-center px-4 py-6 overflow-y-auto">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 w-full max-w-2xl shadow-2xl my-auto">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-start justify-center sm:px-4 sm:py-6 overflow-y-auto">
+          <div className="bg-zinc-900 border border-zinc-800 sm:rounded-2xl rounded-t-2xl p-5 sm:p-6 w-full max-w-2xl shadow-2xl sm:my-auto max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-brand-cream font-black text-lg">Nouvelle commande</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 text-zinc-400 hover:text-white">
@@ -354,31 +354,35 @@ export default function AdminCommandesPage() {
                     <Plus className="w-3 h-3" />Ajouter un article
                   </button>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {items.map((item, i) => (
-                    <div key={i} className="flex gap-2 items-end">
-                      <div className="flex-1">
-                        <select value={item.packaging_id} onChange={(e) => updateItem(i, 'packaging_id', e.target.value)}
-                          className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
-                          <option value="">— Produit —</option>
-                          {packagings.map((p) => (
-                            <option key={p.id} value={p.id}>
-                              {p.product?.name} {p.volume_liters}L — {p.price_gnf.toLocaleString()} GNF
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="w-20">
+                    <div key={i} className="bg-zinc-800/50 rounded-lg p-3 space-y-2">
+                      <select value={item.packaging_id} onChange={(e) => updateItem(i, 'packaging_id', e.target.value)}
+                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
+                        <option value="">— Sélectionner un produit —</option>
+                        {packagings.map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.product?.name} {p.volume_liters}L — {p.price_gnf.toLocaleString()} GNF
+                          </option>
+                        ))}
+                      </select>
+                      <div className="flex items-center gap-2">
+                        <label className="text-zinc-500 text-xs shrink-0">Quantité :</label>
                         <input type="number" min="1" value={item.quantity}
                           onChange={(e) => updateItem(i, 'quantity', parseInt(e.target.value) || 1)}
-                          className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream focus:border-brand-gold focus:outline-none text-sm text-center" />
+                          className="w-24 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream focus:border-brand-gold focus:outline-none text-sm text-center" />
+                        {item.unit_price_gnf > 0 && (
+                          <span className="text-brand-gold text-xs font-semibold ml-auto">
+                            = {(item.unit_price_gnf * item.quantity).toLocaleString()} GNF
+                          </span>
+                        )}
+                        {items.length > 1 && (
+                          <button type="button" onClick={() => setItems((p) => p.filter((_, j) => j !== i))}
+                            className="p-1.5 text-zinc-500 hover:text-red-400 transition-colors shrink-0">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
                       </div>
-                      {items.length > 1 && (
-                        <button type="button" onClick={() => setItems((p) => p.filter((_, j) => j !== i))}
-                          className="p-2 text-zinc-500 hover:text-red-400 transition-colors">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      )}
                     </div>
                   ))}
                 </div>

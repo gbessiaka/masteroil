@@ -213,7 +213,16 @@ export default function AdminCommandeDetailPage() {
         </div>
       )}
 
-      <div className="flex gap-4">
+      {/* Actions fixes en bas sur mobile */}
+      <div className="flex gap-3 md:hidden fixed bottom-16 left-0 right-0 px-4 py-3 bg-zinc-950/95 backdrop-blur border-t border-zinc-800 z-30">
+        <Link href="/admin/commandes" className="btn-secondary flex-1 justify-center py-3 text-sm">Retour</Link>
+        <button onClick={handleSave} disabled={saving} className="btn-primary flex-1 justify-center py-3 text-sm disabled:opacity-50">
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+          {saving ? 'Enregistrement...' : 'Enregistrer'}
+        </button>
+      </div>
+      {/* Actions desktop */}
+      <div className="hidden md:flex gap-4">
         <Link href="/admin/commandes" className="btn-secondary flex-1 justify-center py-3">Retour</Link>
         <button onClick={handleSave} disabled={saving} className="btn-primary flex-1 justify-center py-3 disabled:opacity-50">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}

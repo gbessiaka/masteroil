@@ -166,7 +166,7 @@ export default function AdminStocksPage() {
             {/* Mobile */}
             <div className="md:hidden divide-y divide-zinc-800">
               {stockLevels.map((item) => (
-                <div key={item.packaging_id} className="flex items-center justify-between p-4">
+                <div key={item.packaging_id} className="flex items-center justify-between px-4 py-3">
                   <div className="min-w-0">
                     <p className="text-brand-cream text-sm font-medium">{item.product_name}</p>
                     <div className="flex items-center gap-2 mt-0.5">
@@ -174,12 +174,12 @@ export default function AdminStocksPage() {
                       {item.sku && <span className="text-zinc-500 text-xs font-mono">{item.sku}</span>}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 shrink-0 ml-3">
+                  <div className="flex items-center gap-2 shrink-0 ml-3">
                     <span className={`text-sm font-black px-2.5 py-1 rounded-full border ${getStockColor(item.quantity_available, threshold)}`}>
                       {item.quantity_available}
                     </span>
                     <button onClick={() => { setSelectedItem(item); setModalOpen(true) }}
-                      className="text-brand-gold text-xs font-semibold hover:underline">
+                      className="bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-semibold px-3 py-2 rounded-lg active:bg-brand-gold/20 transition-colors">
                       + Mvt
                     </button>
                   </div>

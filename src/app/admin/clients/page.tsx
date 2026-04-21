@@ -303,8 +303,8 @@ export default function AdminClientsPage() {
 
       {/* Modal ajout / modification */}
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center px-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center sm:px-4">
+          <div className="bg-zinc-900 border border-zinc-800 sm:rounded-2xl rounded-t-2xl p-6 w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-brand-cream font-black text-lg">
                 {editingClient ? 'Modifier le client' : 'Nouveau client'}

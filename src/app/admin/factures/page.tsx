@@ -176,26 +176,28 @@ export default function AdminFacturesPage() {
                     <Badge variant={sc.variant}>{sc.label}</Badge>
                   </div>
                   <p className="text-zinc-400 text-sm mb-1">{invoice.order?.client?.name || 'Client inconnu'}</p>
-                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800">
-                    <div>
+                  <div className="mt-3 pt-3 border-t border-zinc-800">
+                    <div className="flex items-center justify-between mb-3">
                       <span className="text-brand-gold font-semibold text-sm">{formatGNF(invoice.order?.total_gnf ?? 0)}</span>
-                      <span className="text-zinc-500 text-xs ml-2">{formatDate(invoice.created_at)}</span>
+                      <span className="text-zinc-500 text-xs">{formatDate(invoice.created_at)}</span>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="grid grid-cols-3 gap-2">
                       <a href={`/api/admin/invoice/${invoice.id}`} target="_blank" rel="noopener noreferrer"
-                        className="text-zinc-400 hover:text-brand-gold text-xs flex items-center gap-1 transition-colors">
+                        className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-zinc-800 text-zinc-300 text-xs font-medium active:bg-zinc-700 transition-colors">
                         <Download className="w-3.5 h-3.5" />PDF
                       </a>
                       <button onClick={() => shareInvoice(invoice)} disabled={sharing === invoice.id}
-                        className="text-green-500 hover:text-green-400 text-xs flex items-center gap-1 transition-colors disabled:opacity-50">
+                        className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-green-900/30 text-green-400 text-xs font-medium active:bg-green-900/50 transition-colors disabled:opacity-50">
                         {sharing === invoice.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <MessageCircle className="w-3.5 h-3.5" />}
                         Envoyer
                       </button>
-                      {invoice.status === 'en_attente' && (
+                      {invoice.status === 'en_attente' ? (
                         <button onClick={() => updateStatus(invoice.id, 'paye')}
-                          className="text-yellow-400 text-xs hover:underline flex items-center gap-1">
-                          <CheckCircle2 className="w-3.5 h-3.5" />Marquer payé
+                          className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-yellow-900/30 text-yellow-400 text-xs font-medium active:bg-yellow-900/50 transition-colors">
+                          <CheckCircle2 className="w-3.5 h-3.5" />Payé
                         </button>
+                      ) : (
+                        <div className="flex items-center justify-center py-2 rounded-lg bg-zinc-800/50 text-zinc-600 text-xs">Payé</div>
                       )}
                     </div>
                   </div>
@@ -276,8 +278,8 @@ export default function AdminFacturesPage() {
 
       {/* Modal nouvelle facture */}
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center px-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center sm:px-4">
+          <div className="bg-zinc-900 border border-zinc-800 sm:rounded-2xl rounded-t-2xl p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-brand-cream font-black text-lg">Nouvelle facture</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 text-zinc-400 hover:text-white">

@@ -200,28 +200,30 @@ export default function AdminStatistiquesPage() {
             </div>
 
             {/* Navigateur mois */}
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2">
               <button onClick={() => navigateMonth(-1)}
-                className="p-1.5 text-zinc-400 hover:text-brand-cream border border-zinc-700 rounded-lg transition-colors">
+                className="p-2 text-zinc-400 hover:text-brand-cream border border-zinc-700 rounded-lg transition-colors shrink-0">
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <select value={customMonth}
                 onChange={(e) => { setCustomMonth(+e.target.value); setPreset('custom') }}
-                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1.5 text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
+                className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
                 {MONTH_NAMES.map((m,i) => <option key={i} value={i}>{m}</option>)}
               </select>
               <select value={customYear}
                 onChange={(e) => { setCustomYear(+e.target.value); setPreset('custom') }}
-                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1.5 text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
+                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
                 {Array.from({ length: 5 }, (_, i) => new Date().getFullYear()-i).map((y) => (
                   <option key={y} value={y}>{y}</option>
                 ))}
               </select>
               <button onClick={() => navigateMonth(1)}
-                className="p-1.5 text-zinc-400 hover:text-brand-cream border border-zinc-700 rounded-lg transition-colors">
+                className="p-2 text-zinc-400 hover:text-brand-cream border border-zinc-700 rounded-lg transition-colors shrink-0">
                 <ChevronRight className="w-4 h-4" />
               </button>
-              <span className="text-zinc-500 text-xs ml-1">
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-zinc-500 text-xs">
                 {from.toLocaleDateString('fr-FR')} → {to.toLocaleDateString('fr-FR')}
               </span>
               {refreshing && <span className="text-zinc-500 text-xs flex items-center gap-1"><RefreshCw className="w-3 h-3 animate-spin" />Mise à jour…</span>}

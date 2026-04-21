@@ -4,7 +4,7 @@ import { formatGNF, formatDate } from '@/lib/utils'
 import OrderStatusBadge from '@/components/admin/OrderStatusBadge'
 import { OrderStatus } from '@/types'
 import Link from 'next/link'
-import { ShoppingCart, Users, TrendingUp, Package, AlertTriangle, Loader2 } from 'lucide-react'
+import { ShoppingCart, Users, TrendingUp, Package, AlertTriangle, Loader2, Plus, BarChart2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAdminProfile } from '@/hooks/useAdminProfile'
 
@@ -103,11 +103,34 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="p-4 sm:p-8">
-      <div className="mb-6">
-        <h1 className="text-xl sm:text-2xl font-black text-brand-cream mb-1">
-          {greeting()}{profile ? `, ${profile.name.split(' ')[0]}` : ''} 👋
-        </h1>
-        <p className="text-zinc-400 text-sm">Vue d&apos;ensemble de l&apos;activité Master Oil Guinée</p>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black text-brand-cream mb-1">
+            {greeting()}{profile ? `, ${profile.name.split(' ')[0]}` : ''} 👋
+          </h1>
+          <p className="text-zinc-400 text-sm">Vue d&apos;ensemble de l&apos;activité</p>
+        </div>
+        {/* Bouton nouvelle commande rapide sur mobile */}
+        <Link href="/admin/commandes" className="md:hidden btn-primary text-sm py-2 px-3">
+          <Plus className="w-4 h-4" />
+          <span className="text-xs">Commande</span>
+        </Link>
+      </div>
+
+      {/* Actions rapides mobile */}
+      <div className="md:hidden grid grid-cols-4 gap-2 mb-6">
+        {[
+          { href: '/admin/commandes', label: 'Commandes', icon: ShoppingCart, color: 'text-blue-400' },
+          { href: '/admin/clients',   label: 'Clients',   icon: Users,        color: 'text-purple-400' },
+          { href: '/admin/stocks',    label: 'Stocks',    icon: Package,      color: 'text-yellow-400' },
+          { href: '/admin/statistiques', label: 'Stats', icon: BarChart2,    color: 'text-green-400' },
+        ].map((a) => (
+          <Link key={a.href} href={a.href}
+            className="flex flex-col items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-xl p-3 active:bg-zinc-800 transition-colors">
+            <a.icon className={`w-5 h-5 ${a.color}`} />
+            <span className="text-zinc-400 text-[10px] font-medium">{a.label}</span>
+          </Link>
+        ))}
       </div>
 
       {loading ? (
