@@ -140,8 +140,12 @@ export default function ProductCard({ product }: ProductCardProps) {
               <ShoppingCart className="w-3.5 h-3.5" />
               Commander
             </button>
-            <Link href={`/produits/${product.id}`} className="btn-secondary text-xs py-2 px-3">
-              <Eye className="w-3.5 h-3.5" />
+            <Link
+              href={`/produits/${product.id}`}
+              className="btn-secondary text-xs py-2 px-3 flex items-center gap-1.5 shrink-0"
+            >
+              <Eye className="w-3.5 h-3.5 shrink-0" />
+              <span className="hidden sm:inline">Détail</span>
             </Link>
           </div>
         </div>
