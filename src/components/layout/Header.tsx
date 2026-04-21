@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, MessageCircle } from 'lucide-react'
+import { Menu, X, ShoppingCart } from 'lucide-react'
 import { cn, getWhatsAppLink } from '@/lib/utils'
 import { LOGO_URL } from '@/lib/mockData'
 
@@ -69,15 +69,13 @@ export function Header() {
 
           {/* CTA + mobile toggle */}
           <div className="flex items-center gap-3">
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/commande"
               className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm bg-brand-gold text-white hover:bg-brand-gold-dark transition-all duration-200 shadow-sm"
             >
-              <MessageCircle size={16} />
+              <ShoppingCart size={16} />
               Commander
-            </a>
+            </Link>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
@@ -119,16 +117,14 @@ export function Header() {
             ))}
           </nav>
           <div className="px-6 pb-8">
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/commande"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-semibold bg-brand-gold text-white hover:bg-brand-gold-dark transition-colors shadow-sm"
             >
-              <MessageCircle size={18} />
-              Commander sur WhatsApp
-            </a>
+              <ShoppingCart size={18} />
+              Commander
+            </Link>
           </div>
         </div>
       </div>

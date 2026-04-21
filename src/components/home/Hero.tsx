@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { MessageCircle, ChevronRight, CheckCircle2 } from 'lucide-react'
+import { ShoppingCart, ChevronRight, CheckCircle2 } from 'lucide-react'
 import { getWhatsAppLink } from '@/lib/utils'
 import { LOGO_URL, PRODUCT_IMAGES } from '@/lib/mockData'
 
@@ -71,16 +71,14 @@ export function Hero() {
 
             {/* CTAs */}
             <div className="flex flex-row items-center gap-3 mb-12 flex-wrap">
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/commande"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-gold text-white font-bold text-sm hover:bg-brand-gold-dark transition-all duration-200 group shadow-sm whitespace-nowrap"
               >
-                <MessageCircle size={16} />
-                Commander sur WhatsApp
+                <ShoppingCart size={16} />
+                Commander
                 <ChevronRight size={15} className="group-hover:translate-x-1 transition-transform" />
-              </a>
+              </Link>
               <Link
                 href="/produits"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-bold text-sm hover:border-brand-gold hover:text-brand-gold transition-all duration-200 group whitespace-nowrap"

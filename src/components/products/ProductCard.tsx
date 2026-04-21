@@ -112,15 +112,24 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           {/* Prix */}
           {product.show_price && minPrice !== null && (
-            <p className="text-gray-900 font-black text-sm lg:text-base mb-3">
+            <p className="text-gray-900 font-black text-sm lg:text-base mb-2">
               <span className="text-gray-400 font-normal text-xs">À partir de </span>
               {formatGNF(minPrice)}
             </p>
           )}
 
+          {/* Stock */}
+          {stockQty <= 0 && (
+            <p className="text-red-500 text-xs font-semibold mb-2">Rupture de stock</p>
+          )}
+
           {/* CTAs */}
           <div className="flex gap-2 mt-auto">
-            <button onClick={handleCommander} className="flex-1 btn-primary text-xs py-2 justify-center">
+            <button
+              onClick={handleCommander}
+              disabled={stockQty <= 0}
+              className="flex-1 btn-primary text-xs py-2 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+            >
               <ShoppingCart className="w-3.5 h-3.5" />
               Commander
             </button>

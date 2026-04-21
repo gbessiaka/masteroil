@@ -1,5 +1,5 @@
-import ProductCard from '@/components/products/ProductCard'
 import { createClient } from '@/lib/supabase/server'
+import ProductsClient from '@/components/products/ProductsClient'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,13 +10,34 @@ export const metadata: Metadata = {
 
 export default async function ProduitsPage() {
   const supabase = createClient()
-  const { data } = await supabase
-    .from('products')
-    .select('*, packagings(*)')
-    .eq('is_active', true)
-    .order('created_at', { ascending: false })
 
-  const products = data ?? []
+  const [{ data: products }, { data: movements }] = await Promise.all([
+    supabase
+      .from('products')
+      .select('*, packagings(*)')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('stock_movements')
+      .select('packaging_id, type, quantity'),
+  ])
+
+  // Calcul du stock initial par packaging
+  const stockMap: Record<string, number> = {}
+  for (const mv of movements ?? []) {
+    if (!stockMap[mv.packaging_id]) stockMap[mv.packaging_id] = 0
+    if (mv.type === 'in') stockMap[mv.packaging_id] += mv.quantity
+    else if (mv.type === 'out') stockMap[mv.packaging_id] -= mv.quantity
+    else stockMap[mv.packaging_id] = mv.quantity
+  }
+
+  const productsWithStock = (products ?? []).map((p) => ({
+    ...p,
+    stockTotal: (p.packagings ?? []).reduce(
+      (sum: number, pkg: any) => sum + (stockMap[pkg.id] ?? 0),
+      0
+    ),
+  }))
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] pt-24 pb-16">
@@ -30,11 +51,11 @@ export default async function ProduitsPage() {
             disponibles à Conakry.
           </p>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+
+        <ProductsClient
+          initialProducts={productsWithStock}
+          initialStockMap={stockMap}
+        />
       </div>
     </div>
   )
