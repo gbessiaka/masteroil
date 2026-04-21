@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const { error } = await resend.emails.send({
       from: 'Contact Master Oil <onboarding@resend.dev>',
-      to: ['info@masteroilguinee.com'],
+      to: ['saliouvj@gmail.com'], // TODO: remplacer par info@masteroilguinee.com après vérification du domaine sur Resend
       replyTo: email || undefined,
       subject: `Nouveau message — ${typeLabels[request_type] ?? request_type} — ${name}`,
       html: `
