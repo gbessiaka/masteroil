@@ -131,20 +131,21 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
 
           {/* CTAs */}
-          <div className="flex gap-2 mt-auto">
+          <div className="flex flex-col gap-2 mt-auto">
             <button
               onClick={handleCommander}
               disabled={stockQty <= 0}
-              className="flex-1 btn-primary text-xs py-2.5 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full btn-primary text-xs py-2.5 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden sm:inline">Commander</span>
+              Commander
             </button>
             <Link
               href={`/produits/${product.id}`}
-              className="shrink-0 w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-brand-gold hover:border-brand-gold transition-colors"
+              className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-brand-gold border border-gray-200 rounded-xl py-2 transition-colors"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="w-3.5 h-3.5" />
+              Voir le détail
             </Link>
           </div>
         </div>
@@ -152,24 +153,24 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Modal sélection format */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center sm:px-4"
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center sm:px-4"
           onClick={(e) => { if (e.target === e.currentTarget) setModalOpen(false) }}>
-          <div className="bg-zinc-900 border border-zinc-800 sm:rounded-2xl rounded-t-2xl p-6 w-full max-w-sm shadow-2xl">
+          <div className="bg-white border border-gray-200 sm:rounded-2xl rounded-t-2xl p-6 w-full max-w-sm shadow-2xl">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-brand-cream font-black text-lg">{product.name}</h3>
-              <button onClick={() => setModalOpen(false)} className="p-1.5 text-zinc-500 hover:text-white transition-colors">
+              <h3 className="text-gray-900 font-black text-lg">{product.name}</h3>
+              <button onClick={() => setModalOpen(false)} className="p-1.5 text-gray-400 hover:text-gray-700 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <p className="text-zinc-400 text-sm mb-5">Choisissez un format</p>
+            <p className="text-gray-500 text-sm mb-5">Choisissez un format</p>
 
             <div className="space-y-2 mb-5">
               {product.packagings!.map((pkg) => (
                 <button key={pkg.id} onClick={() => setSelectedPkg(pkg.id)}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-all ${
                     selectedPkg === pkg.id
-                      ? 'border-brand-gold bg-brand-gold/10 text-brand-cream'
-                      : 'border-zinc-700 bg-zinc-800 text-zinc-300 hover:border-zinc-600'
+                      ? 'border-brand-gold bg-amber-50 text-gray-900'
+                      : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                   }`}>
                   <span className="font-semibold">{pkg.volume_liters}L</span>
                   <div className="flex items-center gap-3">
@@ -183,7 +184,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <button
               onClick={() => selectedPkg && addToCartAndRedirect(selectedPkg)}
               disabled={!selectedPkg || added}
-              className="w-full bg-brand-gold text-zinc-950 font-black py-3.5 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50 text-sm">
+              className="w-full bg-brand-gold text-white font-black py-3.5 rounded-xl flex items-center justify-center gap-2 hover:bg-brand-gold-dark transition-all disabled:opacity-50 text-sm">
               {added ? <><Check className="w-4 h-4" /> Ajouté !</> : <><ShoppingCart className="w-4 h-4" /> Ajouter au panier</>}
             </button>
           </div>
