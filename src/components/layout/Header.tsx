@@ -92,9 +92,9 @@ export function Header() {
         'lg:hidden fixed inset-0 top-0 z-50 transition-all duration-300',
         isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       )}>
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
+        <div className="absolute inset-0 bg-black/60" onClick={() => setIsMobileMenuOpen(false)} />
         <div className={cn(
-          'absolute top-0 right-0 h-full w-72 bg-white border-l border-gray-200',
+          'absolute top-0 right-0 h-full w-4/5 max-w-xs bg-white border-l border-gray-200',
           'transition-transform duration-300 flex flex-col shadow-xl',
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         )}>

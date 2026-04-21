@@ -55,6 +55,8 @@ export default async function FeaturedProducts() {
                       alt={p.name}
                       fill
                       className="object-contain p-3 group-hover:scale-105 transition-transform duration-500"
+                      placeholder="blur"
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                     />
                   ) : (
                     <span className="text-6xl">🛢️</span>

@@ -3,9 +3,25 @@ import ProductsClient from '@/components/products/ProductsClient'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Catalogue Produits | Master Oil Guinée',
+  title: 'Catalogue Produits',
   description:
-    "Gamme complète d'huiles moteur synthétiques Super M7. Disponibles en 1L, 4L, 5L à Conakry.",
+    "Gamme complète d'huiles moteur synthétiques Super M7 : 0W-20, 5W-20, 5W-30, 5W-40. Disponibles en 1L, 4L et 5L à Conakry, Guinée.",
+  keywords: [
+    'catalogue huile moteur guinée',
+    'super m7 5w30 conakry',
+    'super m7 5w40 guinée',
+    'huile synthétique prix guinée',
+    'acheter huile moteur conakry',
+  ],
+  openGraph: {
+    title: 'Catalogue Produits — Master Oil Guinée',
+    description:
+      "Huiles moteur synthétiques Super M7 : 0W-20, 5W-20, 5W-30, 5W-40. Disponibles en 1L, 4L et 5L.",
+    url: 'https://www.masteroilguinee.com/produits',
+  },
+  alternates: {
+    canonical: 'https://www.masteroilguinee.com/produits',
+  },
 }
 
 export default async function ProduitsPage() {

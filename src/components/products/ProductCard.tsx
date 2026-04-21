@@ -65,7 +65,14 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Image */}
         <div className="w-full h-44 lg:h-56 bg-gray-50 relative flex items-center justify-center border-b border-gray-100">
           {product.image_url ? (
-            <Image src={product.image_url} alt={product.name} fill className="object-contain p-4" />
+            <Image
+              src={product.image_url}
+              alt={product.name}
+              fill
+              className="object-contain p-4"
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
+            />
           ) : (
             <span className="text-6xl">🛢️</span>
           )}

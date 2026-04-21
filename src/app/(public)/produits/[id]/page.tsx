@@ -30,10 +30,27 @@ async function getProduct(id: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProduct(params.id)
-  if (!product) return { title: 'Produit non trouvé | Master Oil Guinée' }
+  if (!product) return { title: 'Produit non trouvé' }
+  const description = product.description
+    || `${product.name} — huile moteur synthétique Super M7 disponible en 1L, 4L et 5L à Conakry, Guinée.`
+  const url = `https://www.masteroilguinee.com/produits/${params.id}`
   return {
-    title: `${product.name} | Master Oil Guinée`,
-    description: product.description || `${product.name}, huile moteur synthétique Super M7 disponible à Conakry.`,
+    title: product.name,
+    description,
+    keywords: [
+      product.name,
+      product.viscosity,
+      'huile moteur guinée',
+      'super m7',
+      'lubrifiant conakry',
+    ].filter(Boolean) as string[],
+    openGraph: {
+      title: `${product.name} — Master Oil Guinée`,
+      description,
+      url,
+      images: product.image_url ? [{ url: product.image_url, alt: product.name }] : undefined,
+    },
+    alternates: { canonical: url },
   }
 }
 
@@ -56,7 +73,15 @@ export default async function ProductDetailPage({ params }: Props) {
           {/* Image */}
           <div className="w-full aspect-square bg-white rounded-2xl overflow-hidden relative flex items-center justify-center border border-gray-200 shadow-sm">
             {product.image_url ? (
-              <Image src={product.image_url} alt={product.name} fill className="object-contain p-8" />
+              <Image
+                src={product.image_url}
+                alt={product.name}
+                fill
+                className="object-contain p-8"
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
+                priority
+              />
             ) : (
               <span className="text-8xl">🛢️</span>
             )}
