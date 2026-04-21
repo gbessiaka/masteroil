@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, MessageCircle } from 'lucide-react'
 import { formatGNF, formatDate } from '@/lib/utils'
 import OrderStatusBadge from '@/components/admin/OrderStatusBadge'
 import { OrderStatus } from '@/types'
@@ -99,6 +99,16 @@ export default function AdminCommandeDetailPage() {
     setSuccess('Modifications enregistrées')
     setTimeout(() => setSuccess(''), 3000)
     if (order) setOrder({ ...order, status, notes: notes || null })
+  }
+
+  function buildWhatsAppLink() {
+    if (!order?.client?.phone) return null
+    const phone = order.client.phone.replace(/\s+/g, '').replace(/^\+/, '')
+    const items = order.order_items.map((i) =>
+      `• ${i.packaging?.product?.name} ${i.packaging?.volume_liters}L × ${i.quantity}`
+    ).join('\n')
+    const msg = `Bonjour ${order.client.name},\n\nVotre commande a bien été reçue :\n${items}\n\nTotal : ${order.total_gnf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} GNF\n\nNous vous contacterons pour la livraison. Merci\nMaster Oil Guinée`
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`
   }
 
   if (loading) return (
@@ -206,6 +216,19 @@ export default function AdminCommandeDetailPage() {
           placeholder="Instructions de livraison, remarques..."
           className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none resize-none text-sm" />
       </div>
+
+      {/* WhatsApp */}
+      {order.client?.phone && (
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 mb-6">
+          <h2 className="text-brand-cream font-bold mb-3">Confirmation client</h2>
+          <p className="text-zinc-400 text-sm mb-4">Envoyer un message WhatsApp au client avec le récapitulatif de sa commande.</p>
+          <a href={buildWhatsAppLink()!} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
+            <MessageCircle className="w-4 h-4" />
+            Confirmer via WhatsApp
+          </a>
+        </div>
+      )}
 
       {success && (
         <div className="bg-green-900/20 border border-green-800 rounded-lg p-4 mb-4">

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Plus, Pencil, Loader2 } from 'lucide-react'
+import Image from 'next/image'
 import { formatGNF } from '@/lib/utils'
 import Badge from '@/components/ui/Badge'
 import { createClient } from '@/lib/supabase/client'
@@ -10,6 +11,7 @@ interface Packaging { id: string; volume_liters: number; price_gnf: number; sku:
 interface Product {
   id: string; name: string; category: string; description: string
   viscosity: string; type: string; is_active: boolean; show_price: boolean
+  image_url: string | null
   packagings: Packaging[]
 }
 
@@ -68,9 +70,20 @@ export default function AdminProduitsPage() {
             {products.map((product) => (
               <div key={product.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
                 <div className="flex items-start justify-between gap-3 mb-2">
-                  <div className="min-w-0">
-                    <p className="text-brand-cream text-sm font-semibold">{product.name}</p>
-                    {product.description && <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1">{product.description}</p>}
+                  <div className="flex items-center gap-3 min-w-0">
+                    {product.image_url ? (
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-zinc-700">
+                        <Image src={product.image_url} alt={product.name} fill className="object-cover" />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700 shrink-0 flex items-center justify-center">
+                        <span className="text-zinc-600 text-xs">—</span>
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <p className="text-brand-cream text-sm font-semibold">{product.name}</p>
+                      {product.description && <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1">{product.description}</p>}
+                    </div>
                   </div>
                   <Badge variant={product.is_active ? 'green' : 'red'}>{product.is_active ? 'Actif' : 'Inactif'}</Badge>
                 </div>
@@ -110,8 +123,19 @@ export default function AdminProduitsPage() {
                 {products.map((product) => (
                   <tr key={product.id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
                     <td className="px-6 py-4">
-                      <p className="text-brand-cream text-sm font-semibold">{product.name}</p>
-                      {product.description && <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1 max-w-xs">{product.description}</p>}
+                      <div className="flex items-center gap-3">
+                        {product.image_url ? (
+                          <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-zinc-700">
+                            <Image src={product.image_url} alt={product.name} fill className="object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700 shrink-0" />
+                        )}
+                        <div>
+                          <p className="text-brand-cream text-sm font-semibold">{product.name}</p>
+                          {product.description && <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1 max-w-xs">{product.description}</p>}
+                        </div>
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <p className="text-zinc-300 text-sm font-mono">{product.viscosity || '—'}</p>

@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { ArrowLeft, Plus, Trash2, Save, Loader2 } from 'lucide-react'
+import { ArrowLeft, Plus, Trash2, Save, Loader2, ImagePlus, X } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
@@ -10,6 +11,8 @@ interface PackagingForm {
   volume_liters: string
   price_gnf: string
   sku: string
+  image_url: string
+  uploading?: boolean
 }
 
 interface ProductForm {
@@ -20,11 +23,12 @@ interface ProductForm {
   type: string
   is_active: boolean
   show_price: boolean
+  image_url: string
 }
 
 const emptyForm: ProductForm = {
   name: '', category: 'automobile', description: '',
-  viscosity: '', type: '', is_active: true, show_price: true,
+  viscosity: '', type: '', is_active: true, show_price: true, image_url: '',
 }
 
 export default function AdminProductEditPage() {
@@ -37,6 +41,7 @@ export default function AdminProductEditPage() {
   const [packagings, setPackagings] = useState<PackagingForm[]>([])
   const [loading, setLoading] = useState(!isNew)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -58,6 +63,7 @@ export default function AdminProductEditPage() {
           type: data.type || '',
           is_active: data.is_active,
           show_price: data.show_price,
+          image_url: data.image_url || '',
         })
         setPackagings(
           (data.packagings || []).map((p: any) => ({
@@ -65,6 +71,7 @@ export default function AdminProductEditPage() {
             volume_liters: String(p.volume_liters),
             price_gnf: String(p.price_gnf),
             sku: p.sku || '',
+            image_url: p.image_url || '',
           }))
         )
       }
@@ -72,6 +79,37 @@ export default function AdminProductEditPage() {
     }
     load()
   }, [id, isNew])
+
+  async function handlePackagingImageUpload(e: React.ChangeEvent<HTMLInputElement>, i: number) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPackagings((prev) => prev.map((p, j) => j === i ? { ...p, uploading: true } : p))
+    const supabase = createClient()
+    const ext = file.name.split('.').pop()
+    const fileName = `pkg-${Date.now()}.${ext}`
+    const { error: uploadErr } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, file, { upsert: true })
+    if (uploadErr) { setError('Erreur upload : ' + uploadErr.message); setPackagings((prev) => prev.map((p, j) => j === i ? { ...p, uploading: false } : p)); return }
+    const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(fileName)
+    setPackagings((prev) => prev.map((p, j) => j === i ? { ...p, image_url: publicUrl, uploading: false } : p))
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    const supabase = createClient()
+    const ext = file.name.split('.').pop()
+    const fileName = `${Date.now()}.${ext}`
+    const { error: uploadErr } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, file, { upsert: true })
+    if (uploadErr) { setError('Erreur upload : ' + uploadErr.message); setUploading(false); return }
+    const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(fileName)
+    setForm((prev) => ({ ...prev, image_url: publicUrl }))
+    setUploading(false)
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
@@ -107,6 +145,7 @@ export default function AdminProductEditPage() {
             volume_liters: parseFloat(p.volume_liters),
             price_gnf: parseInt(p.price_gnf),
             sku: p.sku || null,
+            image_url: p.image_url || null,
           }))
         await supabase.from('packagings').insert(pkgs)
       }
@@ -119,18 +158,38 @@ export default function AdminProductEditPage() {
 
       if (err) { setError(err.message); setSaving(false); return }
 
-      // Delete old packagings and re-insert
-      await supabase.from('packagings').delete().eq('product_id', id)
-      if (packagings.length > 0) {
-        const pkgs = packagings
-          .filter((p) => p.volume_liters && p.price_gnf)
-          .map((p) => ({
-            product_id: id,
-            volume_liters: parseFloat(p.volume_liters),
-            price_gnf: parseInt(p.price_gnf),
-            sku: p.sku || null,
-          }))
-        await supabase.from('packagings').insert(pkgs)
+      // Récupérer les IDs des packagings actuels en base
+      const { data: existingPkgs } = await supabase
+        .from('packagings').select('id').eq('product_id', id)
+      const existingIds = (existingPkgs ?? []).map((p: any) => p.id)
+      const keptIds = packagings.filter((p) => p.id).map((p) => p.id!)
+
+      // Supprimer uniquement ceux qui ont été retirés du formulaire
+      const toDelete = existingIds.filter((eid) => !keptIds.includes(eid))
+      if (toDelete.length > 0) {
+        const { error: delErr } = await supabase
+          .from('packagings').delete().in('id', toDelete)
+        if (delErr) {
+          setError('Impossible de supprimer un conditionnement utilisé dans des commandes existantes.')
+          setSaving(false)
+          return
+        }
+      }
+
+      // Mettre à jour les existants et insérer les nouveaux
+      for (const p of packagings.filter((p) => p.volume_liters && p.price_gnf)) {
+        const payload = {
+          product_id: id,
+          volume_liters: parseFloat(p.volume_liters),
+          price_gnf: parseInt(p.price_gnf),
+          sku: p.sku || null,
+          image_url: p.image_url || null,
+        }
+        if (p.id) {
+          await supabase.from('packagings').update(payload).eq('id', p.id)
+        } else {
+          await supabase.from('packagings').insert(payload)
+        }
       }
     }
 
@@ -161,6 +220,34 @@ export default function AdminProductEditPage() {
       </div>
 
       <div className="space-y-6">
+        {/* Photo produit */}
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <h2 className="text-brand-cream font-bold mb-4">Photo du produit</h2>
+          <div className="flex items-start gap-4">
+            {form.image_url ? (
+              <div className="relative w-28 h-28 rounded-xl overflow-hidden border border-zinc-700 shrink-0">
+                <Image src={form.image_url} alt="Photo produit" fill className="object-cover" />
+                <button onClick={() => setForm((p) => ({ ...p, image_url: '' }))}
+                  className="absolute top-1 right-1 w-6 h-6 bg-black/70 rounded-full flex items-center justify-center text-white hover:bg-black transition-colors">
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
+              <div className="w-28 h-28 rounded-xl border-2 border-dashed border-zinc-700 flex items-center justify-center shrink-0 bg-zinc-800/50">
+                <ImagePlus className="w-8 h-8 text-zinc-600" />
+              </div>
+            )}
+            <div>
+              <label className={`flex items-center gap-2 cursor-pointer btn-secondary text-sm py-2 px-4 ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImagePlus className="w-4 h-4" />}
+                {uploading ? 'Upload...' : form.image_url ? 'Changer la photo' : 'Ajouter une photo'}
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+              </label>
+              <p className="text-zinc-500 text-xs mt-2">JPG, PNG, WEBP — max 5 Mo</p>
+            </div>
+          </div>
+        </div>
+
         {/* Infos générales */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
           <h2 className="text-brand-cream font-bold">Informations générales</h2>
@@ -226,33 +313,56 @@ export default function AdminProductEditPage() {
           </div>
           <div className="space-y-3">
             {packagings.map((pkg, i) => (
-              <div key={i} className="grid grid-cols-3 gap-3 p-3 bg-zinc-800 rounded-lg border border-zinc-700">
-                <div>
-                  <label className="block text-xs text-zinc-400 mb-1">Volume (L)</label>
-                  <input type="number" step="0.1" min="0.1" value={pkg.volume_liters}
-                    onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, volume_liters: e.target.value } : x))}
-                    placeholder="Ex: 5"
-                    className="w-full bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
-                </div>
-                <div>
-                  <label className="block text-xs text-zinc-400 mb-1">Prix (GNF)</label>
-                  <input type="number" min="0" value={pkg.price_gnf}
-                    onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, price_gnf: e.target.value } : x))}
-                    placeholder="Ex: 395000"
-                    className="w-full bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex-1">
-                    <label className="block text-xs text-zinc-400 mb-1">SKU</label>
-                    <input type="text" value={pkg.sku}
-                      onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, sku: e.target.value } : x))}
-                      placeholder="Ex: SM7-5L"
+              <div key={i} className="p-3 bg-zinc-800 rounded-lg border border-zinc-700 space-y-3">
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-xs text-zinc-400 mb-1">Volume (L)</label>
+                    <input type="number" step="0.1" min="0.1" value={pkg.volume_liters}
+                      onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, volume_liters: e.target.value } : x))}
+                      placeholder="Ex: 5"
                       className="w-full bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
                   </div>
-                  <button type="button" onClick={() => setPackagings((p) => p.filter((_, j) => j !== i))}
-                    className="mt-5 p-2 text-zinc-500 hover:text-red-400 transition-colors">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div>
+                    <label className="block text-xs text-zinc-400 mb-1">Prix (GNF)</label>
+                    <input type="number" min="0" value={pkg.price_gnf}
+                      onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, price_gnf: e.target.value } : x))}
+                      placeholder="Ex: 395000"
+                      className="w-full bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <label className="block text-xs text-zinc-400 mb-1">SKU</label>
+                      <input type="text" value={pkg.sku}
+                        onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, sku: e.target.value } : x))}
+                        placeholder="Ex: SM7-5L"
+                        className="w-full bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
+                    </div>
+                    <button type="button" onClick={() => setPackagings((p) => p.filter((_, j) => j !== i))}
+                      className="mt-5 p-2 text-zinc-500 hover:text-red-400 transition-colors">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+                {/* Photo du conditionnement */}
+                <div className="flex items-center gap-3">
+                  {pkg.image_url ? (
+                    <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-zinc-600 shrink-0">
+                      <Image src={pkg.image_url} alt={`${pkg.volume_liters}L`} fill className="object-cover" />
+                      <button type="button" onClick={() => setPackagings((p) => p.map((x, j) => j === i ? { ...x, image_url: '' } : x))}
+                        className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity">
+                        <X className="w-4 h-4 text-white" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 rounded-lg bg-zinc-900 border border-dashed border-zinc-600 shrink-0 flex items-center justify-center">
+                      <ImagePlus className="w-5 h-5 text-zinc-600" />
+                    </div>
+                  )}
+                  <label className={`flex items-center gap-1.5 cursor-pointer text-xs text-zinc-400 hover:text-brand-gold transition-colors ${pkg.uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                    {pkg.uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ImagePlus className="w-3.5 h-3.5" />}
+                    {pkg.uploading ? 'Upload...' : pkg.image_url ? 'Changer la photo' : 'Ajouter une photo'}
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handlePackagingImageUpload(e, i)} disabled={pkg.uploading} />
+                  </label>
                 </div>
               </div>
             ))}
