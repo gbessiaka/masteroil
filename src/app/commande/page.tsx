@@ -237,7 +237,24 @@ export default function CommandePage() {
               <Image src={LOGO_URL} alt="Master Oil" fill className="object-contain" />
             </div>
             <span className="text-brand-gold font-black text-sm">MASTER OIL</span>
-            <span className="text-gray-400 hidden sm:inline text-xs ml-1">— Commande en ligne</span>
+          </div>
+
+          {/* Indicateur d'étapes */}
+          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold">
+            <span className={step === 'products' ? 'text-brand-gold' : 'text-gray-400'}>
+              <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full mr-1.5 text-[10px] font-black ${step === 'products' ? 'bg-brand-gold text-white' : 'bg-gray-200 text-gray-500'}`}>1</span>
+              Produits
+            </span>
+            <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
+            <span className={step === 'info' ? 'text-brand-gold' : 'text-gray-400'}>
+              <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full mr-1.5 text-[10px] font-black ${step === 'info' ? 'bg-brand-gold text-white' : 'bg-gray-200 text-gray-500'}`}>2</span>
+              Informations
+            </span>
+            <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
+            <span className="text-gray-300">
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full mr-1.5 text-[10px] font-black bg-gray-200 text-gray-400">3</span>
+              Confirmation
+            </span>
           </div>
           {cart.length > 0 && step === 'products' && (
             <button onClick={() => setStep('info')}

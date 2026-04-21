@@ -87,9 +87,28 @@ export default function ProductsClient({ initialProducts, initialStockMap }: Pro
     return true
   })
 
+  if (filtered.length === 0 && initialProducts.length === 0) {
+    return (
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="bg-white border border-gray-200 rounded-2xl overflow-hidden animate-pulse">
+            <div className="w-full h-44 lg:h-56 bg-gray-100" />
+            <div className="p-4 space-y-3">
+              <div className="h-4 bg-gray-100 rounded-full w-3/4" />
+              <div className="h-3 bg-gray-100 rounded-full w-1/2" />
+              <div className="h-3 bg-gray-100 rounded-full w-full" />
+              <div className="h-3 bg-gray-100 rounded-full w-2/3" />
+              <div className="h-10 bg-gray-100 rounded-xl mt-4" />
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-      {products.map((product) => (
+      {filtered.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
