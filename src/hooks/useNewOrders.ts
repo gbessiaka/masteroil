@@ -20,43 +20,30 @@ export function useNewOrders() {
 
     fetchCount()
 
+    const channelName = `new-orders-notif-${Math.random()}`
     const channel = supabase
-      .channel('new-orders-notif')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'orders' },
-        (payload) => {
-          if (payload.new?.status === 'nouveau') {
-            setCount((prev) => prev + 1)
+      .channel(channelName)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, (payload) => {
+        if (payload.new?.status === 'nouveau') {
+          setCount((prev) => prev + 1)
 
-            // Notification navigateur
-            if (typeof window !== 'undefined' && 'Notification' in window) {
-              const notify = () => {
-                new Notification('Nouvelle commande — Master Oil Guinée', {
-                  body: 'Une nouvelle commande vient d\'être enregistrée.',
-                  icon: '/images/logo.png',
-                })
-              }
+          if (typeof window !== 'undefined' && 'Notification' in window) {
+            const notify = () => new Notification('Nouvelle commande — Master Oil Guinée', {
+              body: "Une nouvelle commande vient d'être enregistrée.",
+              icon: '/images/logo.png',
+            })
 
-              if (Notification.permission === 'granted') {
-                notify()
-              } else if (Notification.permission === 'default') {
-                Notification.requestPermission().then((p) => {
-                  if (p === 'granted') notify()
-                })
-              }
+            if (Notification.permission === 'granted') {
+              notify()
+            } else if (Notification.permission === 'default') {
+              Notification.requestPermission().then((p) => { if (p === 'granted') notify() })
             }
           }
         }
-      )
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'orders' },
-        () => {
-          // Recalcule le count quand un statut change
-          fetchCount()
-        }
-      )
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, () => {
+        fetchCount()
+      })
       .subscribe()
 
     return () => { supabase.removeChannel(channel) }
