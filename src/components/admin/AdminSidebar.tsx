@@ -86,7 +86,6 @@ export default function AdminSidebar() {
           </Link>
         )})}
       </div>
-      </div>
       <div className="border-t border-zinc-800 pt-2 mt-2 space-y-0.5">
         {visibleBottom.map((item) => (
           <Link

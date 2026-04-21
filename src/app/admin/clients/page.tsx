@@ -1,8 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { formatDate } from '@/lib/utils'
+import { formatDate, exportCSV } from '@/lib/utils'
 import Badge from '@/components/ui/Badge'
-import { Phone, Mail, Plus, X, Loader2, Pencil, Search } from 'lucide-react'
+import { Phone, Mail, Plus, X, Loader2, Pencil, Search, Download } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
@@ -30,7 +30,9 @@ export default function AdminClientsPage() {
   const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
   const [showForm, setShowForm] = useState(false)
+  const PAGE_SIZE = 20
   const [editingClient, setEditingClient] = useState<Client | null>(null)
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
@@ -100,6 +102,17 @@ export default function AdminClientsPage() {
     fetchClients()
   }
 
+  const q = search.toLowerCase()
+  const filteredClients = search
+    ? clients.filter((c) =>
+        c.name.toLowerCase().includes(q) ||
+        c.phone?.toLowerCase().includes(q) ||
+        c.email?.toLowerCase().includes(q)
+      )
+    : clients
+  const totalPages = Math.max(1, Math.ceil(filteredClients.length / PAGE_SIZE))
+  const paginatedClients = filteredClients.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+
   return (
     <div className="p-4 sm:p-8">
       <div className="flex items-center justify-between mb-6">
@@ -107,11 +120,25 @@ export default function AdminClientsPage() {
           <h1 className="text-xl sm:text-2xl font-black text-brand-cream mb-1">Clients</h1>
           <p className="text-zinc-400 text-sm">{clients.length} client(s) enregistré(s)</p>
         </div>
-        <button onClick={openAdd} className="btn-primary text-sm py-2">
-          <Plus className="w-4 h-4" />
-          <span className="hidden sm:inline">Nouveau client</span>
-          <span className="sm:hidden">Nouveau</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={() => exportCSV('clients', clients.map((c) => ({
+            Nom: c.name,
+            Téléphone: c.phone ?? '',
+            Email: c.email ?? '',
+            Type: c.client_type,
+            Commandes: c.order_count ?? 0,
+            Notes: c.notes ?? '',
+            Depuis: formatDate(c.created_at),
+          })))} className="btn-secondary text-sm py-2">
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Exporter</span>
+          </button>
+          <button onClick={openAdd} className="btn-primary text-sm py-2">
+            <Plus className="w-4 h-4" />
+            <span className="hidden sm:inline">Nouveau client</span>
+            <span className="sm:hidden">Nouveau</span>
+          </button>
+        </div>
       </div>
 
       {/* Recherche */}
@@ -120,7 +147,7 @@ export default function AdminClientsPage() {
         <input
           type="text"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setPage(1) }}
           placeholder="Rechercher par nom, téléphone ou email..."
           className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-4 py-2.5 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
         />
@@ -144,26 +171,17 @@ export default function AdminClientsPage() {
                 <Plus className="w-4 h-4" /> Ajouter le premier client
               </button>
             </div>
-          ) : (() => {
-            const q = search.toLowerCase()
-            const filteredClients = search
-              ? clients.filter((c) =>
-                  c.name.toLowerCase().includes(q) ||
-                  c.phone?.toLowerCase().includes(q) ||
-                  c.email?.toLowerCase().includes(q)
-                )
-              : clients
-            return (
+          ) : (
           <>
           {/* Mobile */}
           <div className="md:hidden space-y-2">
-            {filteredClients.map((client) => {
+            {paginatedClients.map((client) => {
               const tc = typeConfig[client.client_type] ?? { label: client.client_type, variant: 'gray' }
               return (
                 <div key={client.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="min-w-0">
-                      <p className="text-brand-cream text-sm font-semibold truncate">{client.name}</p>
+                      <Link href={`/admin/clients/${client.id}`} className="text-brand-cream text-sm font-semibold truncate hover:text-brand-gold transition-colors">{client.name}</Link>
                       {client.notes && <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1">{client.notes}</p>}
                     </div>
                     <Badge variant={tc.variant}>{tc.label}</Badge>
@@ -208,12 +226,12 @@ export default function AdminClientsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filteredClients.map((client) => {
+                {paginatedClients.map((client) => {
                   const tc = typeConfig[client.client_type] ?? { label: client.client_type, variant: 'gray' }
                   return (
                     <tr key={client.id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
                       <td className="px-6 py-4">
-                        <p className="text-brand-cream text-sm font-semibold">{client.name}</p>
+                        <Link href={`/admin/clients/${client.id}`} className="text-brand-cream text-sm font-semibold hover:text-brand-gold transition-colors">{client.name}</Link>
                         {client.notes && <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1">{client.notes}</p>}
                       </td>
                       <td className="px-6 py-4">
@@ -249,8 +267,37 @@ export default function AdminClientsPage() {
             </table>}
           </div>
           </>
-            )
-          })()}
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between mt-4 px-1">
+              <p className="text-zinc-500 text-sm">
+                {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filteredClients.length)} sur {filteredClients.length}
+              </p>
+              <div className="flex items-center gap-1">
+                <button onClick={() => setPage(1)} disabled={page === 1}
+                  className="px-2 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">«</button>
+                <button onClick={() => setPage((p) => p - 1)} disabled={page === 1}
+                  className="px-3 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Préc.</button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
+                  .reduce<(number | '...')[]>((acc, p, i, arr) => {
+                    if (i > 0 && p - (arr[i-1] as number) > 1) acc.push('...')
+                    acc.push(p); return acc
+                  }, [])
+                  .map((p, i) => p === '...'
+                    ? <span key={`e${i}`} className="px-2 text-zinc-600 text-xs">…</span>
+                    : <button key={p} onClick={() => setPage(p as number)}
+                        className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${page === p ? 'bg-brand-gold/10 border-brand-gold/50 text-brand-gold font-bold' : 'border-zinc-700 text-zinc-400 hover:text-brand-cream'}`}>{p}</button>
+                  )}
+                <button onClick={() => setPage((p) => p + 1)} disabled={page === totalPages}
+                  className="px-3 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Suiv.</button>
+                <button onClick={() => setPage(totalPages)} disabled={page === totalPages}
+                  className="px-2 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">»</button>
+              </div>
+            </div>
+          )}
         </>
       )}
 

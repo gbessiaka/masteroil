@@ -4,8 +4,9 @@ import Link from 'next/link'
 import { formatGNF, formatDate } from '@/lib/utils'
 import OrderStatusBadge from '@/components/admin/OrderStatusBadge'
 import { OrderStatus } from '@/types'
-import { Eye, Plus, X, Loader2, Trash2, Search } from 'lucide-react'
+import { Eye, Plus, X, Loader2, Trash2, Search, Download } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { exportCSV } from '@/lib/utils'
 
 interface Client { id: string; name: string; phone: string | null }
 interface Packaging { id: string; volume_liters: number; price_gnf: number; sku: string | null; product: { name: string } }
@@ -38,7 +39,9 @@ export default function AdminCommandesPage() {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
   const [showForm, setShowForm] = useState(false)
+  const PAGE_SIZE = 20
 
   // Form state
   const [clients, setClients] = useState<Client[]>([])
@@ -128,6 +131,9 @@ export default function AdminCommandesPage() {
     .filter((o) => filter === 'all' || o.status === filter)
     .filter((o) => !search || o.client?.name?.toLowerCase().includes(search.toLowerCase()))
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+
   return (
     <div className="p-4 sm:p-8">
       <div className="flex items-center justify-between mb-6">
@@ -135,11 +141,24 @@ export default function AdminCommandesPage() {
           <h1 className="text-xl sm:text-2xl font-black text-brand-cream mb-1">Commandes</h1>
           <p className="text-zinc-400 text-sm">{orders.length} commande(s) au total</p>
         </div>
-        <button onClick={openForm} className="btn-primary text-sm py-2">
-          <Plus className="w-4 h-4" />
-          <span className="hidden sm:inline">Nouvelle commande</span>
-          <span className="sm:hidden">Nouveau</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={() => exportCSV('commandes', filtered.map((o) => ({
+            Date: formatDate(o.created_at),
+            Client: o.client?.name ?? 'Inconnu',
+            Téléphone: o.client?.phone ?? '',
+            Articles: o.order_items?.length ?? 0,
+            Total_GNF: o.total_gnf,
+            Statut: o.status,
+          })))} className="btn-secondary text-sm py-2">
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Exporter</span>
+          </button>
+          <button onClick={openForm} className="btn-primary text-sm py-2">
+            <Plus className="w-4 h-4" />
+            <span className="hidden sm:inline">Nouvelle commande</span>
+            <span className="sm:hidden">Nouveau</span>
+          </button>
+        </div>
       </div>
 
       {/* Recherche */}
@@ -148,7 +167,7 @@ export default function AdminCommandesPage() {
         <input
           type="text"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setPage(1) }}
           placeholder="Rechercher un client..."
           className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-4 py-2.5 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
         />
@@ -164,7 +183,7 @@ export default function AdminCommandesPage() {
         {STATUS_FILTERS.map((s) => {
           const count = s.value === 'all' ? orders.length : orders.filter((o) => o.status === s.value).length
           return (
-            <button key={s.value} onClick={() => setFilter(s.value)}
+            <button key={s.value} onClick={() => { setFilter(s.value); setPage(1) }}
               className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5 shrink-0 border transition-all ${
                 filter === s.value
                   ? 'bg-brand-gold/10 border-brand-gold/40 text-brand-gold'
@@ -190,7 +209,7 @@ export default function AdminCommandesPage() {
         <>
           {/* Mobile */}
           <div className="md:hidden space-y-2">
-            {filtered.map((order) => (
+            {paginated.map((order) => (
               <Link key={order.id} href={`/admin/commandes/${order.id}`}
                 className="block bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-zinc-600 transition-colors">
                 <div className="flex items-start justify-between gap-3 mb-2">
@@ -226,7 +245,7 @@ export default function AdminCommandesPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((order) => (
+                {paginated.map((order) => (
                   <tr key={order.id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
                     <td className="px-6 py-4 text-zinc-400 text-sm">{formatDate(order.created_at)}</td>
                     <td className="px-6 py-4">
@@ -248,6 +267,49 @@ export default function AdminCommandesPage() {
             </table>
           </div>
         </>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-4 px-1">
+          <p className="text-zinc-500 text-sm">
+            {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} sur {filtered.length}
+          </p>
+          <div className="flex items-center gap-1">
+            <button onClick={() => setPage(1)} disabled={page === 1}
+              className="px-2 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              «
+            </button>
+            <button onClick={() => setPage((p) => p - 1)} disabled={page === 1}
+              className="px-3 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              Préc.
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 1)
+              .reduce<(number | '...')[]>((acc, p, i, arr) => {
+                if (i > 0 && p - (arr[i-1] as number) > 1) acc.push('...')
+                acc.push(p)
+                return acc
+              }, [])
+              .map((p, i) => p === '...'
+                ? <span key={`e${i}`} className="px-2 text-zinc-600 text-xs">…</span>
+                : <button key={p} onClick={() => setPage(p as number)}
+                    className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
+                      page === p
+                        ? 'bg-brand-gold/10 border-brand-gold/50 text-brand-gold font-bold'
+                        : 'border-zinc-700 text-zinc-400 hover:text-brand-cream'
+                    }`}>{p}</button>
+              )}
+            <button onClick={() => setPage((p) => p + 1)} disabled={page === totalPages}
+              className="px-3 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              Suiv.
+            </button>
+            <button onClick={() => setPage(totalPages)} disabled={page === totalPages}
+              className="px-2 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              »
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Modal nouvelle commande */}
