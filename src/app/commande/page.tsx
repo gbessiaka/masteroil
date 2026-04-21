@@ -142,6 +142,24 @@ export default function CommandePage() {
     )
     if (itemsErr) { setError("Erreur lors de l'enregistrement des articles"); setSaving(false); return }
 
+    // Notification email admin (fire & forget — ne bloque pas la redirection)
+    fetch('/api/orders/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        orderId: order.id,
+        clientName: name.trim(),
+        clientPhone: phone.trim(),
+        totalGnf: total,
+        items: cart.map((i) => ({
+          name: i.packaging.product?.name ?? '',
+          volume: i.packaging.volume_liters,
+          quantity: i.quantity,
+          price: i.packaging.price_gnf,
+        })),
+      }),
+    }).catch(() => {}) // erreur silencieuse — la commande est déjà enregistrée
+
     setSaving(false)
     router.push(`/commande/confirmation?order=${order.id}&name=${encodeURIComponent(name.trim())}`)
   }
