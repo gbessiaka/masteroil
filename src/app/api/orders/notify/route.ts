@@ -9,7 +9,7 @@ function fmtGNF(n: number) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { orderId, clientName, clientPhone, items, totalGnf } = await req.json()
+    const { orderId, clientName, clientPhone, clientAddress, items, totalGnf } = await req.json()
 
     const itemsHtml = items.map((i: { name: string; volume: number; quantity: number; price: number }) => `
       <tr>
@@ -43,6 +43,10 @@ export async function POST(req: NextRequest) {
                 <td style="padding: 6px 0; color: #666; font-size: 14px;"><strong>Téléphone</strong></td>
                 <td style="padding: 6px 0; font-size: 14px;">${clientPhone}</td>
               </tr>
+              ${clientAddress ? `<tr>
+                <td style="padding: 6px 0; color: #666; font-size: 14px;"><strong>Adresse</strong></td>
+                <td style="padding: 6px 0; font-size: 14px;">${clientAddress}</td>
+              </tr>` : ''}
             </table>
 
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">

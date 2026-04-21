@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, Minus, Trash2, Loader2, ShoppingCart, ChevronRight, ArrowLeft } from 'lucide-react'
+import { Plus, Minus, Trash2, Loader2, ShoppingCart, ChevronRight, ArrowLeft, ChevronDown } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { LOGO_URL } from '@/lib/mockData'
 
@@ -41,13 +41,13 @@ export default function CommandePage() {
   const [step, setStep] = useState<'products' | 'info'>('products')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
   const [notes, setNotes] = useState('')
+  const [recapOpen, setRecapOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    // Read synchronously before async fetch so the closure captures it even
-    // if sessionStorage is cleared by a concurrent effect (React Strict Mode)
     let savedCartEntries: { packaging_id: string; quantity: number }[] = []
     try {
       const saved = sessionStorage.getItem('commande_cart')
@@ -114,6 +114,7 @@ export default function CommandePage() {
     setError('')
     if (!name.trim()) { setError('Veuillez entrer votre nom'); return }
     if (!phone.trim()) { setError('Veuillez entrer votre numéro de téléphone'); return }
+    if (!address.trim()) { setError('Veuillez entrer votre adresse de livraison'); return }
     if (cart.length === 0) { setError('Votre panier est vide'); return }
 
     setSaving(true)
@@ -132,8 +133,9 @@ export default function CommandePage() {
       clientId = newClient.id
     }
 
+    const fullNotes = [address.trim() ? `Adresse : ${address.trim()}` : '', notes.trim()].filter(Boolean).join('\n')
     const { data: order, error: orderErr } = await supabase
-      .from('orders').insert({ client_id: clientId, status: 'nouveau', total_gnf: total, notes: notes || null })
+      .from('orders').insert({ client_id: clientId, status: 'nouveau', total_gnf: total, notes: fullNotes || null })
       .select('id').single()
     if (orderErr || !order) { setError('Erreur lors de la création de la commande'); setSaving(false); return }
 
@@ -142,7 +144,6 @@ export default function CommandePage() {
     )
     if (itemsErr) { setError("Erreur lors de l'enregistrement des articles"); setSaving(false); return }
 
-    // Notification email admin (fire & forget — ne bloque pas la redirection)
     fetch('/api/orders/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -150,6 +151,7 @@ export default function CommandePage() {
         orderId: order.id,
         clientName: name.trim(),
         clientPhone: phone.trim(),
+        clientAddress: address.trim(),
         totalGnf: total,
         items: cart.map((i) => ({
           name: i.packaging.product?.name ?? '',
@@ -158,65 +160,65 @@ export default function CommandePage() {
           price: i.packaging.price_gnf,
         })),
       }),
-    }).catch(() => {}) // erreur silencieuse — la commande est déjà enregistrée
+    }).catch(() => {})
 
     setSaving(false)
     router.push(`/commande/confirmation?order=${order.id}&name=${encodeURIComponent(name.trim())}`)
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+    <div className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
       <Loader2 className="w-6 h-6 text-brand-gold animate-spin" />
     </div>
   )
 
   /* ── Panier sidebar (desktop) ── */
   const CartSidebar = () => (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 sticky top-20">
+    <div className="bg-white border border-gray-200 rounded-2xl p-5 sticky top-20 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <ShoppingCart className="w-4 h-4 text-brand-gold" />
-        <h2 className="text-brand-cream font-bold text-sm">Panier</h2>
+        <h2 className="text-gray-900 font-bold text-sm">Panier</h2>
         {totalItems > 0 && (
-          <span className="ml-auto bg-brand-gold text-zinc-950 text-xs font-black px-2 py-0.5 rounded-full">{totalItems}</span>
+          <span className="ml-auto bg-brand-gold text-white text-xs font-black px-2 py-0.5 rounded-full">{totalItems}</span>
         )}
       </div>
 
       {cart.length === 0 ? (
-        <p className="text-zinc-500 text-sm text-center py-6">Votre panier est vide</p>
+        <p className="text-gray-400 text-sm text-center py-6">Votre panier est vide</p>
       ) : (
         <>
           <div className="space-y-3 mb-4">
             {cart.map((item) => (
               <div key={item.packaging.id} className="flex items-center gap-2">
                 <div className="min-w-0 flex-1">
-                  <p className="text-brand-cream text-xs font-medium truncate">{item.packaging.product?.name}</p>
-                  <p className="text-zinc-500 text-xs">{item.packaging.volume_liters}L</p>
+                  <p className="text-gray-800 text-xs font-medium truncate">{item.packaging.product?.name}</p>
+                  <p className="text-gray-400 text-xs">{item.packaging.volume_liters}L</p>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
                   <button onClick={() => updateQty(item.packaging.id, -1)}
-                    className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 hover:bg-zinc-700 transition-colors">
+                    className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors">
                     {item.quantity === 1 ? <Trash2 className="w-2.5 h-2.5 text-red-400" /> : <Minus className="w-2.5 h-2.5" />}
                   </button>
-                  <span className="text-brand-cream font-black text-sm w-4 text-center">{item.quantity}</span>
+                  <span className="text-gray-900 font-black text-sm w-4 text-center">{item.quantity}</span>
                   <button onClick={() => updateQty(item.packaging.id, 1)}
-                    className="w-6 h-6 rounded-full bg-brand-gold/20 border border-brand-gold/40 flex items-center justify-center text-brand-gold hover:bg-brand-gold/30 transition-colors">
+                    className="w-6 h-6 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold hover:bg-brand-gold/20 transition-colors">
                     <Plus className="w-2.5 h-2.5" />
                   </button>
                 </div>
-                <span className="text-brand-gold text-xs font-semibold shrink-0 w-24 text-right">
+                <span className="text-gray-700 text-xs font-semibold shrink-0 w-24 text-right">
                   {fmtGNF(item.packaging.price_gnf * item.quantity)}
                 </span>
               </div>
             ))}
           </div>
-          <div className="border-t border-zinc-800 pt-3 mb-4">
+          <div className="border-t border-gray-100 pt-3 mb-4">
             <div className="flex items-center justify-between">
-              <span className="text-zinc-400 text-sm font-semibold">Total</span>
-              <span className="text-brand-gold font-black text-lg">{fmtGNF(total)}</span>
+              <span className="text-gray-500 text-sm font-semibold">Total</span>
+              <span className="text-gray-900 font-black text-lg">{fmtGNF(total)}</span>
             </div>
           </div>
           <button onClick={() => setStep('info')}
-            className="w-full bg-brand-gold text-zinc-950 font-black py-3 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm">
+            className="w-full btn-primary py-3 justify-center text-sm">
             Commander
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -226,21 +228,20 @@ export default function CommandePage() {
   )
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-[#FAFAF8]">
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-zinc-950/95 backdrop-blur border-b border-zinc-800">
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="relative w-8 h-8 shrink-0">
               <Image src={LOGO_URL} alt="Master Oil" fill className="object-contain" />
             </div>
             <span className="text-brand-gold font-black text-sm">MASTER OIL</span>
-            <span className="text-zinc-600 hidden sm:inline text-xs ml-1">— Commande en ligne</span>
+            <span className="text-gray-400 hidden sm:inline text-xs ml-1">— Commande en ligne</span>
           </div>
-          {/* Panier résumé mobile */}
           {cart.length > 0 && step === 'products' && (
             <button onClick={() => setStep('info')}
-              className="md:hidden flex items-center gap-1.5 text-zinc-400 text-sm">
+              className="md:hidden flex items-center gap-1.5 text-gray-500 text-sm">
               <ShoppingCart className="w-4 h-4" />
               <span className="text-brand-gold font-bold">{fmtGNF(total)}</span>
             </button>
@@ -254,50 +255,50 @@ export default function CommandePage() {
             {/* Colonne produits */}
             <div className="flex-1 min-w-0">
               <div className="mb-6">
-                <Link href="/produits" className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-brand-cream text-sm mb-4 transition-colors">
+                <Link href="/produits" className="inline-flex items-center gap-1.5 text-gray-400 hover:text-gray-700 text-sm mb-4 transition-colors">
                   <ArrowLeft className="w-4 h-4" /> Retour au catalogue
                 </Link>
-                <h1 className="text-2xl sm:text-3xl font-black text-brand-cream">Passer une commande</h1>
-                <p className="text-zinc-400 text-sm mt-1">Sélectionnez vos produits et quantités</p>
+                <h1 className="text-2xl sm:text-3xl font-black text-gray-900">Passer une commande</h1>
+                <p className="text-gray-500 text-sm mt-1">Sélectionnez vos produits et quantités</p>
               </div>
 
               <div className="space-y-8 mb-28 md:mb-8">
                 {productGroups.map((group) => (
                   <div key={group.product_id}>
-                    <h2 className="text-brand-cream font-black text-lg mb-3 pb-2 border-b border-zinc-800">{group.product_name}</h2>
+                    <h2 className="text-gray-900 font-black text-lg mb-3 pb-2 border-b border-gray-200">{group.product_name}</h2>
                     <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${Math.min(group.packagings.length, 4)}, minmax(0, 1fr))` }}>
                       {group.packagings.map((pkg) => {
                         const cartItem = cart.find((i) => i.packaging.id === pkg.id)
                         const imgSrc = pkg.image_url || group.product_image
                         return (
-                          <div key={pkg.id} className={`bg-zinc-900 border rounded-2xl overflow-hidden flex flex-col transition-all ${cartItem ? 'border-brand-gold/50 shadow-lg shadow-brand-gold/5' : 'border-zinc-800 hover:border-zinc-700'}`}>
-                            <div className="relative w-full aspect-square bg-zinc-800">
+                          <div key={pkg.id} className={`bg-white border rounded-2xl overflow-hidden flex flex-col transition-all shadow-sm ${cartItem ? 'border-brand-gold shadow-brand-gold/10' : 'border-gray-200 hover:border-gray-300'}`}>
+                            <div className="relative w-full aspect-square bg-gray-50">
                               {imgSrc ? (
                                 <Image src={imgSrc} alt={`${group.product_name} ${pkg.volume_liters}L`} fill className="object-contain p-4" />
                               ) : (
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                  <span className="text-zinc-600 font-mono text-2xl font-black">{pkg.volume_liters}L</span>
+                                  <span className="text-gray-300 font-mono text-2xl font-black">{pkg.volume_liters}L</span>
                                 </div>
                               )}
                             </div>
                             <div className="p-3 flex flex-col flex-1">
-                              <p className="text-zinc-400 text-xs font-mono">{pkg.volume_liters}L</p>
-                              <p className="text-brand-gold font-black text-sm mt-0.5 mb-3">{fmtGNF(pkg.price_gnf)}</p>
+                              <p className="text-gray-500 text-xs font-mono">{pkg.volume_liters}L</p>
+                              <p className="text-gray-900 font-black text-sm mt-0.5 mb-3">{fmtGNF(pkg.price_gnf)}</p>
                               {cartItem ? (
                                 <div className="flex items-center justify-between mt-auto">
                                   <button onClick={() => updateQty(pkg.id, -1)}
-                                    className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 hover:bg-zinc-700 active:bg-zinc-600 transition-colors">
+                                    className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 active:bg-gray-300 transition-colors">
                                     {cartItem.quantity === 1 ? <Trash2 className="w-3.5 h-3.5 text-red-400" /> : <Minus className="w-3.5 h-3.5" />}
                                   </button>
-                                  <span className="text-brand-cream font-black text-lg">{cartItem.quantity}</span>
+                                  <span className="text-gray-900 font-black text-lg">{cartItem.quantity}</span>
                                   <button onClick={() => updateQty(pkg.id, 1)}
-                                    className="w-8 h-8 rounded-full bg-brand-gold/20 border border-brand-gold/40 flex items-center justify-center text-brand-gold hover:bg-brand-gold/30 active:bg-brand-gold/40 transition-colors">
+                                    className="w-8 h-8 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold hover:bg-brand-gold/20 active:bg-brand-gold/30 transition-colors">
                                     <Plus className="w-3.5 h-3.5" />
                                   </button>
                                 </div>
                               ) : (
                                 <button onClick={() => addToCart(pkg)}
-                                  className="mt-auto w-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-semibold py-2 rounded-xl hover:bg-brand-gold/20 active:bg-brand-gold/20 transition-colors">
+                                  className="mt-auto w-full btn-primary text-xs py-2 justify-center">
                                   Ajouter
                                 </button>
                               )}
@@ -319,58 +320,94 @@ export default function CommandePage() {
         ) : (
           /* ── Étape 2 : infos client ── */
           <div className="max-w-2xl mx-auto">
-            <button onClick={() => setStep('products')} className="flex items-center gap-1.5 text-zinc-400 hover:text-brand-cream text-sm mb-6 transition-colors">
+            <button onClick={() => setStep('products')} className="flex items-center gap-1.5 text-gray-400 hover:text-gray-700 text-sm mb-6 transition-colors">
               <ArrowLeft className="w-4 h-4" /> Retour aux produits
             </button>
 
+            {/* Récap mobile collapsible */}
+            <div className="md:hidden bg-white border border-gray-200 rounded-2xl mb-6 shadow-sm overflow-hidden">
+              <button
+                onClick={() => setRecapOpen(!recapOpen)}
+                className="w-full flex items-center justify-between px-5 py-4"
+              >
+                <div className="flex items-center gap-2">
+                  <ShoppingCart className="w-4 h-4 text-brand-gold" />
+                  <span className="text-gray-900 font-semibold text-sm">{totalItems} article{totalItems > 1 ? 's' : ''}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-900 font-black">{fmtGNF(total)}</span>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${recapOpen ? 'rotate-180' : ''}`} />
+                </div>
+              </button>
+              {recapOpen && (
+                <div className="px-5 pb-4 border-t border-gray-100 pt-3 space-y-3">
+                  {cart.map((item) => (
+                    <div key={item.packaging.id} className="flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-gray-800 text-sm font-medium truncate">{item.packaging.product?.name}</p>
+                        <p className="text-gray-400 text-xs">{item.packaging.volume_liters}L × {item.quantity}</p>
+                      </div>
+                      <span className="text-gray-700 text-sm font-semibold shrink-0">{fmtGNF(item.packaging.price_gnf * item.quantity)}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="md:grid md:grid-cols-2 md:gap-8">
-              {/* Récap */}
-              <div>
-                <h2 className="text-brand-cream font-black text-xl mb-4">Récapitulatif</h2>
-                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 mb-6 md:mb-0">
+              {/* Récap desktop */}
+              <div className="hidden md:block">
+                <h2 className="text-gray-900 font-black text-xl mb-4">Récapitulatif</h2>
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
                   <div className="space-y-3">
                     {cart.map((item) => (
                       <div key={item.packaging.id} className="flex items-center justify-between gap-3">
                         <div className="min-w-0">
-                          <p className="text-brand-cream text-sm font-medium truncate">{item.packaging.product?.name}</p>
-                          <p className="text-zinc-500 text-xs">{item.packaging.volume_liters}L × {item.quantity}</p>
+                          <p className="text-gray-800 text-sm font-medium truncate">{item.packaging.product?.name}</p>
+                          <p className="text-gray-400 text-xs">{item.packaging.volume_liters}L × {item.quantity}</p>
                         </div>
-                        <span className="text-brand-gold text-sm font-semibold shrink-0">{fmtGNF(item.packaging.price_gnf * item.quantity)}</span>
+                        <span className="text-gray-700 text-sm font-semibold shrink-0">{fmtGNF(item.packaging.price_gnf * item.quantity)}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="border-t border-zinc-800 mt-4 pt-4 flex items-center justify-between">
-                    <span className="text-zinc-400 font-semibold">Total</span>
-                    <span className="text-brand-gold font-black text-xl">{fmtGNF(total)}</span>
+                  <div className="border-t border-gray-100 mt-4 pt-4 flex items-center justify-between">
+                    <span className="text-gray-500 font-semibold">Total</span>
+                    <span className="text-gray-900 font-black text-xl">{fmtGNF(total)}</span>
                   </div>
                 </div>
               </div>
 
               {/* Formulaire */}
               <div>
-                <h2 className="text-brand-cream font-black text-xl mb-4">Vos informations</h2>
+                <h2 className="text-gray-900 font-black text-xl mb-4">Vos informations</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-zinc-300 mb-1.5">Nom complet <span className="text-brand-gold">*</span></label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Nom complet <span className="text-brand-gold">*</span></label>
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} required
-                      placeholder="Ex: Mamadou Barry"
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm" />
+                      placeholder="Ex: Moustapha Camara"
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-brand-gold focus:outline-none text-sm" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-zinc-300 mb-1.5">Téléphone <span className="text-brand-gold">*</span></label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Téléphone <span className="text-brand-gold">*</span></label>
                     <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required
                       placeholder="+224 6XX XX XX XX"
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm" />
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-brand-gold focus:outline-none text-sm" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-zinc-300 mb-1.5">Instructions de livraison <span className="text-zinc-600">(optionnel)</span></label>
-                    <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3}
-                      placeholder="Adresse, quartier, précisions..."
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm resize-none" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Adresse de livraison <span className="text-brand-gold">*</span></label>
+                    <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} required
+                      placeholder="Quartier, commune, point de repère..."
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-brand-gold focus:outline-none text-sm" />
                   </div>
-                  {error && <p className="text-red-400 text-sm">{error}</p>}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Remarques <span className="text-gray-400 font-normal">(optionnel)</span></label>
+                    <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
+                      placeholder="Précisions supplémentaires..."
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-brand-gold focus:outline-none text-sm resize-none" />
+                  </div>
+                  {error && <p className="text-red-500 text-sm">{error}</p>}
                   <button type="submit" disabled={saving}
-                    className="w-full bg-brand-gold text-zinc-950 font-black py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50 text-base">
+                    className="w-full btn-primary py-4 justify-center disabled:opacity-50 text-base">
                     {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Confirmer la commande'}
                   </button>
                 </form>
@@ -382,9 +419,9 @@ export default function CommandePage() {
 
       {/* Barre panier mobile fixe en bas */}
       {cart.length > 0 && step === 'products' && (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-zinc-950/95 backdrop-blur border-t border-zinc-800 px-4 py-3">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-gray-200 px-4 py-3 shadow-lg">
           <button onClick={() => setStep('info')}
-            className="w-full bg-brand-gold text-zinc-950 font-black py-3.5 rounded-xl flex items-center justify-between px-5 active:opacity-90 transition-opacity">
+            className="w-full btn-primary py-3.5 justify-between px-5">
             <span>{totalItems} article{totalItems > 1 ? 's' : ''}</span>
             <span className="flex items-center gap-2">{fmtGNF(total)}<ChevronRight className="w-5 h-5" /></span>
           </button>

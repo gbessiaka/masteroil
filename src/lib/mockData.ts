@@ -93,7 +93,7 @@ export const MOCK_PRODUCTS: (Product & { stockTotal: number })[] = [
 ]
 
 export const MOCK_CLIENTS: Client[] = [
-  { id: 'c1', name: 'Mamadou Diallo', phone: '+224 620 00 01', email: 'mamadou@example.com', client_type: 'particulier', notes: null, created_at: '2026-01-10T08:00:00Z', updated_at: '2026-01-10T08:00:00Z' },
+  { id: 'c1', name: 'Moustapha Camara', phone: '+224 620 00 01', email: 'moustapha@example.com', client_type: 'particulier', notes: null, created_at: '2026-01-10T08:00:00Z', updated_at: '2026-01-10T08:00:00Z' },
   { id: 'c2', name: 'Garage Central Conakry', phone: '+224 621 00 02', email: null, client_type: 'garage', notes: 'Client régulier', created_at: '2026-01-15T09:00:00Z', updated_at: '2026-01-15T09:00:00Z' },
   { id: 'c3', name: 'Société Minière de Guinée', phone: '+224 622 00 03', email: 'achats@smg.gn', client_type: 'entreprise', notes: 'Commande mensuelle', created_at: '2026-02-01T10:00:00Z', updated_at: '2026-02-01T10:00:00Z' },
   { id: 'c4', name: 'ONG Santé Guinée', phone: '+224 623 00 04', email: null, client_type: 'flotte', notes: '12 véhicules', created_at: '2026-02-20T11:00:00Z', updated_at: '2026-02-20T11:00:00Z' },

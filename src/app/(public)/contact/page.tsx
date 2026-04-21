@@ -108,7 +108,7 @@ export default function ContactPage() {
                       value={form.name}
                       onChange={handleChange}
                       required
-                      placeholder="Mamadou Diallo"
+                      placeholder="Moustapha Camara"
                       className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
                     />
                   </div>
