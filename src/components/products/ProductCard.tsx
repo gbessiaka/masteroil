@@ -135,17 +135,16 @@ export default function ProductCard({ product }: ProductCardProps) {
             <button
               onClick={handleCommander}
               disabled={stockQty <= 0}
-              className="flex-1 btn-primary text-xs py-2 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex-1 min-w-0 btn-primary text-xs py-2.5 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <ShoppingCart className="w-3.5 h-3.5" />
-              Commander
+              <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Commander</span>
             </button>
             <Link
               href={`/produits/${product.id}`}
-              className="btn-secondary text-xs py-2 px-3 flex items-center gap-1.5 shrink-0"
+              className="shrink-0 w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-500 hover:text-brand-gold hover:border-brand-gold transition-colors"
             >
-              <Eye className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden sm:inline">Détail</span>
+              <Eye className="w-4 h-4" />
             </Link>
           </div>
         </div>
