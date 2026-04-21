@@ -135,10 +135,10 @@ export default function ProductCard({ product }: ProductCardProps) {
             <button
               onClick={handleCommander}
               disabled={stockQty <= 0}
-              className="flex-1 min-w-0 btn-primary text-xs py-2.5 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex-1 btn-primary text-xs py-2.5 justify-center disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate">Commander</span>
+              <span className="hidden sm:inline">Commander</span>
             </button>
             <Link
               href={`/produits/${product.id}`}
