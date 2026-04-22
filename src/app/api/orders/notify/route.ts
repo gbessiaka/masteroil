@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
     `).join('')
 
     const { error } = await resend.emails.send({
-      from: 'Commandes Master Oil <onboarding@resend.dev>',
-      to: ['saliouvj@gmail.com'], // TODO: remplacer par info@masteroilguinee.com après vérification du domaine
+      from: 'Commandes Master Oil <info@masteroilguinee.com>',
+      to: ['info@masteroilguinee.com'],
       subject: `Nouvelle commande #${orderId.slice(0, 8).toUpperCase()} — ${clientName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
               </tfoot>
             </table>
 
-            <a href="https://masteroil.vercel.app/admin/commandes/${orderId}"
+            <a href="https://www.masteroilguinee.com/admin/commandes/${orderId}"
               style="display: inline-block; background: #C8952A; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px;">
               Voir la commande dans l'admin →
             </a>

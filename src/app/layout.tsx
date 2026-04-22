@@ -4,7 +4,7 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const BASE_URL = 'https://www.masteroilguinee.com'
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.masteroilguinee.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
