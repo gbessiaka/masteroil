@@ -48,12 +48,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: BASE_URL,
   },
-  manifest: '/manifest.webmanifest',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'Master Oil',
-  },
   icons: {
     icon: '/icons/icon-192.png',
     apple: '/icons/icon-512.png',

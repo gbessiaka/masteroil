@@ -9,8 +9,12 @@ export const metadata: Metadata = {
   manifest: '/admin-manifest.json',
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'black-translucent',
+    statusBarStyle: 'black',
     title: 'MO Admin',
+  },
+  icons: {
+    icon: '/icons/admin-icon-192.png',
+    apple: '/icons/admin-icon-512.png',
   },
 }
 
