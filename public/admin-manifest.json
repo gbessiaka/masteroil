@@ -1,0 +1,48 @@
+{
+  "name": "Master Oil — Admin",
+  "short_name": "MO Admin",
+  "description": "Gestion des commandes, stocks et clients Master Oil Guinée",
+  "start_url": "/admin",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#C8952A",
+  "orientation": "portrait",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Commandes",
+      "short_name": "Commandes",
+      "description": "Voir les nouvelles commandes",
+      "url": "/admin/commandes",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Stocks",
+      "short_name": "Stocks",
+      "description": "Gérer les stocks",
+      "url": "/admin/stocks",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Clients",
+      "short_name": "Clients",
+      "description": "Liste des clients",
+      "url": "/admin/clients",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

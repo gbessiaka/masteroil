@@ -1,6 +1,17 @@
+import type { Metadata } from 'next'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import BottomNav from '@/components/admin/BottomNav'
 import AuthGuard from '@/components/admin/AuthGuard'
+
+export const metadata: Metadata = {
+  title: 'Master Oil — Admin',
+  manifest: '/admin-manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'MO Admin',
+  },
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
