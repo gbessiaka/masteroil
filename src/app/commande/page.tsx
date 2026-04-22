@@ -232,12 +232,15 @@ export default function CommandePage() {
       {/* Header */}
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5 group">
             <div className="relative w-8 h-8 shrink-0">
               <Image src={LOGO_URL} alt="Master Oil" fill className="object-contain" />
             </div>
-            <span className="text-brand-gold font-black text-sm">MASTER OIL</span>
-          </div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-brand-gold font-black text-sm">MASTER OIL</span>
+              <span className="text-gray-900 font-black text-sm">GUINÉE</span>
+            </div>
+          </Link>
 
           {/* Indicateur d'étapes */}
           <div className="hidden sm:flex items-center gap-2 text-xs font-semibold">

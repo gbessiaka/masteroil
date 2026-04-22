@@ -1,8 +1,8 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import { ShoppingCart, X, Check } from 'lucide-react'
-import { formatGNF } from '@/lib/utils'
 
 interface Packaging {
   id: string
@@ -25,6 +25,8 @@ export default function CommanderButton({ packagings, showPrice, productName }: 
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedPkg, setSelectedPkg] = useState<string | null>(packagings[0]?.id ?? null)
   const [added, setAdded] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
 
   function handleCommander() {
     if (packagings.length === 0) { router.push('/commande'); return }
@@ -48,25 +50,26 @@ export default function CommanderButton({ packagings, showPrice, productName }: 
         Commander
       </button>
 
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center sm:px-4"
-          onClick={(e) => { if (e.target === e.currentTarget) setModalOpen(false) }}>
-          <div className="bg-zinc-900 border border-zinc-800 sm:rounded-2xl rounded-t-2xl p-6 w-full max-w-sm shadow-2xl">
+      {mounted && modalOpen && createPortal(
+        <div
+          className="fixed inset-0 z-[9999] bg-black/60 flex items-center justify-center px-4"
+          onClick={(e) => { if (e.target === e.currentTarget) setModalOpen(false) }}
+        >
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 w-full max-w-sm shadow-2xl">
             <div className="flex items-center justify-between mb-1">
-              <h3 className="text-brand-cream font-black text-lg">{productName}</h3>
-              <button onClick={() => setModalOpen(false)} className="p-1.5 text-zinc-500 hover:text-white transition-colors">
+              <h3 className="text-gray-900 font-black text-lg">{productName}</h3>
+              <button onClick={() => setModalOpen(false)} className="p-1.5 text-gray-400 hover:text-gray-700 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <p className="text-zinc-400 text-sm mb-5">Choisissez un format</p>
-
+            <p className="text-gray-500 text-sm mb-5">Choisissez un format</p>
             <div className="space-y-2 mb-5">
               {packagings.map((pkg) => (
                 <button key={pkg.id} onClick={() => setSelectedPkg(pkg.id)}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-all ${
                     selectedPkg === pkg.id
-                      ? 'border-brand-gold bg-brand-gold/10 text-brand-cream'
-                      : 'border-zinc-700 bg-zinc-800 text-zinc-300 hover:border-zinc-600'
+                      ? 'border-brand-gold bg-amber-50 text-gray-900'
+                      : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                   }`}>
                   <span className="font-semibold">{pkg.volume_liters}L</span>
                   <div className="flex items-center gap-3">
@@ -76,15 +79,15 @@ export default function CommanderButton({ packagings, showPrice, productName }: 
                 </button>
               ))}
             </div>
-
             <button
               onClick={() => selectedPkg && addToCartAndRedirect(selectedPkg)}
               disabled={!selectedPkg || added}
-              className="w-full bg-brand-gold text-zinc-950 font-black py-3.5 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50 text-sm">
+              className="w-full bg-brand-gold text-white font-black py-3.5 rounded-xl flex items-center justify-center gap-2 hover:bg-brand-gold-dark transition-all disabled:opacity-50 text-sm">
               {added ? <><Check className="w-4 h-4" /> Ajouté !</> : <><ShoppingCart className="w-4 h-4" /> Ajouter au panier</>}
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )

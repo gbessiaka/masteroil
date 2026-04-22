@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -22,6 +23,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedPkg, setSelectedPkg] = useState<string | null>(null)
   const [added, setAdded] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
 
   const stockQty = product.stockTotal ?? 999
   const minPrice =
@@ -151,10 +154,12 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
 
-      {/* Modal sélection format */}
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4"
-          onClick={(e) => { if (e.target === e.currentTarget) setModalOpen(false) }}>
+      {/* Modal via portal — rendu directement dans <body> */}
+      {mounted && modalOpen && createPortal(
+        <div
+          className="fixed inset-0 z-[9999] bg-black/60 flex items-center justify-center px-4"
+          onClick={(e) => { if (e.target === e.currentTarget) setModalOpen(false) }}
+        >
           <div className="bg-white border border-gray-200 rounded-2xl p-6 w-full max-w-sm shadow-2xl">
             <div className="flex items-center justify-between mb-1">
               <h3 className="text-gray-900 font-black text-lg">{product.name}</h3>
@@ -163,7 +168,6 @@ export default function ProductCard({ product }: ProductCardProps) {
               </button>
             </div>
             <p className="text-gray-500 text-sm mb-5">Choisissez un format</p>
-
             <div className="space-y-2 mb-5">
               {product.packagings!.map((pkg) => (
                 <button key={pkg.id} onClick={() => setSelectedPkg(pkg.id)}
@@ -180,7 +184,6 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </button>
               ))}
             </div>
-
             <button
               onClick={() => selectedPkg && addToCartAndRedirect(selectedPkg)}
               disabled={!selectedPkg || added}
@@ -188,7 +191,8 @@ export default function ProductCard({ product }: ProductCardProps) {
               {added ? <><Check className="w-4 h-4" /> Ajouté !</> : <><ShoppingCart className="w-4 h-4" /> Ajouter au panier</>}
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )
