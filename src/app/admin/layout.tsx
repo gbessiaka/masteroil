@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import BottomNav from '@/components/admin/BottomNav'
 import AuthGuard from '@/components/admin/AuthGuard'
+import AdminManifest from '@/components/admin/AdminManifest'
 
 export const metadata: Metadata = {
   title: 'Master Oil — Admin',
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthGuard>
+      <AdminManifest />
       <div className="flex h-screen bg-zinc-900 overflow-hidden">
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
