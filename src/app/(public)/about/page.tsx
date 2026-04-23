@@ -4,18 +4,19 @@ import { Shield, Target, Heart, Globe, ArrowRight } from 'lucide-react'
 import { getWhatsAppLink } from '@/lib/utils'
 
 export const metadata: Metadata = {
-  title: 'À Propos',
+  title: 'À Propos | Distributeur Exclusif Huile Moteur Super M7 en Guinée',
   description:
-    "Découvrez l'histoire de Master Oil Guinée, distributeur exclusif de Master Oil Canada en République de Guinée. Notre mission : rendre accessible une lubrification de qualité pour tous.",
+    "Master Oil Guinée, distributeur exclusif de l'huile moteur synthétique canadienne Super M7 en République de Guinée. Qualité certifiée, lubrifiant moteur premium à Conakry.",
   keywords: [
-    'master oil guinée histoire',
-    'distributeur exclusif super m7 guinée',
-    'master oil canada guinée',
-    'à propos master oil',
-    'lubrifiant canadien guinée',
+    'master oil guinée',
+    'distributeur exclusif lubrifiant guinée',
+    'super m7 canada guinée',
+    'huile moteur canadienne guinée',
+    'lubrifiant moteur premium guinée',
+    'master oil canada distributeur',
   ],
   openGraph: {
-    title: 'À Propos — Master Oil Guinée',
+    title: 'À Propos | Distributeur Exclusif Huile Moteur Super M7 — Guinée',
     description:
       "Distributeur exclusif de Master Oil Canada en Guinée. Qualité certifiée, service dédié, disponible à Conakry.",
     url: 'https://www.masteroilguinee.com/about',

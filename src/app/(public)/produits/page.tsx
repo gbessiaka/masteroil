@@ -3,20 +3,23 @@ import ProductsClient from '@/components/products/ProductsClient'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Catalogue Produits',
+  title: 'Huiles Moteur Super M7 en Guinée | 5W-30, 5W-40, 0W-20',
   description:
-    "Gamme complète d'huiles moteur synthétiques Super M7 : 0W-20, 5W-20, 5W-30, 5W-40. Disponibles en 1L, 4L et 5L à Conakry, Guinée.",
+    "Achetez les huiles moteur synthétiques Super M7 en Guinée : 0W-20, 5W-20, 5W-30, 5W-40. Lubrifiant moteur canadien disponible en 1L, 4L et 5L à Conakry.",
   keywords: [
-    'catalogue huile moteur guinée',
-    'super m7 5w30 conakry',
-    'super m7 5w40 guinée',
-    'huile synthétique prix guinée',
+    'huile moteur guinée prix',
     'acheter huile moteur conakry',
+    'lubrifiant moteur super m7',
+    'super m7 5w30 guinée',
+    'super m7 5w40 conakry',
+    'huile synthétique 5w30 guinée',
+    'lubrifiant moteur guinée',
+    'lubrifiant canadien guinée',
   ],
   openGraph: {
-    title: 'Catalogue Produits — Master Oil Guinée',
+    title: 'Huiles Moteur Super M7 — 5W-30, 5W-40, 0W-20 | Master Oil Guinée',
     description:
-      "Huiles moteur synthétiques Super M7 : 0W-20, 5W-20, 5W-30, 5W-40. Disponibles en 1L, 4L et 5L.",
+      "Achetez les huiles moteur synthétiques Super M7 en Guinée : 0W-20, 5W-20, 5W-30, 5W-40. Disponibles en 1L, 4L et 5L à Conakry.",
     url: 'https://www.masteroilguinee.com/produits',
   },
   alternates: {
@@ -60,11 +63,11 @@ export default async function ProduitsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10">
           <p className="section-subtitle">Notre gamme</p>
-          <h1 className="section-title">Catalogue de produits</h1>
+          <h1 className="section-title">Huiles Moteur Synthétiques Super M7 en Guinée</h1>
           <div className="gold-line mb-4" />
           <p className="text-gray-500 max-w-xl">
-            Huiles moteur synthétiques canadiennes Super M7, importées directement,
-            disponibles à Conakry.
+            Lubrifiants moteur canadiens Super M7 — 5W-30, 5W-40, 0W-20 — importés directement,
+            disponibles en 1L, 4L et 5L à Conakry.
           </p>
         </div>
 

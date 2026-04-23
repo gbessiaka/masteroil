@@ -4,18 +4,20 @@ import { getWhatsAppLink } from '@/lib/utils'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Services',
+  title: 'Distribution & Livraison Huile Moteur en Guinée | Master Oil',
   description:
-    "Distribution, vente en gros et détail, livraison et accompagnement B2B d'huiles moteur synthétiques Super M7 à Conakry et en Guinée.",
+    "Distribution, vente en gros et livraison d'huiles moteur Super M7 à Conakry et en Guinée. Service B2B dédié pour garages, flottes et entreprises.",
   keywords: [
     'distribution huile moteur guinée',
-    'vente gros huile conakry',
-    'livraison lubrifiant guinée',
-    'service b2b huile moteur',
-    'super m7 guinée services',
+    'vente gros lubrifiant conakry',
+    'livraison huile moteur guinée',
+    'lubrifiant moteur entreprise guinée',
+    'service b2b huile moteur guinée',
+    'super m7 gros conakry',
+    'fournisseur lubrifiant guinée',
   ],
   openGraph: {
-    title: 'Services — Master Oil Guinée',
+    title: 'Distribution & Livraison Huile Moteur en Guinée | Master Oil',
     description:
       "Distribution, vente en gros et détail, livraison et accompagnement B2B d'huiles moteur Super M7 à Conakry.",
     url: 'https://www.masteroilguinee.com/services',
