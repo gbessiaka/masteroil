@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const { error } = await resend.emails.send({
       from: 'Contact Master Oil <info@masteroilguinee.com>',
-      to: ['info@masteroilguinee.com'],
+      to: ['saliouvj@gmail.com'],
       replyTo: email || undefined,
       subject: `Nouveau message — ${typeLabels[request_type] ?? request_type} — ${name}`,
       html: `

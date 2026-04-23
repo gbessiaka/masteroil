@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     const { error } = await resend.emails.send({
       from: 'Commandes Master Oil <info@masteroilguinee.com>',
-      to: ['info@masteroilguinee.com'],
+      to: ['saliouvj@gmail.com'],
       subject: `Nouvelle commande #${orderId.slice(0, 8).toUpperCase()} — ${clientName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
