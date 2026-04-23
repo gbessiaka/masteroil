@@ -34,12 +34,14 @@ export const metadata: Metadata = {
     title: 'Master Oil Guinée | Huile Moteur Synthétique Super M7',
     description:
       "Distributeur exclusif en Guinée de l'huile moteur synthétique canadienne Super M7. Qualité certifiée, disponible à Conakry.",
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Master Oil Guinée' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Master Oil Guinée | Huile Moteur Synthétique Super M7',
     description:
       "Distributeur exclusif en Guinée de l'huile moteur synthétique canadienne Super M7.",
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
