@@ -3,14 +3,17 @@ import { useEffect } from 'react'
 
 export default function AdminManifest() {
   useEffect(() => {
+    const isSubdomain = window.location.hostname.startsWith('admin.')
+    const manifestHref = isSubdomain ? '/admin-subdomain-manifest.json' : '/admin-manifest.json'
+
     // Remplace le manifest public par le manifest admin
     const existing = document.querySelector('link[rel="manifest"]')
     if (existing) {
-      existing.setAttribute('href', '/admin-manifest.json')
+      existing.setAttribute('href', manifestHref)
     } else {
       const link = document.createElement('link')
       link.rel = 'manifest'
-      link.href = '/admin-manifest.json'
+      link.href = manifestHref
       document.head.appendChild(link)
     }
     // Nettoyage : remettre le manifest public quand on quitte l'admin
