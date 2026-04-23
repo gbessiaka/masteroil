@@ -10,6 +10,7 @@ export function middleware(req: NextRequest) {
     // Rewrite vers /admin/* si pas déjà préfixé
     if (
       !pathname.startsWith('/admin') &&
+      !pathname.startsWith('/login') &&
       !pathname.startsWith('/api') &&
       !pathname.startsWith('/_next') &&
       !pathname.match(/\.\w+$/)
