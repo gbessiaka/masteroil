@@ -22,7 +22,7 @@ export default async function FeaturedProducts() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
           <div>
             <p className="section-subtitle">Notre gamme</p>
-            <h2 className="section-title mb-0">Produits phares</h2>
+            <h2 className="section-title mb-0">Huiles Moteur Super M7 — Nos Best-sellers en Guinée</h2>
             <div className="gold-line mt-3" />
           </div>
           <Link href="/produits" className="text-brand-gold hover:text-brand-gold-dark font-semibold flex items-center gap-2 transition-colors text-sm">

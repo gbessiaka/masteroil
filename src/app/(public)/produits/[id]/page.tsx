@@ -32,23 +32,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProduct(params.id)
   if (!product) return { title: 'Produit non trouvé' }
   const description = product.description
-    || `${product.name} — huile moteur synthétique Super M7 disponible en 1L, 4L et 5L à Conakry, Guinée.`
+    || `Achetez ${product.name}${product.viscosity ? ` ${product.viscosity}` : ''} en Guinée — huile moteur synthétique Super M7 disponible en 1L, 4L et 5L à Conakry.`
   const url = `https://www.masteroilguinee.com/produits/${params.id}`
+  const viscosity = product.viscosity || ''
   return {
-    title: product.name,
+    title: `${product.name}${viscosity ? ` ${viscosity}` : ''} — Huile Moteur Synthétique en Guinée | Master Oil`,
     description,
     keywords: [
-      product.name,
-      product.viscosity,
-      'huile moteur guinée',
-      'super m7',
-      'lubrifiant conakry',
+      `${product.name} guinée`,
+      viscosity ? `huile moteur ${viscosity} guinée` : '',
+      viscosity ? `${viscosity} conakry` : '',
+      'huile moteur synthétique guinée',
+      'super m7 guinée',
+      'lubrifiant moteur conakry',
+      'acheter huile moteur guinée',
     ].filter(Boolean) as string[],
     openGraph: {
-      title: `${product.name} — Master Oil Guinée`,
+      title: `${product.name}${viscosity ? ` ${viscosity}` : ''} — Huile Moteur Super M7 | Master Oil Guinée`,
       description,
       url,
-      images: product.image_url ? [{ url: product.image_url, alt: product.name }] : undefined,
+      images: product.image_url ? [{ url: product.image_url, alt: `${product.name} — Master Oil Guinée` }] : [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Master Oil Guinée' }],
     },
     alternates: { canonical: url },
   }
@@ -61,7 +64,27 @@ export default async function ProductDetailPage({ params }: Props) {
   const packagings = (product.packagings ?? []).sort((a: any, b: any) => a.volume_liters - b.volume_liters)
   const minPrice = packagings.length > 0 ? Math.min(...packagings.map((p: any) => p.price_gnf)) : null
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description || `${product.name} — huile moteur synthétique Super M7 disponible à Conakry, Guinée.`,
+    image: product.image_url || undefined,
+    brand: { '@type': 'Brand', name: 'Super M7 — Master Oil Canada' },
+    offers: packagings.length > 0 ? packagings.map((pkg: any) => ({
+      '@type': 'Offer',
+      priceCurrency: 'GNF',
+      price: pkg.price_gnf,
+      availability: 'https://schema.org/InStock',
+      areaServed: { '@type': 'Country', name: 'Guinée' },
+      itemCondition: 'https://schema.org/NewCondition',
+      name: `${product.name} ${pkg.volume_liters}L`,
+    })) : undefined,
+  }
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <div className="min-h-screen bg-[#FAFAF8] pt-24 pb-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link href="/produits" className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors mb-8 text-sm">
@@ -167,5 +190,6 @@ export default async function ProductDetailPage({ params }: Props) {
         </div>
       </div>
     </div>
+    </>
   )
 }

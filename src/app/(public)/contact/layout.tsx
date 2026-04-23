@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Contact',
+  title: 'Contactez-nous | Commander Huile Moteur en Guinée — Master Oil',
   description:
     "Contactez Master Oil Guinée pour un devis, des renseignements sur nos huiles moteur Super M7 ou un partenariat. Réponse rapide par email ou WhatsApp.",
   keywords: [
