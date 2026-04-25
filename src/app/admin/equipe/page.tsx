@@ -150,7 +150,7 @@ export default function EquipePage() {
       </div>
 
       {/* List */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-6 h-6 text-brand-gold animate-spin" />
