@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { createClient } from '@/lib/supabase/server'
+import { getAuthUser } from '@/lib/supabase/auth-helper'
 
-async function isSuperAdmin() {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+async function isSuperAdmin(request: Request) {
+  const user = await getAuthUser(request)
   if (!user) return false
   const admin = createAdminClient()
   const { data } = await admin.from('profiles').select('role').eq('id', user.id).single()
@@ -13,7 +12,7 @@ async function isSuperAdmin() {
 
 // PATCH — toggle active or change role
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
-  if (!(await isSuperAdmin())) {
+  if (!(await isSuperAdmin(request))) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
@@ -33,7 +32,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
 // DELETE — remove admin user
 export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
-  if (!(await isSuperAdmin())) {
+  if (!(await isSuperAdmin(_req))) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 

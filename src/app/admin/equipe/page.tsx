@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { UserPlus, Shield, Briefcase, TrendingUp, MoreVertical, X, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useAdminProfile, type AdminRole } from '@/hooks/useAdminProfile'
+import { createClient } from '@/lib/supabase/client'
 
 interface AdminUser {
   id: string
@@ -46,9 +47,18 @@ export default function EquipePage() {
     fetchAdmins()
   }, [])
 
+  async function getToken() {
+    const supabase = createClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    return session?.access_token
+  }
+
   async function fetchAdmins() {
     setLoading(true)
-    const res = await fetch('/api/admin/users')
+    const token = await getToken()
+    const res = await fetch('/api/admin/users', {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
     if (res.ok) setAdmins(await res.json())
     setLoading(false)
   }
@@ -58,9 +68,13 @@ export default function EquipePage() {
     setError('')
     setSaving(true)
 
+    const token = await getToken()
     const res = await fetch('/api/admin/users', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       body: JSON.stringify(form),
     })
 
@@ -77,9 +91,13 @@ export default function EquipePage() {
   }
 
   const toggleActive = async (admin: AdminUser) => {
+    const token = await getToken()
     await fetch(`/api/admin/users/${admin.id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       body: JSON.stringify({ active: !admin.active }),
     })
     setMenuOpen(null)
@@ -88,7 +106,11 @@ export default function EquipePage() {
 
   const deleteAdmin = async (id: string) => {
     if (!confirm('Supprimer cet administrateur ?')) return
-    await fetch(`/api/admin/users/${id}`, { method: 'DELETE' })
+    const token = await getToken()
+    await fetch(`/api/admin/users/${id}`, {
+      method: 'DELETE',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
     setMenuOpen(null)
     fetchAdmins()
   }
