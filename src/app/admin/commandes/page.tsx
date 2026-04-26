@@ -138,8 +138,8 @@ export default function AdminCommandesPage() {
     <div className="p-4 sm:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-brand-cream mb-1">Commandes</h1>
-          <p className="text-zinc-400 text-sm">{orders.length} commande(s) au total</p>
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-brand-cream mb-1">Commandes</h1>
+          <p className="text-gray-500 dark:text-zinc-400 text-sm">{orders.length} commande(s) au total</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => exportCSV('commandes', filtered.map((o) => ({
@@ -163,16 +163,16 @@ export default function AdminCommandesPage() {
 
       {/* Recherche */}
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-zinc-500 pointer-events-none" />
         <input
           type="text"
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1) }}
           placeholder="Rechercher un client..."
-          className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-4 py-2.5 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
+          className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl pl-9 pr-4 py-2.5 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
         />
         {search && (
-          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
+          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-zinc-500 hover:text-gray-600 dark:text-zinc-300">
             <X className="w-4 h-4" />
           </button>
         )}
@@ -187,10 +187,10 @@ export default function AdminCommandesPage() {
               className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-1.5 shrink-0 border transition-all ${
                 filter === s.value
                   ? 'bg-brand-gold/10 border-brand-gold/40 text-brand-gold'
-                  : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-zinc-600'
+                  : 'bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:border-gray-400 dark:hover:border-zinc-600'
               }`}>
               {s.label}
-              <span className="bg-zinc-700 text-zinc-300 text-xs px-1.5 py-0.5 rounded-full">{count}</span>
+              <span className="bg-gray-200 dark:bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-zinc-300 text-xs px-1.5 py-0.5 rounded-full">{count}</span>
             </button>
           )
         })}
@@ -202,7 +202,7 @@ export default function AdminCommandesPage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-zinc-500 mb-4">Aucune commande.</p>
+          <p className="text-gray-500 dark:text-zinc-500 mb-4">Aucune commande.</p>
           <button onClick={openForm} className="btn-primary text-sm"><Plus className="w-4 h-4" /> Créer une commande</button>
         </div>
       ) : (
@@ -211,16 +211,16 @@ export default function AdminCommandesPage() {
           <div className="md:hidden space-y-2">
             {paginated.map((order) => (
               <Link key={order.id} href={`/admin/commandes/${order.id}`}
-                className="block bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-zinc-600 transition-colors">
+                className="block bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4 hover:border-gray-400 dark:hover:border-zinc-600 transition-colors">
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="min-w-0">
-                    <p className="text-brand-cream text-sm font-semibold truncate">{order.client?.name || 'Client inconnu'}</p>
-                    {order.client?.phone && <p className="text-zinc-500 text-xs">{order.client.phone}</p>}
+                    <p className="text-gray-900 dark:text-brand-cream text-sm font-semibold truncate">{order.client?.name || 'Client inconnu'}</p>
+                    {order.client?.phone && <p className="text-gray-500 dark:text-zinc-500 text-xs">{order.client.phone}</p>}
                   </div>
                   <OrderStatusBadge status={order.status as OrderStatus} />
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-xs text-zinc-500">
+                  <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-zinc-500">
                     <span>{formatDate(order.created_at)}</span>
                     <span>·</span>
                     <span>{order.order_items?.length ?? 0} article(s)</span>
@@ -232,32 +232,32 @@ export default function AdminCommandesPage() {
           </div>
 
           {/* Desktop */}
-          <div className="hidden md:block bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+          <div className="hidden md:block bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-950">
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Date</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Client</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Articles</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Total</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Statut</th>
-                  <th className="text-right px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Actions</th>
+                <tr className="border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-950">
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Date</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Client</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Articles</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Total</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Statut</th>
+                  <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {paginated.map((order) => (
-                  <tr key={order.id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
-                    <td className="px-6 py-4 text-zinc-400 text-sm">{formatDate(order.created_at)}</td>
+                  <tr key={order.id} className="border-b border-gray-200 dark:border-zinc-800/50 hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
+                    <td className="px-6 py-4 text-gray-500 dark:text-zinc-400 text-sm">{formatDate(order.created_at)}</td>
                     <td className="px-6 py-4">
-                      <p className="text-brand-cream text-sm font-medium">{order.client?.name || 'Client inconnu'}</p>
-                      {order.client?.phone && <p className="text-zinc-500 text-xs mt-0.5">{order.client.phone}</p>}
+                      <p className="text-gray-900 dark:text-brand-cream text-sm font-medium">{order.client?.name || 'Client inconnu'}</p>
+                      {order.client?.phone && <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5">{order.client.phone}</p>}
                     </td>
-                    <td className="px-6 py-4 text-zinc-400 text-sm">{order.order_items?.length ?? 0} article(s)</td>
+                    <td className="px-6 py-4 text-gray-500 dark:text-zinc-400 text-sm">{order.order_items?.length ?? 0} article(s)</td>
                     <td className="px-6 py-4"><span className="text-brand-gold font-semibold text-sm">{formatGNF(order.total_gnf)}</span></td>
                     <td className="px-6 py-4"><OrderStatusBadge status={order.status as OrderStatus} /></td>
                     <td className="px-6 py-4 text-right">
                       <Link href={`/admin/commandes/${order.id}`}
-                        className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium">
+                        className="inline-flex items-center gap-1.5 text-gray-500 dark:text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium">
                         <Eye className="w-4 h-4" />Détail
                       </Link>
                     </td>
@@ -272,16 +272,16 @@ export default function AdminCommandesPage() {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-4 px-1">
-          <p className="text-zinc-500 text-sm">
+          <p className="text-gray-500 dark:text-zinc-500 text-sm">
             {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, filtered.length)} sur {filtered.length}
           </p>
           <div className="flex items-center gap-1">
             <button onClick={() => setPage(1)} disabled={page === 1}
-              className="px-2 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              className="px-2 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
               «
             </button>
             <button onClick={() => setPage((p) => p - 1)} disabled={page === 1}
-              className="px-3 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              className="px-3 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
               Préc.
             </button>
             {Array.from({ length: totalPages }, (_, i) => i + 1)
@@ -292,20 +292,20 @@ export default function AdminCommandesPage() {
                 return acc
               }, [])
               .map((p, i) => p === '...'
-                ? <span key={`e${i}`} className="px-2 text-zinc-600 text-xs">…</span>
+                ? <span key={`e${i}`} className="px-2 text-gray-400 dark:text-zinc-600 text-xs">…</span>
                 : <button key={p} onClick={() => setPage(p as number)}
                     className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
                       page === p
                         ? 'bg-brand-gold/10 border-brand-gold/50 text-brand-gold font-bold'
-                        : 'border-zinc-700 text-zinc-400 hover:text-brand-cream'
+                        : 'border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream'
                     }`}>{p}</button>
               )}
             <button onClick={() => setPage((p) => p + 1)} disabled={page === totalPages}
-              className="px-3 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              className="px-3 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
               Suiv.
             </button>
             <button onClick={() => setPage(totalPages)} disabled={page === totalPages}
-              className="px-2 py-1.5 text-xs rounded-lg border border-zinc-700 text-zinc-400 hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
+              className="px-2 py-1.5 text-xs rounded-lg border border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
               »
             </button>
           </div>
@@ -315,10 +315,10 @@ export default function AdminCommandesPage() {
       {/* Modal nouvelle commande */}
       {showForm && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-start justify-center sm:px-4 sm:py-6 overflow-y-auto">
-          <div className="bg-zinc-900 border border-zinc-800 sm:rounded-2xl rounded-t-2xl p-5 sm:p-6 w-full max-w-2xl shadow-2xl sm:my-auto max-h-[92vh] overflow-y-auto">
+          <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 sm:rounded-2xl rounded-t-2xl p-5 sm:p-6 w-full max-w-2xl shadow-2xl sm:my-auto max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-brand-cream font-black text-lg">Nouvelle commande</h2>
-              <button onClick={() => setShowForm(false)} className="p-1.5 text-zinc-400 hover:text-white">
+              <h2 className="text-gray-900 dark:text-brand-cream font-black text-lg">Nouvelle commande</h2>
+              <button onClick={() => setShowForm(false)} className="p-1.5 text-gray-500 dark:text-zinc-400 hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -326,9 +326,9 @@ export default function AdminCommandesPage() {
             <form onSubmit={handleSave} className="space-y-5">
               {/* Client */}
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Client <span className="text-brand-gold">*</span></label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Client <span className="text-brand-gold">*</span></label>
                 <select value={selectedClient} onChange={(e) => setSelectedClient(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
                   <option value="">— Sélectionner un client —</option>
                   {clients.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}{c.phone ? ` · ${c.phone}` : ''}</option>
@@ -338,9 +338,9 @@ export default function AdminCommandesPage() {
 
               {/* Statut */}
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Statut</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Statut</label>
                 <select value={status} onChange={(e) => setStatus(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
                   {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
                 </select>
               </div>
@@ -348,7 +348,7 @@ export default function AdminCommandesPage() {
               {/* Articles */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-zinc-300">Articles <span className="text-brand-gold">*</span></label>
+                  <label className="text-sm font-medium text-gray-600 dark:text-zinc-300">Articles <span className="text-brand-gold">*</span></label>
                   <button type="button" onClick={() => setItems((p) => [...p, { packaging_id: '', quantity: 1, unit_price_gnf: 0 }])}
                     className="text-brand-gold text-xs hover:underline flex items-center gap-1">
                     <Plus className="w-3 h-3" />Ajouter un article
@@ -356,9 +356,9 @@ export default function AdminCommandesPage() {
                 </div>
                 <div className="space-y-3">
                   {items.map((item, i) => (
-                    <div key={i} className="bg-zinc-800/50 rounded-lg p-3 space-y-2">
+                    <div key={i} className="bg-gray-100 dark:bg-zinc-800/50 rounded-lg p-3 space-y-2">
                       <select value={item.packaging_id} onChange={(e) => updateItem(i, 'packaging_id', e.target.value)}
-                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
+                        className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
                         <option value="">— Sélectionner un produit —</option>
                         {packagings.map((p) => (
                           <option key={p.id} value={p.id}>
@@ -367,10 +367,10 @@ export default function AdminCommandesPage() {
                         ))}
                       </select>
                       <div className="flex items-center gap-2">
-                        <label className="text-zinc-500 text-xs shrink-0">Quantité :</label>
+                        <label className="text-gray-500 dark:text-zinc-500 text-xs shrink-0">Quantité :</label>
                         <input type="number" min="1" value={item.quantity}
                           onChange={(e) => updateItem(i, 'quantity', parseInt(e.target.value) || 1)}
-                          className="w-24 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream focus:border-brand-gold focus:outline-none text-sm text-center" />
+                          className="w-24 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm text-center" />
                         {item.unit_price_gnf > 0 && (
                           <span className="text-brand-gold text-xs font-semibold ml-auto">
                             = {(item.unit_price_gnf * item.quantity).toLocaleString()} GNF
@@ -378,7 +378,7 @@ export default function AdminCommandesPage() {
                         )}
                         {items.length > 1 && (
                           <button type="button" onClick={() => setItems((p) => p.filter((_, j) => j !== i))}
-                            className="p-1.5 text-zinc-500 hover:text-red-400 transition-colors shrink-0">
+                            className="p-1.5 text-gray-500 dark:text-zinc-500 hover:text-red-400 transition-colors shrink-0">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         )}
@@ -389,20 +389,20 @@ export default function AdminCommandesPage() {
               </div>
 
               {/* Total */}
-              <div className="bg-zinc-800 rounded-lg px-4 py-3 flex items-center justify-between">
-                <span className="text-zinc-400 text-sm font-medium">Total</span>
+              <div className="bg-gray-100 dark:bg-zinc-800 rounded-lg px-4 py-3 flex items-center justify-between">
+                <span className="text-gray-500 dark:text-zinc-400 text-sm font-medium">Total</span>
                 <span className="text-brand-gold font-black text-lg">{formatGNF(total)}</span>
               </div>
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Notes (optionnel)</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Notes (optionnel)</label>
                 <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
                   placeholder="Instructions de livraison, remarques..."
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm resize-none" />
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm resize-none" />
               </div>
 
-              {error && <p className="text-red-400 text-sm">{error}</p>}
+              {error && <p className="text-red-500 dark:text-red-400 text-sm">{error}</p>}
 
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowForm(false)} className="flex-1 btn-secondary py-2.5 justify-center text-sm">Annuler</button>

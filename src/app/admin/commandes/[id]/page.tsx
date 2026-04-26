@@ -119,7 +119,7 @@ export default function AdminCommandeDetailPage() {
 
   if (!order) return (
     <div className="p-8">
-      <p className="text-red-400">Commande introuvable.</p>
+      <p className="text-red-600 dark:text-red-400">Commande introuvable.</p>
       <Link href="/admin/commandes" className="text-brand-gold mt-4 inline-block">Retour</Link>
     </div>
   )
@@ -127,82 +127,82 @@ export default function AdminCommandeDetailPage() {
   return (
     <div className="p-4 sm:p-8 max-w-4xl">
       <div className="flex items-center gap-4 mb-8">
-        <Link href="/admin/commandes" className="text-zinc-400 hover:text-brand-cream transition-colors">
+        <Link href="/admin/commandes" className="text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div className="flex-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-black text-brand-cream">Commande</h1>
+            <h1 className="text-2xl font-black text-gray-900 dark:text-brand-cream">Commande</h1>
             <OrderStatusBadge status={order.status as OrderStatus} />
           </div>
-          <p className="text-zinc-500 text-sm mt-0.5">{formatDate(order.created_at)}</p>
+          <p className="text-gray-500 dark:text-zinc-500 text-sm mt-0.5">{formatDate(order.created_at)}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Client */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <h2 className="text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Client</h2>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5">
+          <h2 className="text-gray-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Client</h2>
           {order.client ? (
             <>
-              <p className="text-brand-cream font-bold">{order.client.name}</p>
-              {order.client.phone && <p className="text-zinc-400 text-sm mt-1">{order.client.phone}</p>}
-              {order.client.email && <p className="text-zinc-400 text-sm">{order.client.email}</p>}
-              <span className="inline-block mt-2 text-xs bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded text-zinc-400 capitalize">
+              <p className="text-gray-900 dark:text-brand-cream font-bold">{order.client.name}</p>
+              {order.client.phone && <p className="text-gray-500 dark:text-zinc-400 text-sm mt-1">{order.client.phone}</p>}
+              {order.client.email && <p className="text-gray-500 dark:text-zinc-400 text-sm">{order.client.email}</p>}
+              <span className="inline-block mt-2 text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 px-2 py-0.5 rounded text-gray-500 dark:text-zinc-400 capitalize">
                 {order.client.client_type}
               </span>
             </>
           ) : (
-            <p className="text-zinc-500 text-sm">Client non renseigné</p>
+            <p className="text-gray-500 dark:text-zinc-500 text-sm">Client non renseigné</p>
           )}
         </div>
 
         {/* Résumé */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <h2 className="text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Résumé</h2>
-          <p className="text-zinc-400 text-sm">{order.order_items.length} article(s)</p>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5">
+          <h2 className="text-gray-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Résumé</h2>
+          <p className="text-gray-500 dark:text-zinc-400 text-sm">{order.order_items.length} article(s)</p>
           <p className="text-brand-gold font-black text-2xl mt-2">{formatGNF(order.total_gnf)}</p>
         </div>
 
         {/* Statut */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <h2 className="text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Modifier le statut</h2>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5">
+          <h2 className="text-gray-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Modifier le statut</h2>
           <select value={status} onChange={(e) => setStatus(e.target.value)}
-            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
+            className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
             {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
           </select>
         </div>
       </div>
 
       {/* Articles */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden mb-6">
-        <div className="px-6 py-4 border-b border-zinc-800">
-          <h2 className="text-brand-cream font-bold">Articles commandés</h2>
+      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden mb-6">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-zinc-800">
+          <h2 className="text-gray-900 dark:text-brand-cream font-bold">Articles commandés</h2>
         </div>
         <table className="w-full">
           <thead>
-            <tr className="border-b border-zinc-800 bg-zinc-950">
-              <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Produit</th>
-              <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Volume</th>
-              <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Qté</th>
-              <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Prix unit.</th>
-              <th className="text-right px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Sous-total</th>
+            <tr className="border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-950">
+              <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Produit</th>
+              <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Volume</th>
+              <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Qté</th>
+              <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Prix unit.</th>
+              <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Sous-total</th>
             </tr>
           </thead>
           <tbody>
             {order.order_items.map((item) => (
-              <tr key={item.id} className="border-b border-zinc-800/50">
-                <td className="px-6 py-4 text-brand-cream text-sm">{item.packaging?.product?.name || '—'}</td>
-                <td className="px-6 py-4 text-zinc-400 text-sm font-mono">{item.packaging?.volume_liters}L</td>
-                <td className="px-6 py-4 text-zinc-300 text-sm">{item.quantity}</td>
-                <td className="px-6 py-4 text-zinc-300 text-sm">{formatGNF(item.unit_price_gnf)}</td>
+              <tr key={item.id} className="border-b border-gray-200 dark:border-zinc-800/50">
+                <td className="px-6 py-4 text-gray-900 dark:text-brand-cream text-sm">{item.packaging?.product?.name || '—'}</td>
+                <td className="px-6 py-4 text-gray-500 dark:text-zinc-400 text-sm font-mono">{item.packaging?.volume_liters}L</td>
+                <td className="px-6 py-4 text-gray-600 dark:text-zinc-300 text-sm">{item.quantity}</td>
+                <td className="px-6 py-4 text-gray-600 dark:text-zinc-300 text-sm">{formatGNF(item.unit_price_gnf)}</td>
                 <td className="px-6 py-4 text-right text-brand-gold font-semibold text-sm">{formatGNF(item.quantity * item.unit_price_gnf)}</td>
               </tr>
             ))}
           </tbody>
           <tfoot>
-            <tr className="bg-zinc-950">
-              <td colSpan={4} className="px-6 py-4 text-right text-zinc-400 font-bold text-sm">TOTAL</td>
+            <tr className="bg-gray-50 dark:bg-zinc-950">
+              <td colSpan={4} className="px-6 py-4 text-right text-gray-500 dark:text-zinc-400 font-bold text-sm">TOTAL</td>
               <td className="px-6 py-4 text-right text-brand-gold font-black text-lg">{formatGNF(order.total_gnf)}</td>
             </tr>
           </tfoot>
@@ -210,18 +210,18 @@ export default function AdminCommandeDetailPage() {
       </div>
 
       {/* Notes */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 mb-6">
-        <h2 className="text-brand-cream font-bold mb-3">Notes internes</h2>
+      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 mb-6">
+        <h2 className="text-gray-900 dark:text-brand-cream font-bold mb-3">Notes internes</h2>
         <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3}
           placeholder="Instructions de livraison, remarques..."
-          className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none resize-none text-sm" />
+          className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none resize-none text-sm" />
       </div>
 
       {/* WhatsApp */}
       {order.client?.phone && (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 mb-6">
-          <h2 className="text-brand-cream font-bold mb-3">Confirmation client</h2>
-          <p className="text-zinc-400 text-sm mb-4">Envoyer un message WhatsApp au client avec le récapitulatif de sa commande.</p>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 mb-6">
+          <h2 className="text-gray-900 dark:text-brand-cream font-bold mb-3">Confirmation client</h2>
+          <p className="text-gray-500 dark:text-zinc-400 text-sm mb-4">Envoyer un message WhatsApp au client avec le récapitulatif de sa commande.</p>
           <a href={buildWhatsAppLink()!} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
             <MessageCircle className="w-4 h-4" />
@@ -231,13 +231,13 @@ export default function AdminCommandeDetailPage() {
       )}
 
       {success && (
-        <div className="bg-green-900/20 border border-green-800 rounded-lg p-4 mb-4">
+        <div className="bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800 rounded-lg p-4 mb-4">
           <p className="text-green-400 text-sm">{success}</p>
         </div>
       )}
 
       {/* Actions fixes en bas sur mobile */}
-      <div className="flex gap-3 md:hidden fixed bottom-16 left-0 right-0 px-4 py-3 bg-zinc-950/95 backdrop-blur border-t border-zinc-800 z-30">
+      <div className="flex gap-3 md:hidden fixed bottom-16 left-0 right-0 px-4 py-3 bg-gray-50 dark:bg-zinc-950/95 backdrop-blur border-t border-gray-200 dark:border-zinc-800 z-30">
         <Link href="/admin/commandes" className="btn-secondary flex-1 justify-center py-3 text-sm">Retour</Link>
         <button onClick={handleSave} disabled={saving} className="btn-primary flex-1 justify-center py-3 text-sm disabled:opacity-50">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}

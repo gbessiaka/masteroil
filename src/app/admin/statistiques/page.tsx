@@ -161,14 +161,14 @@ export default function AdminStatistiquesPage() {
   ]
 
   const statusLabel: Record<string, string> = { nouveau:'Nouveau', confirme:'Confirmé', en_cours:'En cours', livre:'Livré', annule:'Annulé' }
-  const statusColor: Record<string, string> = { livre:'text-green-400', annule:'text-red-400', nouveau:'text-blue-400', confirme:'text-purple-400', en_cours:'text-yellow-400' }
+  const statusColor: Record<string, string> = { livre:'text-green-600 dark:text-green-400', annule:'text-red-600 dark:text-red-400', nouveau:'text-blue-600 dark:text-blue-400', confirme:'text-purple-600 dark:text-purple-400', en_cours:'text-amber-600 dark:text-yellow-400' }
 
   return (
     <div className="p-4 sm:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-brand-cream mb-1">Statistiques</h1>
-          <p className="text-zinc-400 text-sm">Analyse des ventes en temps réel</p>
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-brand-cream mb-1">Statistiques</h1>
+          <p className="text-gray-500 dark:text-zinc-400 text-sm">Analyse des ventes en temps réel</p>
         </div>
         <button onClick={() => fetchOrders(true)} disabled={refreshing}
           className="btn-secondary text-sm py-2 disabled:opacity-50">
@@ -184,7 +184,7 @@ export default function AdminStatistiquesPage() {
       ) : (
         <>
           {/* ── Filtres période ── */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-6">
+          <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4 mb-6">
             {/* Presets */}
             <div className="flex flex-wrap gap-2 mb-4">
               {PRESETS.map((p) => (
@@ -192,7 +192,7 @@ export default function AdminStatistiquesPage() {
                   className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
                     preset === p.key
                       ? 'bg-brand-gold/10 border-brand-gold/50 text-brand-gold font-semibold'
-                      : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-zinc-600'
+                      : 'bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:border-gray-400 dark:hover:border-zinc-600'
                   }`}>
                   {p.label}
                 </button>
@@ -202,64 +202,64 @@ export default function AdminStatistiquesPage() {
             {/* Navigateur mois */}
             <div className="flex items-center gap-2">
               <button onClick={() => navigateMonth(-1)}
-                className="p-2 text-zinc-400 hover:text-brand-cream border border-zinc-700 rounded-lg transition-colors shrink-0">
+                className="p-2 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream border border-gray-300 dark:border-zinc-700 rounded-lg transition-colors shrink-0">
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <select value={customMonth}
                 onChange={(e) => { setCustomMonth(+e.target.value); setPreset('custom') }}
-                className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
+                className="flex-1 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
                 {MONTH_NAMES.map((m,i) => <option key={i} value={i}>{m}</option>)}
               </select>
               <select value={customYear}
                 onChange={(e) => { setCustomYear(+e.target.value); setPreset('custom') }}
-                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
+                className="bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
                 {Array.from({ length: 5 }, (_, i) => new Date().getFullYear()-i).map((y) => (
                   <option key={y} value={y}>{y}</option>
                 ))}
               </select>
               <button onClick={() => navigateMonth(1)}
-                className="p-2 text-zinc-400 hover:text-brand-cream border border-zinc-700 rounded-lg transition-colors shrink-0">
+                className="p-2 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream border border-gray-300 dark:border-zinc-700 rounded-lg transition-colors shrink-0">
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
             <div className="flex items-center justify-between mt-2">
-              <span className="text-zinc-500 text-xs">
+              <span className="text-gray-500 dark:text-zinc-500 text-xs">
                 {from.toLocaleDateString('fr-FR')} → {to.toLocaleDateString('fr-FR')}
               </span>
-              {refreshing && <span className="text-zinc-500 text-xs flex items-center gap-1"><RefreshCw className="w-3 h-3 animate-spin" />Mise à jour…</span>}
+              {refreshing && <span className="text-gray-500 dark:text-zinc-500 text-xs flex items-center gap-1"><RefreshCw className="w-3 h-3 animate-spin" />Mise à jour…</span>}
             </div>
           </div>
 
           {/* ── 4 métriques ── */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
             {[
-              { label: 'CA livré',      value: formatGNF(revenue),                       icon: TrendingUp, color: 'text-green-400',  bg: 'bg-green-900/20 border-green-800/30' },
-              { label: 'Commandes',     value: periodOrders.length,                      icon: ShoppingCart, color: 'text-blue-400', bg: 'bg-blue-900/20 border-blue-800/30' },
-              { label: 'Bidons vendus', value: unitsSold,                                icon: Package,    color: 'text-brand-gold', bg: 'bg-yellow-900/20 border-yellow-800/30' },
-              { label: 'Panier moyen',  value: avgBasket > 0 ? formatGNF(avgBasket) : '—', icon: BarChart2, color: 'text-purple-400', bg: 'bg-purple-900/20 border-purple-800/30' },
+              { label: 'CA livré',      value: formatGNF(revenue),                       icon: TrendingUp, color: 'text-green-600 dark:text-green-400',  bg: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800/30' },
+              { label: 'Commandes',     value: periodOrders.length,                      icon: ShoppingCart, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800/30' },
+              { label: 'Bidons vendus', value: unitsSold,                                icon: Package,    color: 'text-brand-gold', bg: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/30' },
+              { label: 'Panier moyen',  value: avgBasket > 0 ? formatGNF(avgBasket) : '—', icon: BarChart2, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 border-purple-200 dark:bg-purple-900/20 dark:border-purple-800/30' },
             ].map((s, i) => (
-              <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+              <div key={i} className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-zinc-400 text-xs font-medium leading-tight">{s.label}</span>
+                  <span className="text-gray-500 dark:text-zinc-400 text-xs font-medium leading-tight">{s.label}</span>
                   <div className={`w-8 h-8 rounded-lg ${s.bg} border flex items-center justify-center shrink-0`}>
                     <s.icon className={`w-4 h-4 ${s.color}`} />
                   </div>
                 </div>
-                <p className="text-brand-cream font-black text-lg sm:text-xl truncate">{s.value}</p>
+                <p className="text-gray-900 dark:text-brand-cream font-black text-lg sm:text-xl truncate">{s.value}</p>
               </div>
             ))}
           </div>
 
           {/* ── Graphe ── */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden mb-6">
-            <div className="px-4 sm:px-6 py-4 border-b border-zinc-800">
-              <h2 className="text-brand-cream font-bold text-sm">
+          <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden mb-6">
+            <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-zinc-800">
+              <h2 className="text-gray-900 dark:text-brand-cream font-bold text-sm">
                 Évolution du CA {buckets.length > 62 ? '(par mois)' : '(par jour)'}
               </h2>
             </div>
             <div className="p-4 sm:p-6">
               {buckets.every((b) => b.revenue === 0) ? (
-                <p className="text-zinc-500 text-sm text-center py-8">Aucune vente livrée sur cette période</p>
+                <p className="text-gray-500 dark:text-zinc-500 text-sm text-center py-8">Aucune vente livrée sur cette période</p>
               ) : (
                 <div className="overflow-x-auto">
                   <div className="flex items-end gap-1 h-44"
@@ -270,18 +270,18 @@ export default function AdminStatistiquesPage() {
                       return (
                         <div key={i} className="flex flex-col items-center flex-1 min-w-[20px] group relative">
                           {/* Tooltip */}
-                          <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-zinc-800 border border-zinc-700 rounded-lg px-2.5 py-1.5 text-xs text-brand-cream whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none z-10 shadow-xl">
+                          <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 text-xs text-gray-900 dark:text-brand-cream whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none z-10 shadow-xl">
                             <p className="font-bold mb-0.5">{b.label}</p>
-                            <p className={b.revenue > 0 ? 'text-brand-gold' : 'text-zinc-500'}>{b.revenue > 0 ? formatGNF(b.revenue) : 'Aucune vente'}</p>
-                            {b.count > 0 && <p className="text-zinc-400">{b.count} commande{b.count > 1 ? 's' : ''}</p>}
+                            <p className={b.revenue > 0 ? 'text-brand-gold' : 'text-gray-500 dark:text-zinc-500'}>{b.revenue > 0 ? formatGNF(b.revenue) : 'Aucune vente'}</p>
+                            {b.count > 0 && <p className="text-gray-500 dark:text-zinc-400">{b.count} commande{b.count > 1 ? 's' : ''}</p>}
                           </div>
                           <div className="w-full flex items-end" style={{ height: '140px' }}>
                             <div className={`w-full rounded-t-sm transition-all duration-300 ${
-                              today ? 'bg-brand-gold' : b.revenue > 0 ? 'bg-brand-gold/40 group-hover:bg-brand-gold/65' : 'bg-zinc-800/60'
+                              today ? 'bg-brand-gold' : b.revenue > 0 ? 'bg-brand-gold/40 group-hover:bg-brand-gold/65' : 'bg-gray-100 dark:bg-zinc-800/60'
                             }`}
                               style={{ height: `${Math.max(pct, b.revenue > 0 ? 3 : 1.5)}%` }} />
                           </div>
-                          <span className={`mt-1 ${today ? 'text-brand-gold font-bold' : 'text-zinc-600'}`}
+                          <span className={`mt-1 ${today ? 'text-brand-gold font-bold' : 'text-gray-400 dark:text-zinc-600'}`}
                             style={{ fontSize: '9px' }}>
                             {buckets.length <= 31 ? b.date.getDate() : b.label.slice(0,3)}
                           </span>
@@ -296,27 +296,27 @@ export default function AdminStatistiquesPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* ── Top produits ── */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-              <div className="px-4 sm:px-6 py-4 border-b border-zinc-800">
-                <h2 className="text-brand-cream font-bold text-sm">Top produits</h2>
+            <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden">
+              <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-zinc-800">
+                <h2 className="text-gray-900 dark:text-brand-cream font-bold text-sm">Top produits</h2>
               </div>
               {topProducts.length === 0 ? (
-                <p className="text-zinc-500 text-sm text-center py-10">Aucune vente sur cette période</p>
+                <p className="text-gray-500 dark:text-zinc-500 text-sm text-center py-10">Aucune vente sur cette période</p>
               ) : (
-                <div className="divide-y divide-zinc-800">
+                <div className="divide-y divide-gray-200 dark:divide-zinc-800">
                   {topProducts.map((p, i) => (
                     <div key={i} className="px-4 sm:px-6 py-3">
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-zinc-600 font-black text-xs w-5 shrink-0">#{i+1}</span>
-                          <p className="text-brand-cream text-sm font-medium truncate">{p.name} — {p.volume}L</p>
+                          <span className="text-gray-400 dark:text-zinc-600 font-black text-xs w-5 shrink-0">#{i+1}</span>
+                          <p className="text-gray-900 dark:text-brand-cream text-sm font-medium truncate">{p.name} — {p.volume}L</p>
                         </div>
                         <div className="text-right shrink-0 ml-3">
                           <p className="text-brand-gold font-bold text-sm">{p.qty} bidon{p.qty>1?'s':''}</p>
-                          <p className="text-zinc-500 text-xs">{formatGNF(p.revenue)}</p>
+                          <p className="text-gray-500 dark:text-zinc-500 text-xs">{formatGNF(p.revenue)}</p>
                         </div>
                       </div>
-                      <div className="w-full bg-zinc-800 rounded-full h-1 overflow-hidden">
+                      <div className="w-full bg-gray-100 dark:bg-zinc-800 rounded-full h-1 overflow-hidden">
                         <div className="h-full bg-brand-gold/50 rounded-full transition-all duration-500"
                           style={{ width: `${(p.qty/(topProducts[0]?.qty||1))*100}%` }} />
                       </div>
@@ -327,26 +327,26 @@ export default function AdminStatistiquesPage() {
             </div>
 
             {/* ── Commandes de la période ── */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-              <div className="px-4 sm:px-6 py-4 border-b border-zinc-800">
-                <h2 className="text-brand-cream font-bold text-sm">
-                  Commandes <span className="text-zinc-500 font-normal">({periodOrders.length})</span>
+            <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden">
+              <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-zinc-800">
+                <h2 className="text-gray-900 dark:text-brand-cream font-bold text-sm">
+                  Commandes <span className="text-gray-500 dark:text-zinc-500 font-normal">({periodOrders.length})</span>
                 </h2>
               </div>
               {periodOrders.length === 0 ? (
-                <p className="text-zinc-500 text-sm text-center py-10">Aucune commande sur cette période</p>
+                <p className="text-gray-500 dark:text-zinc-500 text-sm text-center py-10">Aucune commande sur cette période</p>
               ) : (
-                <div className="divide-y divide-zinc-800 max-h-80 overflow-y-auto">
+                <div className="divide-y divide-gray-200 dark:divide-zinc-800 max-h-80 overflow-y-auto">
                   {[...periodOrders].reverse().map((o) => (
                     <Link key={o.id} href={`/admin/commandes/${o.id}`}
-                      className="flex items-center justify-between px-4 sm:px-6 py-3 hover:bg-zinc-800/40 transition-colors">
+                      className="flex items-center justify-between px-4 sm:px-6 py-3 hover:bg-gray-50 dark:hover:bg-zinc-800/40 transition-colors">
                       <div className="min-w-0">
-                        <p className="text-brand-cream text-sm font-medium truncate">{o.client?.name || 'Client inconnu'}</p>
-                        <p className="text-zinc-500 text-xs">{formatDate(o.created_at)}</p>
+                        <p className="text-gray-900 dark:text-brand-cream text-sm font-medium truncate">{o.client?.name || 'Client inconnu'}</p>
+                        <p className="text-gray-500 dark:text-zinc-500 text-xs">{formatDate(o.created_at)}</p>
                       </div>
                       <div className="text-right shrink-0 ml-3">
                         <p className="text-brand-gold text-sm font-semibold">{formatGNF(o.total_gnf)}</p>
-                        <p className={`text-xs ${statusColor[o.status] ?? 'text-zinc-400'}`}>
+                        <p className={`text-xs ${statusColor[o.status] ?? 'text-gray-500 dark:text-zinc-400'}`}>
                           {statusLabel[o.status] ?? o.status}
                         </p>
                       </div>

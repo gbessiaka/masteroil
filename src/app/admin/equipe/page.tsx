@@ -15,8 +15,8 @@ interface AdminUser {
 
 const ROLE_CONFIG: Record<AdminRole, { label: string; color: string; bg: string; icon: React.ElementType }> = {
   super_admin:  { label: 'Super Admin',  color: 'text-brand-gold', bg: 'bg-brand-gold/10 border-brand-gold/30',  icon: Shield },
-  gestionnaire: { label: 'Gestionnaire', color: 'text-blue-400',   bg: 'bg-blue-900/20 border-blue-700/30',       icon: Briefcase },
-  commercial:   { label: 'Commercial',   color: 'text-green-400',  bg: 'bg-green-900/20 border-green-700/30',     icon: TrendingUp },
+  gestionnaire: { label: 'Gestionnaire', color: 'text-blue-600 dark:text-blue-400',   bg: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-700/30',       icon: Briefcase },
+  commercial:   { label: 'Commercial',   color: 'text-green-600 dark:text-green-400',  bg: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-700/30',     icon: TrendingUp },
 }
 
 function RoleBadge({ role }: { role: AdminRole }) {
@@ -119,8 +119,8 @@ export default function EquipePage() {
     <div className="p-4 sm:p-8 max-w-4xl">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-brand-cream text-2xl font-black">Équipe & Accès</h1>
-          <p className="text-zinc-500 text-sm mt-1">{admins.length} administrateur{admins.length > 1 ? 's' : ''}</p>
+          <h1 className="text-gray-900 dark:text-brand-cream text-2xl font-black">Équipe & Accès</h1>
+          <p className="text-gray-500 dark:text-zinc-500 text-sm mt-1">{admins.length} administrateur{admins.length > 1 ? 's' : ''}</p>
         </div>
         {isSuperAdmin && (
           <button onClick={() => setShowForm(true)} className="btn-primary text-sm py-2.5 px-4">
@@ -136,13 +136,13 @@ export default function EquipePage() {
           const Icon = cfg.icon
           const count = admins.filter((a) => a.role === key).length
           return (
-            <div key={key} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center gap-3">
+            <div key={key} className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4 flex items-center gap-3">
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center border ${cfg.bg}`}>
                 <Icon className={`w-4 h-4 ${cfg.color}`} />
               </div>
               <div>
                 <p className={`text-sm font-bold ${cfg.color}`}>{cfg.label}</p>
-                <p className="text-zinc-500 text-xs">{count} membre{count > 1 ? 's' : ''}</p>
+                <p className="text-gray-500 dark:text-zinc-500 text-xs">{count} membre{count > 1 ? 's' : ''}</p>
               </div>
             </div>
           )
@@ -150,33 +150,33 @@ export default function EquipePage() {
       </div>
 
       {/* List */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl">
+      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-6 h-6 text-brand-gold animate-spin" />
           </div>
         ) : admins.length === 0 ? (
-          <p className="text-zinc-500 text-sm text-center py-12">Aucun administrateur</p>
+          <p className="text-gray-500 dark:text-zinc-500 text-sm text-center py-12">Aucun administrateur</p>
         ) : (
           admins.map((admin, i) => (
             <div
               key={admin.id}
-              className={`flex items-center justify-between px-5 py-4 gap-4 ${i !== admins.length - 1 ? 'border-b border-zinc-800' : ''} ${!admin.active ? 'opacity-50' : ''}`}
+              className={`flex items-center justify-between px-5 py-4 gap-4 ${i !== admins.length - 1 ? 'border-b border-gray-200 dark:border-zinc-800' : ''} ${!admin.active ? 'opacity-50' : ''}`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 flex items-center justify-center shrink-0">
                   <span className="text-brand-gold text-sm font-black">{admin.name.charAt(0)}</span>
                 </div>
                 <div className="min-w-0">
-                  <p className="text-brand-cream text-sm font-semibold truncate">{admin.name}</p>
-                  {admin.email && <p className="text-zinc-500 text-xs truncate">{admin.email}</p>}
+                  <p className="text-gray-900 dark:text-brand-cream text-sm font-semibold truncate">{admin.name}</p>
+                  {admin.email && <p className="text-gray-500 dark:text-zinc-500 text-xs truncate">{admin.email}</p>}
                 </div>
               </div>
 
               <div className="flex items-center gap-3 shrink-0">
                 <RoleBadge role={admin.role} />
                 {!admin.active && (
-                  <span className="text-xs text-zinc-500 border border-zinc-700 px-2 py-0.5 rounded-full hidden sm:inline">
+                  <span className="text-xs text-gray-500 dark:text-zinc-500 border border-gray-300 dark:border-zinc-700 px-2 py-0.5 rounded-full hidden sm:inline">
                     Inactif
                   </span>
                 )}
@@ -184,22 +184,22 @@ export default function EquipePage() {
                   <div className="relative">
                     <button
                       onClick={() => setMenuOpen(menuOpen === admin.id ? null : admin.id)}
-                      className="p-1.5 text-zinc-500 hover:text-zinc-300 transition-colors rounded-lg hover:bg-zinc-800"
+                      className="p-1.5 text-gray-500 dark:text-zinc-500 hover:text-gray-600 dark:text-zinc-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800"
                     >
                       <MoreVertical className="w-4 h-4" />
                     </button>
                     {menuOpen === admin.id && (
-                      <div className="absolute right-0 top-8 z-20 bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl w-44 py-1">
+                      <div className="absolute right-0 top-8 z-20 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-xl shadow-xl w-44 py-1">
                         <button
                           onClick={() => toggleActive(admin)}
-                          className="w-full text-left px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                          className="w-full text-left px-4 py-2.5 text-sm text-gray-600 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-white transition-colors"
                         >
                           {admin.active ? 'Désactiver' : 'Réactiver'}
                         </button>
                         {admin.role !== 'super_admin' && (
                           <button
                             onClick={() => deleteAdmin(admin.id)}
-                            className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-900/20 transition-colors"
+                            className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                           >
                             Supprimer
                           </button>
@@ -217,56 +217,56 @@ export default function EquipePage() {
       {/* Add modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center px-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-brand-cream font-black text-lg">Nouvel administrateur</h2>
-              <button onClick={() => { setShowForm(false); setError('') }} className="p-1.5 text-zinc-400 hover:text-white">
+              <h2 className="text-gray-900 dark:text-brand-cream font-black text-lg">Nouvel administrateur</h2>
+              <button onClick={() => { setShowForm(false); setError('') }} className="p-1.5 text-gray-500 dark:text-zinc-400 hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleAdd} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Nom complet</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Nom complet</label>
                 <input
                   type="text" required value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Prénom Nom"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Email</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Email</label>
                 <input
                   type="email" required value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   placeholder="prenom@masteroilguinee.com"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Mot de passe</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Mot de passe</label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'} required value={form.password}
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
                     placeholder="••••••••"
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 pr-10 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
+                    className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 pr-10 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm"
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400">
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-zinc-400">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Rôle</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Rôle</label>
                 <select
                   value={form.role}
                   onChange={(e) => setForm({ ...form, role: e.target.value as AdminRole })}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm"
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm"
                 >
                   <option value="gestionnaire">Gestionnaire</option>
                   <option value="commercial">Commercial</option>
@@ -275,8 +275,8 @@ export default function EquipePage() {
               </div>
 
               {error && (
-                <div className="bg-red-900/20 border border-red-800 rounded-lg p-3">
-                  <p className="text-red-400 text-sm">{error}</p>
+                <div className="bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800 rounded-lg p-3">
+                  <p className="text-red-500 dark:text-red-400 text-sm">{error}</p>
                 </div>
               )}
 

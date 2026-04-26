@@ -42,8 +42,8 @@ export default function AdminProduitsPage() {
     <div className="p-4 sm:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-brand-cream mb-1">Produits</h1>
-          <p className="text-zinc-400 text-sm">{products.length} produit(s) dans le catalogue</p>
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-brand-cream mb-1">Produits</h1>
+          <p className="text-gray-500 dark:text-zinc-400 text-sm">{products.length} produit(s) dans le catalogue</p>
         </div>
         <Link href="/admin/produits/new" className="btn-primary text-sm py-2">
           <Plus className="w-4 h-4" />
@@ -58,7 +58,7 @@ export default function AdminProduitsPage() {
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-zinc-500 mb-4">Aucun produit pour l'instant.</p>
+          <p className="text-gray-500 dark:text-zinc-500 mb-4">Aucun produit pour l'instant.</p>
           <Link href="/admin/produits/new" className="btn-primary text-sm">
             <Plus className="w-4 h-4" /> Créer le premier produit
           </Link>
@@ -68,37 +68,37 @@ export default function AdminProduitsPage() {
           {/* Mobile: cards */}
           <div className="md:hidden space-y-2">
             {products.map((product) => (
-              <div key={product.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+              <div key={product.id} className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4">
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="flex items-center gap-3 min-w-0">
                     {product.image_url ? (
-                      <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-zinc-700">
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-gray-300 dark:border-zinc-700">
                         <Image src={product.image_url} alt={product.name} fill className="object-cover" />
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700 shrink-0 flex items-center justify-center">
-                        <span className="text-zinc-600 text-xs">—</span>
+                      <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 shrink-0 flex items-center justify-center">
+                        <span className="text-gray-400 dark:text-zinc-600 text-xs">—</span>
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-brand-cream text-sm font-semibold">{product.name}</p>
-                      {product.description && <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1">{product.description}</p>}
+                      <p className="text-gray-900 dark:text-brand-cream text-sm font-semibold">{product.name}</p>
+                      {product.description && <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5 line-clamp-1">{product.description}</p>}
                     </div>
                   </div>
                   <Badge variant={product.is_active ? 'green' : 'red'}>{product.is_active ? 'Actif' : 'Inactif'}</Badge>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   <Badge variant={product.category === 'automobile' ? 'gold' : 'blue'}>{product.category}</Badge>
-                  {product.viscosity && <span className="text-zinc-300 text-xs font-mono bg-zinc-800 px-2 py-0.5 rounded">{product.viscosity}</span>}
-                  {product.type && <span className="text-zinc-500 text-xs">{typeLabel[product.type] || product.type}</span>}
+                  {product.viscosity && <span className="text-gray-600 dark:text-zinc-300 text-xs font-mono bg-gray-100 dark:bg-zinc-800 px-2 py-0.5 rounded">{product.viscosity}</span>}
+                  {product.type && <span className="text-gray-500 dark:text-zinc-500 text-xs">{typeLabel[product.type] || product.type}</span>}
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex gap-1 flex-wrap">
                     {(product.packagings || []).map((pkg) => (
-                      <span key={pkg.id} className="text-xs bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded font-mono">{pkg.volume_liters}L</span>
+                      <span key={pkg.id} className="text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 px-2 py-0.5 rounded font-mono">{pkg.volume_liters}L</span>
                     ))}
                   </div>
-                  <Link href={`/admin/produits/${product.id}`} className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium">
+                  <Link href={`/admin/produits/${product.id}`} className="inline-flex items-center gap-1.5 text-gray-500 dark:text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium">
                     <Pencil className="w-4 h-4" />Modifier
                   </Link>
                 </div>
@@ -107,44 +107,44 @@ export default function AdminProduitsPage() {
           </div>
 
           {/* Desktop: table */}
-          <div className="hidden md:block bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+          <div className="hidden md:block bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-950">
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Produit</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Viscosité / Type</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Conditionnements</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Prix</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Statut</th>
-                  <th className="text-right px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Actions</th>
+                <tr className="border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-950">
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Produit</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Viscosité / Type</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Conditionnements</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Prix</th>
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Statut</th>
+                  <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((product) => (
-                  <tr key={product.id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
+                  <tr key={product.id} className="border-b border-gray-200 dark:border-zinc-800/50 hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {product.image_url ? (
-                          <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-zinc-700">
+                          <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-gray-300 dark:border-zinc-700">
                             <Image src={product.image_url} alt={product.name} fill className="object-cover" />
                           </div>
                         ) : (
-                          <div className="w-10 h-10 rounded-lg bg-zinc-800 border border-zinc-700 shrink-0" />
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 shrink-0" />
                         )}
                         <div>
-                          <p className="text-brand-cream text-sm font-semibold">{product.name}</p>
-                          {product.description && <p className="text-zinc-500 text-xs mt-0.5 line-clamp-1 max-w-xs">{product.description}</p>}
+                          <p className="text-gray-900 dark:text-brand-cream text-sm font-semibold">{product.name}</p>
+                          {product.description && <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5 line-clamp-1 max-w-xs">{product.description}</p>}
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-zinc-300 text-sm font-mono">{product.viscosity || '—'}</p>
-                      {product.type && <p className="text-zinc-500 text-xs mt-0.5">{typeLabel[product.type]}</p>}
+                      <p className="text-gray-600 dark:text-zinc-300 text-sm font-mono">{product.viscosity || '—'}</p>
+                      {product.type && <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5">{typeLabel[product.type]}</p>}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
                         {(product.packagings || []).map((pkg) => (
-                          <span key={pkg.id} className="text-xs bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded font-mono">{pkg.volume_liters}L</span>
+                          <span key={pkg.id} className="text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 px-2 py-0.5 rounded font-mono">{pkg.volume_liters}L</span>
                         ))}
                       </div>
                     </td>
@@ -154,12 +154,12 @@ export default function AdminProduitsPage() {
                           À partir de {formatGNF(Math.min(...product.packagings.map((p) => p.price_gnf)))}
                         </span>
                       ) : (
-                        <span className="text-zinc-500 text-xs">Sur demande</span>
+                        <span className="text-gray-500 dark:text-zinc-500 text-xs">Sur demande</span>
                       )}
                     </td>
                     <td className="px-6 py-4"><Badge variant={product.is_active ? 'green' : 'red'}>{product.is_active ? 'Actif' : 'Inactif'}</Badge></td>
                     <td className="px-6 py-4 text-right">
-                      <Link href={`/admin/produits/${product.id}`} className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium">
+                      <Link href={`/admin/produits/${product.id}`} className="inline-flex items-center gap-1.5 text-gray-500 dark:text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium">
                         <Pencil className="w-4 h-4" />Modifier
                       </Link>
                     </td>

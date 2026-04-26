@@ -48,31 +48,31 @@ export default function StockMovementModal({ isOpen, onClose, packagingId, produ
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center px-4">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-brand-cream font-black text-lg">Mouvement de stock</h2>
-          <button onClick={onClose} className="p-1.5 text-zinc-400 hover:text-white transition-colors">
+          <h2 className="text-gray-900 dark:text-brand-cream font-black text-lg">Mouvement de stock</h2>
+          <button onClick={onClose} className="p-1.5 text-gray-500 dark:text-zinc-400 hover:text-white transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <p className="text-zinc-400 text-sm mb-5">
-          Produit : <span className="text-brand-cream font-semibold">{productName} — {volumeLiters}L</span>
+        <p className="text-gray-500 dark:text-zinc-400 text-sm mb-5">
+          Produit : <span className="text-gray-900 dark:text-brand-cream font-semibold">{productName} — {volumeLiters}L</span>
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-2">Type de mouvement</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-2">Type de mouvement</label>
             <div className="grid grid-cols-2 gap-3">
               <button type="button" onClick={() => setType('in')}
                 className={`py-2.5 rounded-lg text-sm font-semibold border transition-all ${
-                  type === 'in' ? 'bg-green-900/30 border-green-600 text-green-400' : 'border-zinc-700 text-zinc-400 hover:border-zinc-600'
+                  type === 'in' ? 'bg-green-900/30 border-green-600 text-green-400' : 'border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:border-gray-400 dark:hover:border-zinc-600'
                 }`}>
                 Entrée (+)
               </button>
               <button type="button" onClick={() => setType('out')}
                 className={`py-2.5 rounded-lg text-sm font-semibold border transition-all ${
-                  type === 'out' ? 'bg-red-900/30 border-red-600 text-red-400' : 'border-zinc-700 text-zinc-400 hover:border-zinc-600'
+                  type === 'out' ? 'bg-red-900/30 border-red-600 text-red-400' : 'border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:border-gray-400 dark:hover:border-zinc-600'
                 }`}>
                 Sortie (−)
               </button>
@@ -80,19 +80,19 @@ export default function StockMovementModal({ isOpen, onClose, packagingId, produ
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Quantité</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Quantité</label>
             <input type="number" min="1" required value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               placeholder="Ex: 10"
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm" />
+              className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">Note (optionnel)</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Note (optionnel)</label>
             <input type="text" value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Ex: Livraison reçue, Vente garage ABC..."
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm" />
+              className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm" />
           </div>
 
           {error && <p className="text-red-400 text-sm">{error}</p>}

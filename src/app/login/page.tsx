@@ -29,7 +29,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-10">
@@ -39,16 +39,16 @@ export default function AdminLoginPage() {
             </div>
             <div>
               <span className="text-2xl font-black text-brand-gold">MASTER OIL</span>
-              <span className="text-2xl font-black text-brand-cream"> GUINÉE</span>
+              <span className="text-2xl font-black text-gray-900 dark:text-brand-cream"> GUINÉE</span>
             </div>
           </div>
-          <p className="text-zinc-400 text-sm">Espace Administration</p>
+          <p className="text-gray-500 dark:text-zinc-400 text-sm">Espace Administration</p>
         </div>
 
         {/* Card */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
-          <h1 className="text-brand-cream font-black text-2xl mb-2">Connexion</h1>
-          <p className="text-zinc-500 text-sm mb-8">
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-8">
+          <h1 className="text-gray-900 dark:text-brand-cream font-black text-2xl mb-2">Connexion</h1>
+          <p className="text-gray-500 dark:text-zinc-500 text-sm mb-8">
             Accès réservé aux administrateurs autorisés.
           </p>
 
@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-zinc-300 mb-2"
+                className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-2"
               >
                 Adresse email
               </label>
@@ -68,14 +68,14 @@ export default function AdminLoginPage() {
                 required
                 autoComplete="email"
                 placeholder="admin@masteroilguinee.com"
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
+                className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-zinc-300 mb-2"
+                className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-2"
               >
                 Mot de passe
               </label>
@@ -88,12 +88,12 @@ export default function AdminLoginPage() {
                   required
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 pr-12 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 pr-12 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none transition-colors"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-brand-cream transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream transition-colors"
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />
@@ -120,7 +120,7 @@ export default function AdminLoginPage() {
           </form>
         </div>
 
-        <p className="text-center text-zinc-600 text-xs mt-6">
+        <p className="text-center text-gray-400 dark:text-zinc-600 text-xs mt-6">
           Master Oil Guinée — Administration
         </p>
       </div>

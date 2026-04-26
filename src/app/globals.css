@@ -24,11 +24,19 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+.dark body {
+  background-color: #09090b;
+  color: #f4f2ee;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #F0EDE8;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #18181b;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--brand-gold);

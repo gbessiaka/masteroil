@@ -99,7 +99,7 @@ export default function ClientDetailPage() {
 
   if (!client) return (
     <div className="p-8">
-      <p className="text-red-400">Client introuvable.</p>
+      <p className="text-red-600 dark:text-red-400">Client introuvable.</p>
       <Link href="/admin/clients" className="text-brand-gold mt-4 inline-block">Retour</Link>
     </div>
   )
@@ -113,15 +113,15 @@ export default function ClientDetailPage() {
     <div className="p-4 sm:p-8 max-w-4xl">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
-        <Link href="/admin/clients" className="text-zinc-400 hover:text-brand-cream transition-colors">
+        <Link href="/admin/clients" className="text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-xl sm:text-2xl font-black text-brand-cream truncate">{client.name}</h1>
+            <h1 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-brand-cream truncate">{client.name}</h1>
             <Badge variant={tc.variant}>{tc.label}</Badge>
           </div>
-          <p className="text-zinc-500 text-sm mt-0.5">Client depuis {formatDate(client.created_at)}</p>
+          <p className="text-gray-500 dark:text-zinc-500 text-sm mt-0.5">Client depuis {formatDate(client.created_at)}</p>
         </div>
         <button onClick={openEdit}
           className="btn-secondary text-sm py-2 shrink-0">
@@ -133,77 +133,77 @@ export default function ClientDetailPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-8">
         {[
-          { label: 'CA total', value: formatGNF(totalRevenue), icon: TrendingUp, color: 'text-green-400', bg: 'bg-green-900/20 border-green-800/30' },
-          { label: 'Commandes', value: orders.length, icon: ShoppingCart, color: 'text-blue-400', bg: 'bg-blue-900/20 border-blue-800/30' },
-          { label: 'Livrées', value: deliveredCount, icon: Package, color: 'text-brand-gold', bg: 'bg-yellow-900/20 border-yellow-800/30' },
+          { label: 'CA total', value: formatGNF(totalRevenue), icon: TrendingUp, color: 'text-green-600 dark:text-green-400', bg: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800/30' },
+          { label: 'Commandes', value: orders.length, icon: ShoppingCart, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800/30' },
+          { label: 'Livrées', value: deliveredCount, icon: Package, color: 'text-brand-gold', bg: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/30' },
         ].map((s, i) => (
-          <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+          <div key={i} className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-zinc-400 text-xs font-medium leading-tight">{s.label}</span>
+              <span className="text-gray-500 dark:text-zinc-400 text-xs font-medium leading-tight">{s.label}</span>
               <div className={`w-8 h-8 rounded-lg ${s.bg} border flex items-center justify-center shrink-0`}>
                 <s.icon className={`w-4 h-4 ${s.color}`} />
               </div>
             </div>
-            <p className="text-brand-cream font-black text-lg sm:text-xl truncate">{s.value}</p>
+            <p className="text-gray-900 dark:text-brand-cream font-black text-lg sm:text-xl truncate">{s.value}</p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Infos contact */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <h2 className="text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Contact</h2>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5">
+          <h2 className="text-gray-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Contact</h2>
           {client.phone ? (
-            <a href={`tel:${client.phone}`} className="flex items-center gap-2 text-brand-cream hover:text-brand-gold text-sm mb-2 transition-colors">
+            <a href={`tel:${client.phone}`} className="flex items-center gap-2 text-gray-900 dark:text-brand-cream hover:text-brand-gold text-sm mb-2 transition-colors">
               <Phone className="w-4 h-4 text-brand-gold shrink-0" />{client.phone}
             </a>
-          ) : <p className="text-zinc-600 text-sm mb-2">Pas de téléphone</p>}
+          ) : <p className="text-gray-400 dark:text-zinc-600 text-sm mb-2">Pas de téléphone</p>}
           {client.email ? (
-            <a href={`mailto:${client.email}`} className="flex items-center gap-2 text-brand-cream hover:text-brand-gold text-sm transition-colors">
+            <a href={`mailto:${client.email}`} className="flex items-center gap-2 text-gray-900 dark:text-brand-cream hover:text-brand-gold text-sm transition-colors">
               <Mail className="w-4 h-4 text-brand-gold shrink-0" /><span className="truncate">{client.email}</span>
             </a>
-          ) : <p className="text-zinc-600 text-sm">Pas d'email</p>}
+          ) : <p className="text-gray-400 dark:text-zinc-600 text-sm">Pas d'email</p>}
         </div>
 
         {/* Dernière commande */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <h2 className="text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Dernière commande</h2>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5">
+          <h2 className="text-gray-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Dernière commande</h2>
           {lastOrder ? (
             <>
               <p className="text-brand-gold font-black text-xl">{formatGNF(lastOrder.total_gnf)}</p>
-              <p className="text-zinc-400 text-sm mt-1">{formatDate(lastOrder.created_at)}</p>
+              <p className="text-gray-500 dark:text-zinc-400 text-sm mt-1">{formatDate(lastOrder.created_at)}</p>
               <OrderStatusBadge status={lastOrder.status as OrderStatus} />
             </>
-          ) : <p className="text-zinc-600 text-sm">Aucune commande</p>}
+          ) : <p className="text-gray-400 dark:text-zinc-600 text-sm">Aucune commande</p>}
         </div>
 
         {/* Notes */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-          <h2 className="text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Notes</h2>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-5">
+          <h2 className="text-gray-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wide mb-3">Notes</h2>
           {client.notes
-            ? <p className="text-zinc-300 text-sm leading-relaxed">{client.notes}</p>
-            : <p className="text-zinc-600 text-sm">Aucune note</p>}
+            ? <p className="text-gray-600 dark:text-zinc-300 text-sm leading-relaxed">{client.notes}</p>
+            : <p className="text-gray-400 dark:text-zinc-600 text-sm">Aucune note</p>}
         </div>
       </div>
 
       {/* Historique commandes */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-        <div className="px-4 sm:px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
-          <h2 className="text-brand-cream font-bold">Historique des commandes</h2>
-          <span className="text-zinc-500 text-sm">{orders.length} commande{orders.length > 1 ? 's' : ''}</span>
+      <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden">
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-zinc-800 flex items-center justify-between">
+          <h2 className="text-gray-900 dark:text-brand-cream font-bold">Historique des commandes</h2>
+          <span className="text-gray-500 dark:text-zinc-500 text-sm">{orders.length} commande{orders.length > 1 ? 's' : ''}</span>
         </div>
         {orders.length === 0 ? (
-          <p className="text-zinc-500 text-sm text-center py-10">Aucune commande pour ce client</p>
+          <p className="text-gray-500 dark:text-zinc-500 text-sm text-center py-10">Aucune commande pour ce client</p>
         ) : (
           <>
             {/* Mobile */}
-            <div className="md:hidden divide-y divide-zinc-800">
+            <div className="md:hidden divide-y divide-gray-200 dark:divide-zinc-800">
               {orders.map((order) => (
                 <Link key={order.id} href={`/admin/commandes/${order.id}`}
-                  className="flex items-center justify-between px-4 py-3 hover:bg-zinc-800/30 transition-colors">
+                  className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
                   <div>
-                    <p className="text-zinc-400 text-xs">{formatDate(order.created_at)}</p>
-                    <p className="text-zinc-500 text-xs">{order.order_items?.length ?? 0} article(s)</p>
+                    <p className="text-gray-500 dark:text-zinc-400 text-xs">{formatDate(order.created_at)}</p>
+                    <p className="text-gray-500 dark:text-zinc-500 text-xs">{order.order_items?.length ?? 0} article(s)</p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <span className="text-brand-gold font-semibold text-sm">{formatGNF(order.total_gnf)}</span>
@@ -217,24 +217,24 @@ export default function ClientDetailPage() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-zinc-800 bg-zinc-950">
-                    <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Date</th>
-                    <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Articles</th>
-                    <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Total</th>
-                    <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Statut</th>
-                    <th className="text-right px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Actions</th>
+                  <tr className="border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-950">
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Date</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Articles</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Total</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Statut</th>
+                    <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {orders.map((order) => (
-                    <tr key={order.id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
-                      <td className="px-6 py-4 text-zinc-400 text-sm">{formatDate(order.created_at)}</td>
-                      <td className="px-6 py-4 text-zinc-400 text-sm">{order.order_items?.length ?? 0} article(s)</td>
+                    <tr key={order.id} className="border-b border-gray-200 dark:border-zinc-800/50 hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
+                      <td className="px-6 py-4 text-gray-500 dark:text-zinc-400 text-sm">{formatDate(order.created_at)}</td>
+                      <td className="px-6 py-4 text-gray-500 dark:text-zinc-400 text-sm">{order.order_items?.length ?? 0} article(s)</td>
                       <td className="px-6 py-4"><span className="text-brand-gold font-semibold text-sm">{formatGNF(order.total_gnf)}</span></td>
                       <td className="px-6 py-4"><OrderStatusBadge status={order.status as OrderStatus} /></td>
                       <td className="px-6 py-4 text-right">
                         <Link href={`/admin/commandes/${order.id}`}
-                          className="text-zinc-400 hover:text-brand-gold text-sm transition-colors">
+                          className="text-gray-500 dark:text-zinc-400 hover:text-brand-gold text-sm transition-colors">
                           Voir détail
                         </Link>
                       </td>
@@ -242,8 +242,8 @@ export default function ClientDetailPage() {
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr className="bg-zinc-950">
-                    <td colSpan={2} className="px-6 py-3 text-zinc-500 text-xs">
+                  <tr className="bg-gray-50 dark:bg-zinc-950">
+                    <td colSpan={2} className="px-6 py-3 text-gray-500 dark:text-zinc-500 text-xs">
                       {deliveredCount} commande{deliveredCount > 1 ? 's' : ''} livrée{deliveredCount > 1 ? 's' : ''}
                     </td>
                     <td className="px-6 py-3">
@@ -261,23 +261,23 @@ export default function ClientDetailPage() {
       {/* Modal modifier */}
       {showEdit && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center px-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-brand-cream font-black text-lg">Modifier le client</h2>
-              <button onClick={() => setShowEdit(false)} className="p-1.5 text-zinc-400 hover:text-white">
+              <h2 className="text-gray-900 dark:text-brand-cream font-black text-lg">Modifier le client</h2>
+              <button onClick={() => setShowEdit(false)} className="p-1.5 text-gray-500 dark:text-zinc-400 hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Nom complet <span className="text-brand-gold">*</span></label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Nom complet <span className="text-brand-gold">*</span></label>
                 <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm" />
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Type</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Type</label>
                 <select value={form.client_type} onChange={(e) => setForm({ ...form, client_type: e.target.value })}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm">
                   <option value="particulier">Particulier</option>
                   <option value="garage">Garage</option>
                   <option value="entreprise">Entreprise</option>
@@ -285,20 +285,20 @@ export default function ClientDetailPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Téléphone</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Téléphone</label>
                 <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   placeholder="+224 6XX XX XX XX"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm" />
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none text-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Email</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Email</label>
                 <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm" />
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1.5">Notes</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1.5">Notes</label>
                 <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} rows={2}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 text-brand-cream focus:border-brand-gold focus:outline-none text-sm resize-none" />
+                  className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-2.5 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none text-sm resize-none" />
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowEdit(false)} className="flex-1 btn-secondary py-2.5 justify-center text-sm">Annuler</button>

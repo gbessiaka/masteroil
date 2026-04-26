@@ -208,24 +208,24 @@ export default function AdminProductEditPage() {
   return (
     <div className="p-4 sm:p-8 max-w-3xl">
       <div className="flex items-center gap-4 mb-8">
-        <Link href="/admin/produits" className="text-zinc-400 hover:text-brand-cream transition-colors">
+        <Link href="/admin/produits" className="text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-black text-brand-cream">
+          <h1 className="text-2xl font-black text-gray-900 dark:text-brand-cream">
             {isNew ? 'Nouveau produit' : 'Modifier le produit'}
           </h1>
-          <p className="text-zinc-500 text-sm">{isNew ? 'Créer un nouveau produit' : form.name}</p>
+          <p className="text-gray-500 dark:text-zinc-500 text-sm">{isNew ? 'Créer un nouveau produit' : form.name}</p>
         </div>
       </div>
 
       <div className="space-y-6">
         {/* Photo produit */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-          <h2 className="text-brand-cream font-bold mb-4">Photo du produit</h2>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6">
+          <h2 className="text-gray-900 dark:text-brand-cream font-bold mb-4">Photo du produit</h2>
           <div className="flex items-start gap-4">
             {form.image_url ? (
-              <div className="relative w-28 h-28 rounded-xl overflow-hidden border border-zinc-700 shrink-0">
+              <div className="relative w-28 h-28 rounded-xl overflow-hidden border border-gray-300 dark:border-zinc-700 shrink-0">
                 <Image src={form.image_url} alt="Photo produit" fill className="object-cover" />
                 <button onClick={() => setForm((p) => ({ ...p, image_url: '' }))}
                   className="absolute top-1 right-1 w-6 h-6 bg-black/70 rounded-full flex items-center justify-center text-white hover:bg-black transition-colors">
@@ -233,8 +233,8 @@ export default function AdminProductEditPage() {
                 </button>
               </div>
             ) : (
-              <div className="w-28 h-28 rounded-xl border-2 border-dashed border-zinc-700 flex items-center justify-center shrink-0 bg-zinc-800/50">
-                <ImagePlus className="w-8 h-8 text-zinc-600" />
+              <div className="w-28 h-28 rounded-xl border-2 border-dashed border-gray-300 dark:border-zinc-700 flex items-center justify-center shrink-0 bg-gray-100 dark:bg-zinc-800/50">
+                <ImagePlus className="w-8 h-8 text-gray-400 dark:text-zinc-600" />
               </div>
             )}
             <div>
@@ -243,34 +243,34 @@ export default function AdminProductEditPage() {
                 {uploading ? 'Upload...' : form.image_url ? 'Changer la photo' : 'Ajouter une photo'}
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
               </label>
-              <p className="text-zinc-500 text-xs mt-2">JPG, PNG, WEBP — max 5 Mo</p>
+              <p className="text-gray-500 dark:text-zinc-500 text-xs mt-2">JPG, PNG, WEBP — max 5 Mo</p>
             </div>
           </div>
         </div>
 
         {/* Infos générales */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
-          <h2 className="text-brand-cream font-bold">Informations générales</h2>
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 space-y-4">
+          <h2 className="text-gray-900 dark:text-brand-cream font-bold">Informations générales</h2>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Nom du produit <span className="text-brand-gold">*</span></label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1">Nom du produit <span className="text-brand-gold">*</span></label>
             <input name="name" value={form.name} onChange={handleChange}
               placeholder="Ex: Super M7 5W-30"
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none" />
+              className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Catégorie</label>
+              <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1">Catégorie</label>
               <select name="category" value={form.category} onChange={handleChange}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream focus:border-brand-gold focus:outline-none">
+                className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none">
                 <option value="automobile">Automobile</option>
                 <option value="industriel">Industriel</option>
                 <option value="autre">Autre</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1">Type</label>
+              <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1">Type</label>
               <select name="type" value={form.type} onChange={handleChange}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream focus:border-brand-gold focus:outline-none">
+                className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-brand-cream focus:border-brand-gold focus:outline-none">
                 <option value="">— Non spécifié —</option>
                 <option value="synthetique">100% Synthétique</option>
                 <option value="semi-synthetique">Semi-Synthétique</option>
@@ -279,33 +279,33 @@ export default function AdminProductEditPage() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Viscosité</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1">Viscosité</label>
             <input name="viscosity" value={form.viscosity} onChange={handleChange}
               placeholder="Ex: 5W-30"
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none" />
+              className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">Description</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-zinc-300 mb-1">Description</label>
             <textarea name="description" value={form.description} onChange={handleChange} rows={4}
               placeholder="Description du produit..."
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-brand-cream placeholder-zinc-500 focus:border-brand-gold focus:outline-none resize-none" />
+              className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none resize-none" />
           </div>
           <div className="flex gap-6">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} className="w-4 h-4 accent-brand-gold" />
-              <span className="text-zinc-300 text-sm">Produit actif</span>
+              <span className="text-gray-600 dark:text-zinc-300 text-sm">Produit actif</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" name="show_price" checked={form.show_price} onChange={handleChange} className="w-4 h-4 accent-brand-gold" />
-              <span className="text-zinc-300 text-sm">Afficher les prix</span>
+              <span className="text-gray-600 dark:text-zinc-300 text-sm">Afficher les prix</span>
             </label>
           </div>
         </div>
 
         {/* Conditionnements */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+        <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-brand-cream font-bold">Conditionnements</h2>
+            <h2 className="text-gray-900 dark:text-brand-cream font-bold">Conditionnements</h2>
             <button type="button" onClick={() => setPackagings((p) => [...p, { volume_liters: '', price_gnf: '', sku: '' }])}
               className="btn-secondary text-sm py-2 px-3">
               <Plus className="w-4 h-4" /> Ajouter
@@ -313,32 +313,32 @@ export default function AdminProductEditPage() {
           </div>
           <div className="space-y-3">
             {packagings.map((pkg, i) => (
-              <div key={i} className="p-3 bg-zinc-800 rounded-lg border border-zinc-700 space-y-3">
+              <div key={i} className="p-3 bg-gray-100 dark:bg-zinc-800 rounded-lg border border-gray-300 dark:border-zinc-700 space-y-3">
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-xs text-zinc-400 mb-1">Volume (L)</label>
+                    <label className="block text-xs text-gray-500 dark:text-zinc-400 mb-1">Volume (L)</label>
                     <input type="number" step="0.1" min="0.1" value={pkg.volume_liters}
                       onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, volume_liters: e.target.value } : x))}
                       placeholder="Ex: 5"
-                      className="w-full bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
+                      className="w-full bg-white dark:bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
                   </div>
                   <div>
-                    <label className="block text-xs text-zinc-400 mb-1">Prix (GNF)</label>
+                    <label className="block text-xs text-gray-500 dark:text-zinc-400 mb-1">Prix (GNF)</label>
                     <input type="number" min="0" value={pkg.price_gnf}
                       onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, price_gnf: e.target.value } : x))}
                       placeholder="Ex: 395000"
-                      className="w-full bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
+                      className="w-full bg-white dark:bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
                   </div>
                   <div className="flex gap-2">
                     <div className="flex-1">
-                      <label className="block text-xs text-zinc-400 mb-1">SKU</label>
+                      <label className="block text-xs text-gray-500 dark:text-zinc-400 mb-1">SKU</label>
                       <input type="text" value={pkg.sku}
                         onChange={(e) => setPackagings((p) => p.map((x, j) => j === i ? { ...x, sku: e.target.value } : x))}
                         placeholder="Ex: SM7-5L"
-                        className="w-full bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
+                        className="w-full bg-white dark:bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
                     </div>
                     <button type="button" onClick={() => setPackagings((p) => p.filter((_, j) => j !== i))}
-                      className="mt-5 p-2 text-zinc-500 hover:text-red-400 transition-colors">
+                      className="mt-5 p-2 text-gray-500 dark:text-zinc-500 hover:text-red-400 transition-colors">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -354,11 +354,11 @@ export default function AdminProductEditPage() {
                       </button>
                     </div>
                   ) : (
-                    <div className="w-12 h-12 rounded-lg bg-zinc-900 border border-dashed border-zinc-600 shrink-0 flex items-center justify-center">
-                      <ImagePlus className="w-5 h-5 text-zinc-600" />
+                    <div className="w-12 h-12 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-600 shrink-0 flex items-center justify-center">
+                      <ImagePlus className="w-5 h-5 text-gray-400 dark:text-zinc-600" />
                     </div>
                   )}
-                  <label className={`flex items-center gap-1.5 cursor-pointer text-xs text-zinc-400 hover:text-brand-gold transition-colors ${pkg.uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  <label className={`flex items-center gap-1.5 cursor-pointer text-xs text-gray-500 dark:text-zinc-400 hover:text-brand-gold transition-colors ${pkg.uploading ? 'opacity-50 pointer-events-none' : ''}`}>
                     {pkg.uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ImagePlus className="w-3.5 h-3.5" />}
                     {pkg.uploading ? 'Upload...' : pkg.image_url ? 'Changer la photo' : 'Ajouter une photo'}
                     <input type="file" accept="image/*" className="hidden" onChange={(e) => handlePackagingImageUpload(e, i)} disabled={pkg.uploading} />
@@ -367,14 +367,14 @@ export default function AdminProductEditPage() {
               </div>
             ))}
             {packagings.length === 0 && (
-              <p className="text-zinc-500 text-sm text-center py-4">Aucun conditionnement. Cliquez sur "Ajouter".</p>
+              <p className="text-gray-500 dark:text-zinc-500 text-sm text-center py-4">Aucun conditionnement. Cliquez sur "Ajouter".</p>
             )}
           </div>
         </div>
 
         {error && (
-          <div className="bg-red-900/20 border border-red-800 rounded-lg p-4">
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800 rounded-lg p-4">
+            <p className="text-red-500 dark:text-red-400 text-sm">{error}</p>
           </div>
         )}
 

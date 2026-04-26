@@ -139,14 +139,14 @@ export default function AdminSidebar() {
             </div>
             <div>
               <span className="text-xs font-black text-brand-gold">MASTER OIL</span>
-              <p className="text-[10px] text-gray-400 dark:text-zinc-500">Administration</p>
+              <p className="text-[10px] text-gray-500 dark:text-zinc-500">Administration</p>
             </div>
           </div>
         </div>
         {profile && (
           <div className="px-4 py-3 border-b border-gray-200 dark:border-zinc-800">
             <p className="text-gray-900 dark:text-brand-cream text-xs font-semibold truncate">{profile.name}</p>
-            <p className="text-gray-400 dark:text-zinc-500 text-[10px] mt-0.5">
+            <p className="text-gray-500 dark:text-zinc-500 text-[10px] mt-0.5">
               {role === 'super_admin' ? 'Super Admin' : role === 'gestionnaire' ? 'Gestionnaire' : 'Commercial'}
             </p>
           </div>
@@ -199,7 +199,7 @@ export default function AdminSidebar() {
             </div>
             <div>
               <span className="text-sm font-black text-brand-gold">MASTER OIL</span>
-              <p className="text-xs text-gray-400 dark:text-zinc-500">Administration</p>
+              <p className="text-xs text-gray-500 dark:text-zinc-500">Administration</p>
             </div>
           </div>
           <button
@@ -213,7 +213,7 @@ export default function AdminSidebar() {
         {profile && (
           <div className="px-4 py-3 border-b border-gray-200 dark:border-zinc-800">
             <p className="text-gray-900 dark:text-brand-cream text-sm font-semibold truncate">{profile.name}</p>
-            <p className="text-gray-400 dark:text-zinc-500 text-xs mt-0.5">
+            <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5">
               {role === 'super_admin' ? 'Super Admin' : role === 'gestionnaire' ? 'Gestionnaire' : 'Commercial'}
             </p>
           </div>

@@ -88,10 +88,10 @@ export default function AdminDashboardPage() {
   }, [])
 
   const stats = [
-    { label: 'Total commandes', value: orderCount, icon: ShoppingCart, color: 'text-blue-400', bg: 'bg-blue-900/20 border-blue-800/30' },
-    { label: 'Clients', value: clientCount, icon: Users, color: 'text-purple-400', bg: 'bg-purple-900/20 border-purple-800/30' },
-    { label: 'Nouvelles', value: newOrderCount, icon: Package, color: 'text-yellow-400', bg: 'bg-yellow-900/20 border-yellow-800/30' },
-    { label: 'CA livré', value: formatGNF(revenue), icon: TrendingUp, color: 'text-green-400', bg: 'bg-green-900/20 border-green-800/30', isText: true },
+    { label: 'Total commandes', value: orderCount, icon: ShoppingCart, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800/30' },
+    { label: 'Clients', value: clientCount, icon: Users, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 border-purple-200 dark:bg-purple-900/20 dark:border-purple-800/30' },
+    { label: 'Nouvelles', value: newOrderCount, icon: Package, color: 'text-amber-600 dark:text-yellow-400', bg: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/30' },
+    { label: 'CA livré', value: formatGNF(revenue), icon: TrendingUp, color: 'text-green-600 dark:text-green-400', bg: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800/30', isText: true },
   ]
 
   const greeting = () => {
@@ -105,10 +105,10 @@ export default function AdminDashboardPage() {
     <div className="p-4 sm:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-brand-cream mb-1">
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-brand-cream mb-1">
             {greeting()}{profile ? `, ${profile.name.split(' ')[0]}` : ''} 👋
           </h1>
-          <p className="text-zinc-400 text-sm">Vue d&apos;ensemble de l&apos;activité</p>
+          <p className="text-gray-500 dark:text-zinc-400 text-sm">Vue d&apos;ensemble de l&apos;activité</p>
         </div>
         {/* Bouton nouvelle commande rapide sur mobile */}
         <Link href="/admin/commandes" className="md:hidden btn-primary text-sm py-2 px-3">
@@ -120,15 +120,15 @@ export default function AdminDashboardPage() {
       {/* Actions rapides mobile */}
       <div className="md:hidden grid grid-cols-4 gap-2 mb-6">
         {[
-          { href: '/admin/commandes', label: 'Commandes', icon: ShoppingCart, color: 'text-blue-400' },
-          { href: '/admin/clients',   label: 'Clients',   icon: Users,        color: 'text-purple-400' },
-          { href: '/admin/stocks',    label: 'Stocks',    icon: Package,      color: 'text-yellow-400' },
-          { href: '/admin/statistiques', label: 'Stats', icon: BarChart2,    color: 'text-green-400' },
+          { href: '/admin/commandes', label: 'Commandes', icon: ShoppingCart, color: 'text-blue-600 dark:text-blue-400' },
+          { href: '/admin/clients',   label: 'Clients',   icon: Users,        color: 'text-purple-600 dark:text-purple-400' },
+          { href: '/admin/stocks',    label: 'Stocks',    icon: Package,      color: 'text-amber-600 dark:text-yellow-400' },
+          { href: '/admin/statistiques', label: 'Stats', icon: BarChart2,    color: 'text-green-600 dark:text-green-400' },
         ].map((a) => (
           <Link key={a.href} href={a.href}
-            className="flex flex-col items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-xl p-3 active:bg-zinc-800 transition-colors">
+            className="flex flex-col items-center gap-1.5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-3 active:bg-gray-100 dark:active:bg-zinc-800 transition-colors">
             <a.icon className={`w-5 h-5 ${a.color}`} />
-            <span className="text-zinc-400 text-[10px] font-medium">{a.label}</span>
+            <span className="text-gray-500 dark:text-zinc-400 text-[10px] font-medium">{a.label}</span>
           </Link>
         ))}
       </div>
@@ -142,14 +142,14 @@ export default function AdminDashboardPage() {
           {/* Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-8">
             {stats.map((stat, i) => (
-              <div key={i} className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 sm:p-5`}>
+              <div key={i} className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4 sm:p-5`}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-zinc-400 text-xs sm:text-sm font-medium leading-tight">{stat.label}</span>
+                  <span className="text-gray-500 dark:text-zinc-400 text-xs sm:text-sm font-medium leading-tight">{stat.label}</span>
                   <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg ${stat.bg} border flex items-center justify-center shrink-0`}>
                     <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
                   </div>
                 </div>
-                <p className={`font-black ${stat.isText ? 'text-lg sm:text-xl text-brand-gold' : 'text-2xl sm:text-3xl text-brand-cream'}`}>
+                <p className={`font-black ${stat.isText ? 'text-lg sm:text-xl text-brand-gold' : 'text-2xl sm:text-3xl text-gray-900 dark:text-brand-cream'}`}>
                   {stat.value}
                 </p>
               </div>
@@ -159,24 +159,24 @@ export default function AdminDashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Commandes récentes */}
             <div className="lg:col-span-2">
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-zinc-800">
-                  <h2 className="text-brand-cream font-bold text-sm sm:text-base">Commandes récentes</h2>
+              <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden">
+                <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-zinc-800">
+                  <h2 className="text-gray-900 dark:text-brand-cream font-bold text-sm sm:text-base">Commandes récentes</h2>
                   <Link href="/admin/commandes" className="text-brand-gold text-sm hover:underline transition-colors">Voir tout</Link>
                 </div>
 
                 {orders.length === 0 ? (
-                  <p className="text-zinc-500 text-sm text-center py-8">Aucune commande</p>
+                  <p className="text-gray-500 dark:text-zinc-500 text-sm text-center py-8">Aucune commande</p>
                 ) : (
                   <>
                     {/* Mobile */}
-                    <div className="md:hidden divide-y divide-zinc-800">
+                    <div className="md:hidden divide-y divide-gray-200 dark:divide-zinc-800">
                       {orders.map((order) => (
                         <Link key={order.id} href={`/admin/commandes/${order.id}`}
-                          className="flex items-center justify-between px-4 py-3 hover:bg-zinc-800/30 transition-colors">
+                          className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
                           <div className="min-w-0">
-                            <p className="text-brand-cream text-sm font-medium truncate">{order.client?.name || 'Client inconnu'}</p>
-                            <p className="text-zinc-500 text-xs">{formatDate(order.created_at)}</p>
+                            <p className="text-gray-900 dark:text-brand-cream text-sm font-medium truncate">{order.client?.name || 'Client inconnu'}</p>
+                            <p className="text-gray-500 dark:text-zinc-500 text-xs">{formatDate(order.created_at)}</p>
                           </div>
                           <div className="flex flex-col items-end gap-1 shrink-0 ml-3">
                             <span className="text-brand-gold text-sm font-semibold">{formatGNF(order.total_gnf)}</span>
@@ -190,23 +190,23 @@ export default function AdminDashboardPage() {
                     <div className="hidden md:block overflow-x-auto">
                       <table className="w-full">
                         <thead>
-                          <tr className="border-b border-zinc-800">
-                            <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Client</th>
-                            <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Articles</th>
-                            <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Total</th>
-                            <th className="text-left px-6 py-3 text-xs font-semibold text-zinc-500 uppercase tracking-wide">Statut</th>
+                          <tr className="border-b border-gray-200 dark:border-zinc-800">
+                            <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Client</th>
+                            <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Articles</th>
+                            <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Total</th>
+                            <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Statut</th>
                           </tr>
                         </thead>
                         <tbody>
                           {orders.map((order) => (
-                            <tr key={order.id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
+                            <tr key={order.id} className="border-b border-gray-200 dark:border-zinc-800/50 hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
                               <td className="px-6 py-4">
-                                <Link href={`/admin/commandes/${order.id}`} className="text-brand-cream text-sm font-medium hover:text-brand-gold transition-colors">
+                                <Link href={`/admin/commandes/${order.id}`} className="text-gray-900 dark:text-brand-cream text-sm font-medium hover:text-brand-gold transition-colors">
                                   {order.client?.name || 'Client inconnu'}
                                 </Link>
-                                <p className="text-zinc-500 text-xs mt-0.5">{formatDate(order.created_at)}</p>
+                                <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5">{formatDate(order.created_at)}</p>
                               </td>
-                              <td className="px-6 py-4 text-zinc-400 text-sm">{order.order_items?.length ?? 0} article(s)</td>
+                              <td className="px-6 py-4 text-gray-500 dark:text-zinc-400 text-sm">{order.order_items?.length ?? 0} article(s)</td>
                               <td className="px-6 py-4 text-brand-gold text-sm font-semibold">{formatGNF(order.total_gnf)}</td>
                               <td className="px-6 py-4"><OrderStatusBadge status={order.status as OrderStatus} /></td>
                             </tr>
@@ -221,13 +221,13 @@ export default function AdminDashboardPage() {
 
             {/* Alertes stock */}
             <div>
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden">
+                <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-200 dark:border-zinc-800">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4 text-orange-400" />
-                    <h2 className="text-brand-cream font-bold text-sm sm:text-base">Stock faible</h2>
+                    <h2 className="text-gray-900 dark:text-brand-cream font-bold text-sm sm:text-base">Stock faible</h2>
                     {stockAlerts.length > 0 && (
-                      <span className="bg-orange-900/30 text-orange-400 text-xs font-bold px-2 py-0.5 rounded-full border border-orange-800/30">
+                      <span className="bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400 text-xs font-bold px-2 py-0.5 rounded-full border border-orange-200 dark:border-orange-800/30">
                         {stockAlerts.length}
                       </span>
                     )}
@@ -236,15 +236,15 @@ export default function AdminDashboardPage() {
                 </div>
                 <div className="p-3 sm:p-4 space-y-2">
                   {stockAlerts.length === 0 ? (
-                    <p className="text-zinc-500 text-sm text-center py-4">Aucune alerte stock</p>
+                    <p className="text-gray-500 dark:text-zinc-500 text-sm text-center py-4">Aucune alerte stock</p>
                   ) : (
                     stockAlerts.map((item) => (
-                      <div key={item.packaging_id} className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg">
+                      <div key={item.packaging_id} className="flex items-center justify-between p-3 bg-gray-100 dark:bg-zinc-800 rounded-lg">
                         <div className="min-w-0">
-                          <p className="text-brand-cream text-sm font-medium truncate">{item.product_name}</p>
-                          <p className="text-zinc-500 text-xs mt-0.5">{item.volume_liters}L</p>
+                          <p className="text-gray-900 dark:text-brand-cream text-sm font-medium truncate">{item.product_name}</p>
+                          <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5">{item.volume_liters}L</p>
                         </div>
-                        <span className={`text-sm font-black px-2 py-1 rounded-lg shrink-0 ml-2 ${item.quantity <= 0 ? 'bg-red-900/30 text-red-400' : 'bg-orange-900/30 text-orange-400'}`}>
+                        <span className={`text-sm font-black px-2 py-1 rounded-lg shrink-0 ml-2 ${item.quantity <= 0 ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400'}`}>
                           {item.quantity}
                         </span>
                       </div>

@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <AuthGuard>
       <AdminManifest />
-      <div className="flex h-screen bg-gray-100 dark:bg-zinc-900 overflow-hidden">
+      <div className="flex h-screen bg-gray-50 dark:bg-zinc-900 overflow-hidden">
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
           <main className="flex-1 overflow-y-auto pt-14 md:pt-0 pb-16 md:pb-0">
