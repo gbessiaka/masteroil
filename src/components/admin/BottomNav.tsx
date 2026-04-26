@@ -21,14 +21,14 @@ export default function BottomNav() {
   const isOther = !tabs.some((t) => isActive(t.href))
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-950 border-t border-zinc-800 flex items-stretch">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 flex items-stretch">
       {tabs.map((tab) => {
         const active = isActive(tab.href)
         const showBadge = tab.href === '/admin/commandes' && newOrders > 0
         return (
           <Link key={tab.href} href={tab.href}
             className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2 relative transition-colors ${
-              active ? 'text-brand-gold' : 'text-zinc-500'
+              active ? 'text-brand-gold' : 'text-gray-400 dark:text-zinc-500'
             }`}>
             <div className="relative">
               <tab.icon className="w-5 h-5" />
@@ -44,7 +44,7 @@ export default function BottomNav() {
       {/* "Plus" tab pour le reste */}
       <Link href="/admin/factures"
         className={`flex-1 flex flex-col items-center justify-center gap-0.5 py-2 relative transition-colors ${
-          isOther ? 'text-brand-gold' : 'text-zinc-500'
+          isOther ? 'text-brand-gold' : 'text-gray-400 dark:text-zinc-500'
         }`}>
         <MoreHorizontal className="w-5 h-5" />
         <span className="text-[10px] font-medium">Plus</span>

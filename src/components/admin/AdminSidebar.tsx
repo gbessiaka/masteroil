@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import {
   LayoutDashboard, Package, BarChart3, ShoppingCart,
-  FileText, Users, LogOut, Menu, X, UserCog, TrendingUp,
+  FileText, Users, LogOut, Menu, X, UserCog, TrendingUp, Sun, Moon,
 } from 'lucide-react'
 import { LOGO_URL } from '@/lib/mockData'
 import { useAdminProfile, type AdminRole } from '@/hooks/useAdminProfile'
@@ -28,12 +29,26 @@ const bottomNavItems: NavItem[] = [
   { href: '/admin/equipe', label: 'Équipe & Accès', icon: UserCog, roles: ['super_admin'] },
 ]
 
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+  const isDark = theme === 'dark'
+  return (
+    <button
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium w-full transition-all text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream hover:bg-gray-100 dark:hover:bg-zinc-800"
+      title={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
+    >
+      {isDark ? <Sun className="w-5 h-5 shrink-0" /> : <Moon className="w-5 h-5 shrink-0" />}
+      <span>{isDark ? 'Mode clair' : 'Mode sombre'}</span>
+    </button>
+  )
+}
+
 export default function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const { profile, loading: profileLoading } = useAdminProfile()
-  // Tant que le profil n'est pas chargé, on affiche tout (évite une sidebar vide)
   const role: AdminRole = profile?.role ?? 'super_admin'
   const newOrdersCount = useNewOrders()
 
@@ -51,7 +66,6 @@ export default function AdminSidebar() {
 
   const currentPage = [...navItems, ...bottomNavItems].find((item) => isActive(item.href))?.label ?? 'Admin'
 
-  // Mise à jour du titre de l'onglet
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.title = newOrdersCount > 0
@@ -73,7 +87,7 @@ export default function AdminSidebar() {
             className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all ${
               isActive(item.href)
                 ? 'bg-brand-gold/10 text-brand-gold border border-brand-gold/20'
-                : 'text-zinc-400 hover:text-brand-cream hover:bg-zinc-800'
+                : 'text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream hover:bg-gray-100 dark:hover:bg-zinc-800'
             }`}
           >
             <item.icon className="w-5 h-5 shrink-0" />
@@ -86,7 +100,7 @@ export default function AdminSidebar() {
           </Link>
         )})}
       </div>
-      <div className="border-t border-zinc-800 pt-2 mt-2 space-y-0.5">
+      <div className="border-t border-gray-200 dark:border-zinc-800 pt-2 mt-2 space-y-0.5">
         {visibleBottom.map((item) => (
           <Link
             key={item.href}
@@ -95,16 +109,17 @@ export default function AdminSidebar() {
             className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all ${
               isActive(item.href)
                 ? 'bg-brand-gold/10 text-brand-gold border border-brand-gold/20'
-                : 'text-zinc-400 hover:text-brand-cream hover:bg-zinc-800'
+                : 'text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream hover:bg-gray-100 dark:hover:bg-zinc-800'
             }`}
           >
             <item.icon className="w-5 h-5 shrink-0" />
             {item.label}
           </Link>
         ))}
+        <ThemeToggle />
         <button
           onClick={() => { onClick?.(); handleLogout() }}
-          className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-zinc-400 hover:text-red-400 hover:bg-red-900/10 w-full transition-all"
+          className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-gray-500 dark:text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 w-full transition-all"
         >
           <LogOut className="w-5 h-5" />
           Déconnexion
@@ -116,22 +131,22 @@ export default function AdminSidebar() {
   return (
     <>
       {/* ── Desktop sidebar (md+) ── */}
-      <aside className="hidden md:flex w-56 bg-zinc-950 border-r border-zinc-800 flex-col shrink-0">
-        <div className="p-5 border-b border-zinc-800">
+      <aside className="hidden md:flex w-56 bg-white dark:bg-zinc-950 border-r border-gray-200 dark:border-zinc-800 flex-col shrink-0">
+        <div className="p-5 border-b border-gray-200 dark:border-zinc-800">
           <div className="flex items-center gap-3">
             <div className="relative w-9 h-9 shrink-0">
               <Image src={LOGO_URL} alt="Master Oil" fill className="object-contain" />
             </div>
             <div>
               <span className="text-xs font-black text-brand-gold">MASTER OIL</span>
-              <p className="text-[10px] text-zinc-500">Administration</p>
+              <p className="text-[10px] text-gray-400 dark:text-zinc-500">Administration</p>
             </div>
           </div>
         </div>
         {profile && (
-          <div className="px-4 py-3 border-b border-zinc-800">
-            <p className="text-brand-cream text-xs font-semibold truncate">{profile.name}</p>
-            <p className="text-zinc-500 text-[10px] mt-0.5">
+          <div className="px-4 py-3 border-b border-gray-200 dark:border-zinc-800">
+            <p className="text-gray-900 dark:text-brand-cream text-xs font-semibold truncate">{profile.name}</p>
+            <p className="text-gray-400 dark:text-zinc-500 text-[10px] mt-0.5">
               {role === 'super_admin' ? 'Super Admin' : role === 'gestionnaire' ? 'Gestionnaire' : 'Commercial'}
             </p>
           </div>
@@ -142,18 +157,18 @@ export default function AdminSidebar() {
       </aside>
 
       {/* ── Mobile top header bar ── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between px-4 h-14">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white dark:bg-zinc-950 border-b border-gray-200 dark:border-zinc-800 flex items-center justify-between px-4 h-14">
         <div className="flex items-center gap-2">
           <div className="relative w-7 h-7 shrink-0">
             <Image src={LOGO_URL} alt="Master Oil" fill className="object-contain" />
           </div>
           <span className="text-xs font-black text-brand-gold">MASTER OIL</span>
-          <span className="text-zinc-600 text-xs">·</span>
-          <span className="text-zinc-400 text-xs truncate max-w-[120px]">{currentPage}</span>
+          <span className="text-gray-300 dark:text-zinc-600 text-xs">·</span>
+          <span className="text-gray-500 dark:text-zinc-400 text-xs truncate max-w-[120px]">{currentPage}</span>
         </div>
         <button
           onClick={() => setDrawerOpen(true)}
-          className="p-2 text-zinc-400 hover:text-white transition-colors relative"
+          className="p-2 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-colors relative"
           aria-label="Ouvrir le menu"
         >
           <Menu className="w-5 h-5" />
@@ -166,39 +181,39 @@ export default function AdminSidebar() {
       {/* ── Mobile drawer overlay ── */}
       {drawerOpen && (
         <div
-          className="md:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+          className="md:hidden fixed inset-0 z-50 bg-black/40 dark:bg-black/60 backdrop-blur-sm"
           onClick={() => setDrawerOpen(false)}
         />
       )}
 
       {/* ── Mobile drawer panel ── */}
       <div
-        className={`md:hidden fixed top-0 left-0 h-full w-64 z-50 bg-zinc-950 border-r border-zinc-800 flex flex-col transition-transform duration-300 ${
+        className={`md:hidden fixed top-0 left-0 h-full w-64 z-50 bg-white dark:bg-zinc-950 border-r border-gray-200 dark:border-zinc-800 flex flex-col transition-transform duration-300 ${
           drawerOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between p-4 border-b border-zinc-800">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-zinc-800">
           <div className="flex items-center gap-3">
             <div className="relative w-9 h-9 shrink-0">
               <Image src={LOGO_URL} alt="Master Oil" fill className="object-contain" />
             </div>
             <div>
               <span className="text-sm font-black text-brand-gold">MASTER OIL</span>
-              <p className="text-xs text-zinc-500">Administration</p>
+              <p className="text-xs text-gray-400 dark:text-zinc-500">Administration</p>
             </div>
           </div>
           <button
             onClick={() => setDrawerOpen(false)}
-            className="p-1.5 text-zinc-400 hover:text-white transition-colors"
+            className="p-1.5 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-colors"
             aria-label="Fermer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
         {profile && (
-          <div className="px-4 py-3 border-b border-zinc-800">
-            <p className="text-brand-cream text-sm font-semibold truncate">{profile.name}</p>
-            <p className="text-zinc-500 text-xs mt-0.5">
+          <div className="px-4 py-3 border-b border-gray-200 dark:border-zinc-800">
+            <p className="text-gray-900 dark:text-brand-cream text-sm font-semibold truncate">{profile.name}</p>
+            <p className="text-gray-400 dark:text-zinc-500 text-xs mt-0.5">
               {role === 'super_admin' ? 'Super Admin' : role === 'gestionnaire' ? 'Gestionnaire' : 'Commercial'}
             </p>
           </div>
