@@ -118,37 +118,23 @@ export default function CommandePage() {
     if (cart.length === 0) { setError('Votre panier est vide'); return }
 
     setSaving(true)
-    const supabase = createClient()
 
-    let clientId: string
-    const { data: existing } = await supabase.from('clients').select('id').eq('phone', phone.trim()).maybeSingle()
-    if (existing) {
-      clientId = existing.id
-      await supabase.from('clients').update({ name: name.trim() }).eq('id', clientId)
-    } else {
-      const { data: newClient, error: clientErr } = await supabase
-        .from('clients').insert({ name: name.trim(), phone: phone.trim(), client_type: 'particulier' })
-        .select('id').single()
-      if (clientErr || !newClient) { setError('Erreur lors de la création du client'); setSaving(false); return }
-      clientId = newClient.id
-    }
+    const res = await fetch('/api/orders/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name.trim(), phone: phone.trim(), address: address.trim(), notes: notes.trim(), cart, total }),
+    })
 
-    const fullNotes = [address.trim() ? `Adresse : ${address.trim()}` : '', notes.trim()].filter(Boolean).join('\n')
-    const { data: order, error: orderErr } = await supabase
-      .from('orders').insert({ client_id: clientId, status: 'nouveau', total_gnf: total, notes: fullNotes || null })
-      .select('id').single()
-    if (orderErr || !order) { setError('Erreur lors de la création de la commande'); setSaving(false); return }
+    const data = await res.json()
+    if (!res.ok) { setError(data.error ?? 'Une erreur est survenue'); setSaving(false); return }
 
-    const { error: itemsErr } = await supabase.from('order_items').insert(
-      cart.map((i) => ({ order_id: order.id, packaging_id: i.packaging.id, quantity: i.quantity, unit_price_gnf: i.packaging.price_gnf }))
-    )
-    if (itemsErr) { setError("Erreur lors de l'enregistrement des articles"); setSaving(false); return }
+    const orderId = data.orderId
 
     fetch('/api/orders/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        orderId: order.id,
+        orderId: orderId,
         clientName: name.trim(),
         clientPhone: phone.trim(),
         clientAddress: address.trim(),
@@ -163,7 +149,7 @@ export default function CommandePage() {
     }).catch(() => {})
 
     setSaving(false)
-    router.push(`/commande/confirmation?order=${order.id}&name=${encodeURIComponent(name.trim())}`)
+    router.push(`/commande/confirmation?order=${orderId}&name=${encodeURIComponent(name.trim())}`)
   }
 
   if (loading) return (
