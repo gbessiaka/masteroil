@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Plus, Pencil, Loader2 } from 'lucide-react'
+import { Plus, Pencil, Loader2, Package } from 'lucide-react'
 import Image from 'next/image'
 import { formatGNF } from '@/lib/utils'
 import Badge from '@/components/ui/Badge'
@@ -17,7 +17,7 @@ interface Product {
 
 const typeLabel: Record<string, string> = {
   synthetique: 'Synthétique',
-  'semi-synthetique': 'Semi-Synt.',
+  'semi-synthetique': 'Semi-Synthétique',
   mineral: 'Minérale',
 }
 
@@ -64,111 +64,109 @@ export default function AdminProduitsPage() {
           </Link>
         </div>
       ) : (
-        <>
-          {/* Mobile: cards */}
-          <div className="md:hidden space-y-2">
-            {products.map((product) => (
-              <div key={product.id} className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4">
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <div className="flex items-center gap-3 min-w-0">
-                    {product.image_url ? (
-                      <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-gray-300 dark:border-zinc-700">
-                        <Image src={product.image_url} alt={product.name} fill className="object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 shrink-0 flex items-center justify-center">
-                        <span className="text-gray-400 dark:text-zinc-600 text-xs">—</span>
-                      </div>
-                    )}
-                    <div className="min-w-0">
-                      <p className="text-gray-900 dark:text-brand-cream text-sm font-semibold">{product.name}</p>
-                      {product.description && <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5 line-clamp-1">{product.description}</p>}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {products.map((product) => {
+            const minPrice = product.packagings?.length
+              ? Math.min(...product.packagings.map((p) => p.price_gnf))
+              : null
+
+            return (
+              <div
+                key={product.id}
+                className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-sm dark:shadow-none overflow-hidden flex flex-col group"
+              >
+                {/* Image */}
+                <div className="relative w-full aspect-[4/3] bg-gray-50 dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-800 overflow-hidden">
+                  {product.image_url ? (
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      fill
+                      className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Package className="w-12 h-12 text-gray-200 dark:text-zinc-700" />
+                    </div>
+                  )}
+                  {/* Status badge overlay */}
+                  <div className="absolute top-3 right-3">
+                    <Badge variant={product.is_active ? 'green' : 'red'}>
+                      {product.is_active ? 'Actif' : 'Inactif'}
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="flex flex-col flex-1 p-4">
+                  {/* Name + category */}
+                  <div className="mb-3">
+                    <h3 className="text-gray-900 dark:text-brand-cream font-bold text-sm leading-snug mb-1">
+                      {product.name}
+                    </h3>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <Badge variant={product.category === 'automobile' ? 'gold' : 'blue'}>
+                        {product.category}
+                      </Badge>
+                      {product.viscosity && (
+                        <span className="text-xs font-mono bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 px-2 py-0.5 rounded">
+                          {product.viscosity}
+                        </span>
+                      )}
                     </div>
                   </div>
-                  <Badge variant={product.is_active ? 'green' : 'red'}>{product.is_active ? 'Actif' : 'Inactif'}</Badge>
-                </div>
-                <div className="flex flex-wrap items-center gap-2 mb-3">
-                  <Badge variant={product.category === 'automobile' ? 'gold' : 'blue'}>{product.category}</Badge>
-                  {product.viscosity && <span className="text-gray-600 dark:text-zinc-300 text-xs font-mono bg-gray-100 dark:bg-zinc-800 px-2 py-0.5 rounded">{product.viscosity}</span>}
-                  {product.type && <span className="text-gray-500 dark:text-zinc-500 text-xs">{typeLabel[product.type] || product.type}</span>}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-1 flex-wrap">
-                    {(product.packagings || []).map((pkg) => (
-                      <span key={pkg.id} className="text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 px-2 py-0.5 rounded font-mono">{pkg.volume_liters}L</span>
-                    ))}
+
+                  {/* Type */}
+                  {product.type && (
+                    <p className="text-xs text-gray-400 dark:text-zinc-500 mb-3">
+                      {typeLabel[product.type] || product.type}
+                    </p>
+                  )}
+
+                  {/* Packagings */}
+                  {product.packagings?.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mb-3">
+                      {product.packagings
+                        .sort((a, b) => a.volume_liters - b.volume_liters)
+                        .map((pkg) => (
+                          <span
+                            key={pkg.id}
+                            className="text-xs font-mono bg-brand-gold/10 dark:bg-brand-gold/10 border border-brand-gold/25 text-brand-gold px-2 py-0.5 rounded"
+                          >
+                            {pkg.volume_liters}L
+                          </span>
+                        ))}
+                    </div>
+                  )}
+
+                  {/* Spacer */}
+                  <div className="flex-1" />
+
+                  {/* Footer: price + edit */}
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-zinc-800 mt-2">
+                    <div>
+                      {product.show_price && minPrice ? (
+                        <div>
+                          <p className="text-[10px] text-gray-400 dark:text-zinc-500 uppercase tracking-wide">À partir de</p>
+                          <p className="text-brand-gold font-black text-sm">{formatGNF(minPrice)}</p>
+                        </div>
+                      ) : (
+                        <p className="text-xs text-gray-400 dark:text-zinc-500">Prix sur demande</p>
+                      )}
+                    </div>
+                    <Link
+                      href={`/admin/produits/${product.id}`}
+                      className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 dark:text-zinc-400 hover:text-brand-gold dark:hover:text-brand-gold transition-colors bg-gray-100 dark:bg-zinc-800 hover:bg-brand-gold/10 dark:hover:bg-brand-gold/10 px-3 py-1.5 rounded-lg"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                      Modifier
+                    </Link>
                   </div>
-                  <Link href={`/admin/produits/${product.id}`} className="inline-flex items-center gap-1.5 text-gray-500 dark:text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium">
-                    <Pencil className="w-4 h-4" />Modifier
-                  </Link>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Desktop: table */}
-          <div className="hidden md:block bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none overflow-hidden">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-950">
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Produit</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Viscosité / Type</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Conditionnements</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Prix</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Statut</th>
-                  <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wide">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product) => (
-                  <tr key={product.id} className="border-b border-gray-200 dark:border-zinc-800/50 hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {product.image_url ? (
-                          <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-gray-300 dark:border-zinc-700">
-                            <Image src={product.image_url} alt={product.name} fill className="object-cover" />
-                          </div>
-                        ) : (
-                          <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 shrink-0" />
-                        )}
-                        <div>
-                          <p className="text-gray-900 dark:text-brand-cream text-sm font-semibold">{product.name}</p>
-                          {product.description && <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5 line-clamp-1 max-w-xs">{product.description}</p>}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-gray-600 dark:text-zinc-300 text-sm font-mono">{product.viscosity || '—'}</p>
-                      {product.type && <p className="text-gray-500 dark:text-zinc-500 text-xs mt-0.5">{typeLabel[product.type]}</p>}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex flex-wrap gap-1">
-                        {(product.packagings || []).map((pkg) => (
-                          <span key={pkg.id} className="text-xs bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 px-2 py-0.5 rounded font-mono">{pkg.volume_liters}L</span>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      {product.show_price && product.packagings?.length > 0 ? (
-                        <span className="text-brand-gold text-xs font-semibold">
-                          À partir de {formatGNF(Math.min(...product.packagings.map((p) => p.price_gnf)))}
-                        </span>
-                      ) : (
-                        <span className="text-gray-500 dark:text-zinc-500 text-xs">Sur demande</span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4"><Badge variant={product.is_active ? 'green' : 'red'}>{product.is_active ? 'Actif' : 'Inactif'}</Badge></td>
-                    <td className="px-6 py-4 text-right">
-                      <Link href={`/admin/produits/${product.id}`} className="inline-flex items-center gap-1.5 text-gray-500 dark:text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium">
-                        <Pencil className="w-4 h-4" />Modifier
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
+            )
+          })}
+        </div>
       )}
     </div>
   )
