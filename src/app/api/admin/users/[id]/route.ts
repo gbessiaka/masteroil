@@ -10,7 +10,7 @@ async function isSuperAdmin(request: Request) {
   return data?.role === 'super_admin'
 }
 
-// PATCH — toggle active or change role
+// PATCH — toggle active, change role, or change password
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
   if (!(await isSuperAdmin(request))) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
@@ -18,6 +18,13 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
   const body = await request.json()
   const admin = createAdminClient()
+
+  // Password change goes through auth, not profiles table
+  if (body.password) {
+    const { error } = await admin.auth.admin.updateUserById(params.id, { password: body.password })
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ success: true })
+  }
 
   const { data, error } = await admin
     .from('profiles')
