@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { formatGNF, formatDate } from '@/lib/utils'
-import { TrendingUp, ShoppingCart, Package, BarChart2, Loader2, ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react'
+import { TrendingUp, ShoppingCart, Package, BarChart2, Loader2, ChevronLeft, ChevronRight, RefreshCw, CalendarRange } from 'lucide-react'
 import Link from 'next/link'
 
 /* ─── Types ─────────────────────────────────────────────── */
@@ -26,33 +26,18 @@ function addDays(d: Date, n: number) { const r = new Date(d); r.setDate(r.getDat
 function sameDay(a: Date, b: Date) {
   return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate()
 }
+function toInputDate(d: Date) {
+  return d.toISOString().slice(0, 10)
+}
 
 const MONTH_NAMES  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre']
 const MONTH_SHORT  = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc']
 
-type Preset = 'today' | '7d' | '30d' | 'month' | 'lastmonth' | 'year' | 'custom'
-
-function getRange(preset: Preset, cm: number, cy: number): [Date, Date] {
-  const now = new Date()
-  switch (preset) {
-    case 'today':     return [startOfDay(now), endOfDay(now)]
-    case '7d':        return [startOfDay(addDays(now, -6)), endOfDay(now)]
-    case '30d':       return [startOfDay(addDays(now, -29)), endOfDay(now)]
-    case 'month':     return [new Date(now.getFullYear(), now.getMonth(), 1), endOfDay(now)]
-    case 'lastmonth': {
-      const y = now.getMonth()===0 ? now.getFullYear()-1 : now.getFullYear()
-      const m = now.getMonth()===0 ? 11 : now.getMonth()-1
-      return [new Date(y, m, 1), endOfDay(new Date(y, m+1, 0))]
-    }
-    case 'year':      return [new Date(now.getFullYear(), 0, 1), endOfDay(now)]
-    case 'custom':    return [new Date(cy, cm, 1), endOfDay(new Date(cy, cm+1, 0))]
-  }
-}
+type Preset = 'today' | '7d' | '30d' | 'month' | 'lastmonth' | 'year' | 'custom' | 'range'
 
 function buildBuckets(from: Date, to: Date, orders: Order[]) {
   const diffDays = Math.round((to.getTime()-from.getTime())/86400000)
   if (diffDays <= 62) {
-    // par jour
     const buckets: { label: string; date: Date; revenue: number; count: number }[] = []
     const cur = new Date(from)
     while (cur <= to) {
@@ -63,7 +48,6 @@ function buildBuckets(from: Date, to: Date, orders: Order[]) {
     }
     return buckets
   } else {
-    // par mois
     const buckets: { label: string; date: Date; revenue: number; count: number }[] = []
     const cur = new Date(from.getFullYear(), from.getMonth(), 1)
     while (cur <= to) {
@@ -78,12 +62,15 @@ function buildBuckets(from: Date, to: Date, orders: Order[]) {
 
 /* ─── Component ─────────────────────────────────────────── */
 export default function AdminStatistiquesPage() {
+  const now = new Date()
   const [allOrders, setAllOrders]   = useState<Order[]>([])
   const [loading, setLoading]       = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [preset, setPreset]         = useState<Preset>('month')
-  const [customMonth, setCustomMonth] = useState(new Date().getMonth())
-  const [customYear, setCustomYear]   = useState(new Date().getFullYear())
+  const [customMonth, setCustomMonth] = useState(now.getMonth())
+  const [customYear, setCustomYear]   = useState(now.getFullYear())
+  const [rangeFrom, setRangeFrom]   = useState(toInputDate(addDays(now, -29)))
+  const [rangeTo, setRangeTo]       = useState(toInputDate(now))
 
   const fetchOrders = useCallback(async (silent = false) => {
     if (!silent) setLoading(true)
@@ -101,7 +88,6 @@ export default function AdminStatistiquesPage() {
     setRefreshing(false)
   }, [])
 
-  // Chargement initial + Realtime
   useEffect(() => {
     fetchOrders()
     const supabase = createClient()
@@ -113,23 +99,37 @@ export default function AdminStatistiquesPage() {
     return () => { supabase.removeChannel(channel) }
   }, [fetchOrders])
 
-  // Calcul de la plage de dates
-  const [from, to] = useMemo(() => getRange(preset, customMonth, customYear), [preset, customMonth, customYear])
+  const [from, to] = useMemo((): [Date, Date] => {
+    switch (preset) {
+      case 'today':     return [startOfDay(now), endOfDay(now)]
+      case '7d':        return [startOfDay(addDays(now, -6)), endOfDay(now)]
+      case '30d':       return [startOfDay(addDays(now, -29)), endOfDay(now)]
+      case 'month':     return [new Date(now.getFullYear(), now.getMonth(), 1), endOfDay(now)]
+      case 'lastmonth': {
+        const y = now.getMonth()===0 ? now.getFullYear()-1 : now.getFullYear()
+        const m = now.getMonth()===0 ? 11 : now.getMonth()-1
+        return [new Date(y, m, 1), endOfDay(new Date(y, m+1, 0))]
+      }
+      case 'year':      return [new Date(now.getFullYear(), 0, 1), endOfDay(now)]
+      case 'custom':    return [new Date(customYear, customMonth, 1), endOfDay(new Date(customYear, customMonth+1, 0))]
+      case 'range': {
+        const f = rangeFrom ? startOfDay(new Date(rangeFrom)) : startOfDay(addDays(now, -29))
+        const t = rangeTo   ? endOfDay(new Date(rangeTo))     : endOfDay(now)
+        return f <= t ? [f, t] : [t, f]
+      }
+    }
+  }, [preset, customMonth, customYear, rangeFrom, rangeTo])
 
-  // Filtrage des commandes dans la période
-  const periodOrders   = useMemo(() => allOrders.filter((o) => { const d=new Date(o.created_at); return d>=from && d<=to }), [allOrders, from, to])
+  const periodOrders    = useMemo(() => allOrders.filter((o) => { const d=new Date(o.created_at); return d>=from && d<=to }), [allOrders, from, to])
   const deliveredOrders = useMemo(() => periodOrders.filter((o) => o.status==='livre'), [periodOrders])
 
-  // Métriques
   const revenue    = deliveredOrders.reduce((s,o)=>s+o.total_gnf, 0)
   const avgBasket  = deliveredOrders.length ? Math.round(revenue/deliveredOrders.length) : 0
   const unitsSold  = deliveredOrders.reduce((s,o)=>s+o.order_items.reduce((ss,i)=>ss+i.quantity,0), 0)
 
-  // Buckets graphe
   const buckets = useMemo(() => buildBuckets(from, to, allOrders), [from, to, allOrders])
   const maxRev  = Math.max(...buckets.map((b)=>b.revenue), 1)
 
-  // Top produits
   const topProducts = useMemo(() => {
     const map: Record<string, { name: string; volume: number; qty: number; revenue: number }> = {}
     for (const o of deliveredOrders) {
@@ -143,7 +143,6 @@ export default function AdminStatistiquesPage() {
     return Object.values(map).sort((a,b)=>b.qty-a.qty)
   }, [deliveredOrders])
 
-  // Navigation mois
   function navigateMonth(dir: 1|-1) {
     let m = customMonth + dir; let y = customYear
     if (m < 0)  { m = 11; y-- }
@@ -151,17 +150,20 @@ export default function AdminStatistiquesPage() {
     setCustomMonth(m); setCustomYear(y); setPreset('custom')
   }
 
-  const PRESETS: { key: Preset; label: string }[] = [
+  const PRESETS: { key: Preset; label: string; icon?: React.ElementType }[] = [
     { key: 'today',     label: "Aujourd'hui" },
     { key: '7d',        label: '7 jours' },
     { key: '30d',       label: '30 jours' },
     { key: 'month',     label: 'Ce mois' },
     { key: 'lastmonth', label: 'Mois préc.' },
     { key: 'year',      label: 'Cette année' },
+    { key: 'range',     label: 'Personnalisé', icon: CalendarRange },
   ]
 
   const statusLabel: Record<string, string> = { nouveau:'Nouveau', confirme:'Confirmé', en_cours:'En cours', livre:'Livré', annule:'Annulé' }
   const statusColor: Record<string, string> = { livre:'text-green-600 dark:text-green-400', annule:'text-red-600 dark:text-red-400', nouveau:'text-blue-600 dark:text-blue-400', confirme:'text-purple-600 dark:text-purple-400', en_cours:'text-amber-600 dark:text-yellow-400' }
+
+  const inputCls = 'bg-gray-50 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none'
 
   return (
     <div className="p-4 sm:p-8">
@@ -187,41 +189,77 @@ export default function AdminStatistiquesPage() {
           <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4 mb-6">
             {/* Presets */}
             <div className="flex flex-wrap gap-2 mb-4">
-              {PRESETS.map((p) => (
-                <button key={p.key} onClick={() => setPreset(p.key)}
-                  className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
-                    preset === p.key
-                      ? 'bg-brand-gold/10 border-brand-gold/50 text-brand-gold font-semibold'
-                      : 'bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:border-gray-400 dark:hover:border-zinc-600'
-                  }`}>
-                  {p.label}
-                </button>
-              ))}
+              {PRESETS.map((p) => {
+                const Icon = p.icon
+                return (
+                  <button key={p.key} onClick={() => setPreset(p.key)}
+                    className={`px-3 py-1.5 rounded-full text-sm border transition-all inline-flex items-center gap-1.5 ${
+                      preset === p.key
+                        ? 'bg-brand-gold/10 border-brand-gold/50 text-brand-gold font-semibold'
+                        : 'bg-gray-100 dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:border-gray-400 dark:hover:border-zinc-600'
+                    }`}>
+                    {Icon && <Icon className="w-3.5 h-3.5" />}
+                    {p.label}
+                  </button>
+                )
+              })}
             </div>
 
-            {/* Navigateur mois */}
-            <div className="flex items-center gap-2">
-              <button onClick={() => navigateMonth(-1)}
-                className="p-2 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream border border-gray-300 dark:border-zinc-700 rounded-lg transition-colors shrink-0">
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <select value={customMonth}
-                onChange={(e) => { setCustomMonth(+e.target.value); setPreset('custom') }}
-                className="flex-1 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
-                {MONTH_NAMES.map((m,i) => <option key={i} value={i}>{m}</option>)}
-              </select>
-              <select value={customYear}
-                onChange={(e) => { setCustomYear(+e.target.value); setPreset('custom') }}
-                className="bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none">
-                {Array.from({ length: 5 }, (_, i) => new Date().getFullYear()-i).map((y) => (
-                  <option key={y} value={y}>{y}</option>
-                ))}
-              </select>
-              <button onClick={() => navigateMonth(1)}
-                className="p-2 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream border border-gray-300 dark:border-zinc-700 rounded-lg transition-colors shrink-0">
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+            {/* Date controls */}
+            {preset === 'range' ? (
+              /* ── Plage personnalisée ── */
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <div className="flex items-center gap-2 flex-1 w-full sm:w-auto">
+                  <label className="text-xs font-medium text-gray-500 dark:text-zinc-400 shrink-0 w-6">Du</label>
+                  <input
+                    type="date"
+                    value={rangeFrom}
+                    max={rangeTo || toInputDate(now)}
+                    onChange={(e) => setRangeFrom(e.target.value)}
+                    className={`${inputCls} flex-1`}
+                  />
+                </div>
+                <div className="flex items-center gap-2 flex-1 w-full sm:w-auto">
+                  <label className="text-xs font-medium text-gray-500 dark:text-zinc-400 shrink-0 w-6">Au</label>
+                  <input
+                    type="date"
+                    value={rangeTo}
+                    min={rangeFrom}
+                    max={toInputDate(now)}
+                    onChange={(e) => setRangeTo(e.target.value)}
+                    className={`${inputCls} flex-1`}
+                  />
+                </div>
+                <div className="text-xs text-gray-400 dark:text-zinc-500 shrink-0">
+                  {Math.round((to.getTime() - from.getTime()) / 86400000) + 1} jours
+                </div>
+              </div>
+            ) : (
+              /* ── Navigateur mois ── */
+              <div className="flex items-center gap-2">
+                <button onClick={() => navigateMonth(-1)}
+                  className="p-2 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream border border-gray-300 dark:border-zinc-700 rounded-lg transition-colors shrink-0">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <select value={customMonth}
+                  onChange={(e) => { setCustomMonth(+e.target.value); setPreset('custom') }}
+                  className={`${inputCls} flex-1`}>
+                  {MONTH_NAMES.map((m,i) => <option key={i} value={i}>{m}</option>)}
+                </select>
+                <select value={customYear}
+                  onChange={(e) => { setCustomYear(+e.target.value); setPreset('custom') }}
+                  className={inputCls}>
+                  {Array.from({ length: 5 }, (_, i) => now.getFullYear()-i).map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+                <button onClick={() => navigateMonth(1)}
+                  className="p-2 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-brand-cream border border-gray-300 dark:border-zinc-700 rounded-lg transition-colors shrink-0">
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
             <div className="flex items-center justify-between mt-2">
               <span className="text-gray-500 dark:text-zinc-500 text-xs">
                 {from.toLocaleDateString('fr-FR')} → {to.toLocaleDateString('fr-FR')}
@@ -233,10 +271,10 @@ export default function AdminStatistiquesPage() {
           {/* ── 4 métriques ── */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
             {[
-              { label: 'CA livré',      value: formatGNF(revenue),                       icon: TrendingUp, color: 'text-green-600 dark:text-green-400',  bg: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800/30' },
-              { label: 'Commandes',     value: periodOrders.length,                      icon: ShoppingCart, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800/30' },
-              { label: 'Bidons vendus', value: unitsSold,                                icon: Package,    color: 'text-brand-gold', bg: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/30' },
-              { label: 'Panier moyen',  value: avgBasket > 0 ? formatGNF(avgBasket) : '—', icon: BarChart2, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 border-purple-200 dark:bg-purple-900/20 dark:border-purple-800/30' },
+              { label: 'CA livré',      value: formatGNF(revenue),                         icon: TrendingUp,  color: 'text-green-600 dark:text-green-400',   bg: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800/30' },
+              { label: 'Commandes',     value: periodOrders.length,                        icon: ShoppingCart, color: 'text-blue-600 dark:text-blue-400',    bg: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800/30' },
+              { label: 'Bidons vendus', value: unitsSold,                                  icon: Package,     color: 'text-brand-gold',                       bg: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/30' },
+              { label: 'Panier moyen',  value: avgBasket > 0 ? formatGNF(avgBasket) : '—', icon: BarChart2,   color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 border-purple-200 dark:bg-purple-900/20 dark:border-purple-800/30' },
             ].map((s, i) => (
               <div key={i} className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm dark:shadow-none p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -265,11 +303,10 @@ export default function AdminStatistiquesPage() {
                   <div className="flex items-end gap-1 h-44"
                     style={{ minWidth: buckets.length > 25 ? `${buckets.length * 30}px` : undefined }}>
                     {buckets.map((b, i) => {
-                      const pct  = (b.revenue / maxRev) * 100
-                      const today = sameDay(b.date, new Date())
+                      const pct   = (b.revenue / maxRev) * 100
+                      const today = sameDay(b.date, now)
                       return (
                         <div key={i} className="flex flex-col items-center flex-1 min-w-[20px] group relative">
-                          {/* Tooltip */}
                           <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 text-xs text-gray-900 dark:text-brand-cream whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none z-10 shadow-xl">
                             <p className="font-bold mb-0.5">{b.label}</p>
                             <p className={b.revenue > 0 ? 'text-brand-gold' : 'text-gray-500 dark:text-zinc-500'}>{b.revenue > 0 ? formatGNF(b.revenue) : 'Aucune vente'}</p>
