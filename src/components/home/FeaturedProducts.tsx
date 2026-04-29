@@ -7,14 +7,40 @@ import CommanderButton from '@/components/products/CommanderButton'
 
 export default async function FeaturedProducts() {
   const supabase = createClient()
-  const { data } = await supabase
-    .from('products')
-    .select('*, packagings(*)')
-    .eq('is_active', true)
-    .order('created_at', { ascending: false })
-    .limit(3)
 
-  const products = data ?? []
+  // Load featured slots
+  const { data: featuredRaw } = await supabase
+    .from('featured_products')
+    .select('position, product_id')
+    .order('position')
+
+  const featured = (featuredRaw ?? []) as { position: number; product_id: string | null }[]
+  const productIds = featured.map((f) => f.product_id).filter(Boolean) as string[]
+
+  let products: any[] = []
+
+  if (productIds.length > 0) {
+    const { data } = await supabase
+      .from('products')
+      .select('*, packagings(*)')
+      .in('id', productIds)
+      .eq('is_active', true)
+
+    // Respect the slot order defined by the admin
+    const map = Object.fromEntries((data ?? []).map((p: any) => [p.id, p]))
+    products = productIds.map((id) => map[id]).filter(Boolean)
+  }
+
+  // Fallback: last 3 active products if no featured slots configured
+  if (products.length === 0) {
+    const { data } = await supabase
+      .from('products')
+      .select('*, packagings(*)')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(3)
+    products = data ?? []
+  }
 
   return (
     <section className="py-14 sm:py-20 bg-[#FAFAF8]">
@@ -35,7 +61,6 @@ export default async function FeaturedProducts() {
             const packagings = (p.packagings ?? []).sort((a: any, b: any) => a.volume_liters - b.volume_liters)
             return (
               <div key={p.id} className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md hover:border-brand-gold/30 transition-all group flex flex-col overflow-hidden">
-                {/* Badge viscosité */}
                 <div className="flex justify-between items-center px-5 pt-5 mb-3">
                   <span className="text-gray-500 text-xs font-semibold uppercase tracking-wide">
                     {p.type === 'synthetique' ? '100% Synthétique' : p.type === 'semi-synthetique' ? 'Semi-Synthétique' : p.type === 'mineral' ? 'Minérale' : ''}
@@ -47,7 +72,6 @@ export default async function FeaturedProducts() {
                   )}
                 </div>
 
-                {/* Image */}
                 <div className="mx-5 h-52 sm:h-56 rounded-xl mb-4 overflow-hidden relative bg-white border border-gray-100 flex items-center justify-center">
                   {p.image_url ? (
                     <Image
@@ -63,7 +87,6 @@ export default async function FeaturedProducts() {
                   )}
                 </div>
 
-                {/* Content */}
                 <div className="px-5 pb-5 flex flex-col flex-1">
                   <h3 className="text-gray-900 font-black text-lg mb-3">{p.name}</h3>
                   {p.description && (
