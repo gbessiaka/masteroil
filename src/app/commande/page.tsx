@@ -268,53 +268,49 @@ export default function CommandePage() {
                 <p className="text-gray-500 text-sm mt-1">Sélectionnez vos produits et quantités</p>
               </div>
 
-              <div className="space-y-8 mb-28 md:mb-8">
-                {productGroups.map((group) => (
-                  <div key={group.product_id}>
-                    <h2 className="text-gray-900 font-black text-lg mb-3 pb-2 border-b border-gray-200">{group.product_name}</h2>
-                    <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${Math.min(group.packagings.length, 4)}, minmax(0, 1fr))` }}>
-                      {group.packagings.map((pkg) => {
-                        const cartItem = cart.find((i) => i.packaging.id === pkg.id)
-                        const imgSrc = pkg.image_url || group.product_image
-                        return (
-                          <div key={pkg.id} className={`bg-white border rounded-2xl overflow-hidden flex flex-col transition-all shadow-sm ${cartItem ? 'border-brand-gold shadow-brand-gold/10' : 'border-gray-200 hover:border-gray-300'}`}>
-                            <div className="relative w-full aspect-square bg-gray-50">
-                              {imgSrc ? (
-                                <Image src={imgSrc} alt={`${group.product_name} ${pkg.volume_liters}L`} fill className="object-contain p-4" />
-                              ) : (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <span className="text-gray-300 font-mono text-2xl font-black">{pkg.volume_liters}L</span>
-                                </div>
-                              )}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-28 md:mb-8">
+                {productGroups.flatMap((group) =>
+                  group.packagings.map((pkg) => {
+                    const cartItem = cart.find((i) => i.packaging.id === pkg.id)
+                    const imgSrc = pkg.image_url || group.product_image
+                    return (
+                      <div key={pkg.id} className={`bg-white border rounded-2xl overflow-hidden flex flex-col transition-all shadow-sm ${cartItem ? 'border-brand-gold shadow-brand-gold/10' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <div className="relative w-full aspect-square bg-gray-50">
+                          {imgSrc ? (
+                            <Image src={imgSrc} alt={`${group.product_name} ${pkg.volume_liters}L`} fill className="object-contain p-3" />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-gray-300 font-mono text-2xl font-black">{pkg.volume_liters}L</span>
                             </div>
-                            <div className="p-3 flex flex-col flex-1">
-                              <p className="text-gray-500 text-xs font-mono">{pkg.volume_liters}L</p>
-                              <p className="text-gray-900 font-black text-sm mt-0.5 mb-3">{fmtGNF(pkg.price_gnf)}</p>
-                              {cartItem ? (
-                                <div className="flex items-center justify-between mt-auto">
-                                  <button onClick={() => updateQty(pkg.id, -1)}
-                                    className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 active:bg-gray-300 transition-colors">
-                                    {cartItem.quantity === 1 ? <Trash2 className="w-3.5 h-3.5 text-red-400" /> : <Minus className="w-3.5 h-3.5" />}
-                                  </button>
-                                  <span className="text-gray-900 font-black text-lg">{cartItem.quantity}</span>
-                                  <button onClick={() => updateQty(pkg.id, 1)}
-                                    className="w-8 h-8 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold hover:bg-brand-gold/20 active:bg-brand-gold/30 transition-colors">
-                                    <Plus className="w-3.5 h-3.5" />
-                                  </button>
-                                </div>
-                              ) : (
-                                <button onClick={() => addToCart(pkg)}
-                                  className="mt-auto w-full btn-primary text-xs py-2 justify-center">
-                                  Ajouter
-                                </button>
-                              )}
+                          )}
+                        </div>
+                        <div className="p-3 flex flex-col flex-1">
+                          <p className="text-gray-900 font-bold text-xs sm:text-sm leading-snug line-clamp-2 mb-1">{group.product_name}</p>
+                          <p className="text-gray-400 text-xs font-mono mb-2">{pkg.volume_liters}L</p>
+                          <p className="text-gray-900 font-black text-sm mb-3">{fmtGNF(pkg.price_gnf)}</p>
+                          {cartItem ? (
+                            <div className="flex items-center justify-between mt-auto">
+                              <button onClick={() => updateQty(pkg.id, -1)}
+                                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 active:bg-gray-300 transition-colors">
+                                {cartItem.quantity === 1 ? <Trash2 className="w-3.5 h-3.5 text-red-400" /> : <Minus className="w-3.5 h-3.5" />}
+                              </button>
+                              <span className="text-gray-900 font-black text-lg">{cartItem.quantity}</span>
+                              <button onClick={() => updateQty(pkg.id, 1)}
+                                className="w-8 h-8 rounded-full bg-brand-gold/10 border border-brand-gold/30 flex items-center justify-center text-brand-gold hover:bg-brand-gold/20 active:bg-brand-gold/30 transition-colors">
+                                <Plus className="w-3.5 h-3.5" />
+                              </button>
                             </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                ))}
+                          ) : (
+                            <button onClick={() => addToCart(pkg)}
+                              className="mt-auto w-full btn-primary text-xs py-2 justify-center">
+                              Ajouter
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })
+                )}
               </div>
             </div>
 
