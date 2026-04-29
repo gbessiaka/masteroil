@@ -24,11 +24,13 @@ interface ProductForm {
   is_active: boolean
   show_price: boolean
   image_url: string
+  display_order: number
 }
 
 const emptyForm: ProductForm = {
   name: '', category: 'automobile', description: '',
   viscosity: '', type: '', is_active: true, show_price: true, image_url: '',
+  display_order: 0,
 }
 
 export default function AdminProductEditPage() {
@@ -64,6 +66,7 @@ export default function AdminProductEditPage() {
           is_active: data.is_active,
           show_price: data.show_price,
           image_url: data.image_url || '',
+          display_order: data.display_order ?? 0,
         })
         setPackagings(
           (data.packagings || []).map((p: any) => ({
@@ -290,7 +293,7 @@ export default function AdminProductEditPage() {
               placeholder="Description du produit..."
               className="w-full bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-4 py-3 text-gray-900 dark:text-brand-cream placeholder-gray-400 dark:placeholder-zinc-500 focus:border-brand-gold focus:outline-none resize-none" />
           </div>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap items-center gap-6">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" name="is_active" checked={form.is_active} onChange={handleChange} className="w-4 h-4 accent-brand-gold" />
               <span className="text-gray-600 dark:text-zinc-300 text-sm">Produit actif</span>
@@ -299,6 +302,15 @@ export default function AdminProductEditPage() {
               <input type="checkbox" name="show_price" checked={form.show_price} onChange={handleChange} className="w-4 h-4 accent-brand-gold" />
               <span className="text-gray-600 dark:text-zinc-300 text-sm">Afficher les prix</span>
             </label>
+            <div className="flex items-center gap-2 ml-auto">
+              <label className="text-sm font-medium text-gray-600 dark:text-zinc-300 whitespace-nowrap">Ordre d'affichage</label>
+              <input
+                type="number" name="display_order" min="0" value={form.display_order}
+                onChange={(e) => setForm((p) => ({ ...p, display_order: parseInt(e.target.value) || 0 }))}
+                className="w-20 bg-gray-100 dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm text-center focus:border-brand-gold focus:outline-none"
+              />
+              <span className="text-xs text-gray-400 dark:text-zinc-500">(0 = premier)</span>
+            </div>
           </div>
         </div>
 

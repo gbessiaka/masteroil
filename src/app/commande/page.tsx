@@ -57,10 +57,10 @@ export default function CommandePage() {
     const supabase = createClient()
     supabase
       .from('packagings')
-      .select('id, product_id, volume_liters, price_gnf, sku, image_url, product:products(name, description, image_url)')
+      .select('id, product_id, volume_liters, price_gnf, sku, image_url, product:products(name, description, image_url, display_order, is_active)')
       .order('volume_liters')
       .then(({ data }) => {
-        const pkgs = data ?? []
+        const pkgs = (data ?? []).filter((pkg: any) => pkg.product?.is_active !== false)
         const map: Record<string, ProductGroup> = {}
         for (const pkg of pkgs) {
           if (!map[pkg.product_id]) {
@@ -73,7 +73,13 @@ export default function CommandePage() {
           }
           map[pkg.product_id].packagings.push(pkg)
         }
-        setProductGroups(Object.values(map))
+        // Sort groups by display_order then by product name as fallback
+        const groups = Object.values(map).sort((a: any, b: any) => {
+          const orderA = pkgs.find((p: any) => p.product_id === a.product_id)?.product?.display_order ?? 0
+          const orderB = pkgs.find((p: any) => p.product_id === b.product_id)?.product?.display_order ?? 0
+          return orderA - orderB
+        })
+        setProductGroups(groups)
 
         if (savedCartEntries.length > 0) {
           const preCart: CartItem[] = []
