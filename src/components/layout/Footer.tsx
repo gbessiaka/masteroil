@@ -114,7 +114,7 @@ export async function Footer() {
                 <MapPin size={16} className="mt-0.5 text-brand-gold shrink-0" />
                 <div>
                   <p className="text-xs text-gray-500 mb-0.5">Adresse</p>
-                  <p className="text-sm">Conakry, Guinée</p>
+                  <p className="text-sm">Kountia, République de Guinée</p>
                 </div>
               </li>
               <li>

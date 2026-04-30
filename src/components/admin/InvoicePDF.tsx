@@ -110,7 +110,7 @@ export default function InvoicePDF({ invoice, order }: InvoicePDFProps) {
           <View>
             <Text style={styles.headerTitle}>MASTER OIL GUINÉE</Text>
             <Text style={styles.headerSubtitle}>Distributeur exclusif de Master Oil Canada en Guinée</Text>
-            <Text style={styles.headerSmall}>Conakry, République de Guinée</Text>
+            <Text style={styles.headerSmall}>Kountia, République de Guinée</Text>
             <Text style={styles.headerSmall}>Huiles moteur synthétiques</Text>
           </View>
           <View style={styles.invoiceInfo}>
@@ -217,7 +217,7 @@ export default function InvoicePDF({ invoice, order }: InvoicePDFProps) {
         {/* Footer */}
         <View style={styles.footer} fixed>
           <Text style={styles.footerText}>
-            Master Oil Guinée · Conakry, République de Guinée · Distributeur exclusif de Master Oil Canada en Guinée
+            Master Oil Guinée · Kountia, République de Guinée · Distributeur exclusif de Master Oil Canada en Guinée
           </Text>
         </View>
       </Page>

@@ -26,7 +26,7 @@ export default function ContactSection() {
             </a>
             <div className="flex items-center justify-center gap-2 text-white font-bold py-3 px-6 bg-white/20 rounded-lg text-sm whitespace-nowrap">
               <MapPin className="w-4 h-4 shrink-0" />
-              Conakry, Guinée
+              Kountia, République de Guinée
             </div>
           </div>
         </div>

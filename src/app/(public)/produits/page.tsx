@@ -63,11 +63,10 @@ export default async function ProduitsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10">
           <p className="section-subtitle">Notre gamme</p>
-          <h1 className="section-title">Huiles Moteur Synthétiques Super M7 en Guinée</h1>
+          <h1 className="section-title">Huiles Moteur Synthétiques en Guinée</h1>
           <div className="gold-line mb-4" />
           <p className="text-gray-500 max-w-xl">
-            Lubrifiants moteur canadiens Super M7 — 5W-30, 5W-40, 0W-20 — importés directement,
-            disponibles en 1L, 4L et 5L à Conakry.
+            Lubrifiants synthétiques canadiens importés directement, disponibles en plusieurs formats à Conakry.
           </p>
         </div>
 

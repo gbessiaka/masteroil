@@ -239,7 +239,7 @@ export default function ContactPage() {
                 <MapPin className="w-5 h-5 text-brand-gold mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-gray-900 text-sm font-medium">Adresse</p>
-                  <p className="text-gray-500 text-sm">Conakry, République de Guinée</p>
+                  <p className="text-gray-500 text-sm">Kountia, République de Guinée</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">

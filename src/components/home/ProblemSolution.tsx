@@ -31,7 +31,7 @@ export default function ProblemSolution() {
           <div className="bg-gradient-to-br from-amber-50 to-white rounded-2xl p-8 border-2 border-brand-gold/30 shadow-sm">
             <p className="section-subtitle">La solution</p>
             <h2 className="text-3xl font-black text-gray-900 mb-6">
-              Super M7 par Master Oil
+              Master Oil
             </h2>
             <ul className="space-y-4">
               {[

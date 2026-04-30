@@ -64,9 +64,9 @@ export function Hero() {
             </div>
 
             <p className="text-lg text-gray-600 leading-relaxed mb-10 max-w-lg">
-              Super M7, la marque canadienne de référence, importée directement pour protéger vos
-              moteurs dans les conditions les plus exigeantes. Qualité certifiée, performance
-              garantie, livraison à Conakry.
+              Master Oil Guinée vous propose des huiles synthétiques fabriquées au Canada,
+              conçues pour protéger vos moteurs dans les conditions les plus exigeantes. Qualité
+              certifiée, performance garantie, livraison à Conakry.
             </p>
 
             {/* CTAs */}

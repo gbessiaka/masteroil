@@ -77,7 +77,7 @@ export default function AboutPage() {
                 les moteurs guinéens méritent la meilleure protection possible
               </span>
               . Nous avons donc établi un partenariat exclusif avec Canada Master Oil pour
-              importer directement leurs huiles synthétiques Super M7.
+              importer directement leurs huiles synthétiques.
             </p>
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function AboutPage() {
                 </p>
                 <p>
                   Master Oil Guinée a été créée pour changer cette réalité. Nous importons
-                  directement du Canada l&apos;huile Super M7, une formule synthétique conçue
+                  directement du Canada des huiles synthétiques conçues
                   pour résister aux températures extrêmes et prolonger la durée de vie des
                   moteurs.
                 </p>
@@ -125,7 +125,7 @@ export default function AboutPage() {
                 <p className="text-brand-gold font-bold text-lg mb-1">
                   &ldquo;Fiabilité. Performance. Disponibilité.&rdquo;
                 </p>
-                <p className="text-gray-400 text-sm">— La promesse Master Oil Guinée</p>
+                <p className="text-gray-400 text-sm">La promesse Master Oil Guinée</p>
               </div>
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <p className="section-subtitle">Distributeur officiel</p>
-            <h2 className="section-title">Partenaire exclusif Super M7 en Guinée</h2>
+            <h2 className="section-title">Partenaire exclusif en Guinée</h2>
             <div className="gold-line mx-auto mb-6" />
             <p className="text-gray-500 leading-relaxed mb-8">
               Master Oil Guinée est le distributeur exclusif autorisé par{' '}

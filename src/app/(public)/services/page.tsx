@@ -31,7 +31,7 @@ const services = [
   {
     icon: Package,
     title: 'Importation & Distribution',
-    desc: 'Nous importons directement du Canada les huiles Super M7 en grandes quantités et assurons leur distribution en Guinée. Stock permanent à Conakry pour éviter toute rupture.',
+    desc: 'Nous importons directement du Canada les huiles en grandes quantités et assurons leur distribution en Guinée. Stock permanent à Conakry pour éviter toute rupture.',
     points: [
       'Import direct du fabricant canadien',
       'Stock local permanent à Conakry',
@@ -42,11 +42,11 @@ const services = [
   {
     icon: Truck,
     title: 'Vente en gros & détail',
-    desc: 'Que vous soyez un particulier cherchant 1 litre ou une entreprise commandant des centaines de bidons, nous avons une offre adaptée. Conditionnements disponibles : 1L, 4L, 5L.',
+    desc: 'Que vous soyez un particulier cherchant 1 litre ou une entreprise commandant des fûts de 200L, nous avons une offre adaptée. Conditionnements disponibles : 1L, 4L, 5L et fûts 200L.',
     points: [
       'Vente au détail pour particuliers',
       'Prix de gros pour revendeurs',
-      'Conditionnements 1L, 4L, 5L',
+      'Conditionnements 1L, 4L, 5L et fûts 200L',
       'Devis personnalisé sur demande',
     ],
   },

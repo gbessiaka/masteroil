@@ -4,7 +4,7 @@ const reasons = [
   {
     icon: Shield,
     title: 'Qualité Canadienne Certifiée',
-    description: "Nos huiles Super M7 sont fabriquées selon les normes les plus strictes de l'industrie canadienne. Certifiées API et ACEA.",
+    description: "Nos huiles sont fabriquées selon les normes les plus strictes de l'industrie canadienne. Certifiées API et ACEA.",
     color: 'text-blue-500',
     bg: 'bg-blue-50',
     border: 'border-blue-100',
