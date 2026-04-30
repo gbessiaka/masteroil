@@ -118,11 +118,11 @@ export async function Footer() {
                 </div>
               </li>
               <li>
-                <a href="mailto:contact@masteroilguinee.com" className="flex items-start gap-3 text-gray-400 hover:text-brand-gold transition-colors">
+                <a href="mailto:info@masteroilguinee.com" className="flex items-start gap-3 text-gray-400 hover:text-brand-gold transition-colors">
                   <Mail size={16} className="mt-0.5 text-brand-gold shrink-0" />
                   <div>
                     <p className="text-xs text-gray-500 mb-0.5">Email</p>
-                    <p className="text-sm">contact@masteroilguinee.com</p>
+                    <p className="text-sm">info@masteroilguinee.com</p>
                   </div>
                 </a>
               </li>
