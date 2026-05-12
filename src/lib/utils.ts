@@ -112,7 +112,7 @@ export function buildWhatsAppLink(
 /**
  * WhatsApp helpers
  */
-export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '224620000000'
+export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '224614488671'
 export const WHATSAPP_DEFAULT_MESSAGE =
   process.env.NEXT_PUBLIC_WHATSAPP_MESSAGE ||
   'Bonjour Master Oil Guinée, je souhaite passer une commande.'

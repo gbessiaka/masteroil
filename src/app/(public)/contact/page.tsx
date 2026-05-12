@@ -44,7 +44,7 @@ export default function ContactPage() {
     }
   }
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '224620000000'
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '224614488671'
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] pt-24 pb-16">

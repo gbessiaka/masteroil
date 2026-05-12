@@ -61,8 +61,8 @@ export default function MapSection() {
                 </div>
                 <div>
                   <p className="text-gray-900 font-semibold text-sm mb-0.5">Téléphone</p>
-                  <a href="tel:+224620000000" className="text-gray-600 text-sm hover:text-brand-gold transition-colors">
-                    +224 620 00 00 00
+                  <a href="tel:+224614488671" className="text-gray-600 text-sm hover:text-brand-gold transition-colors">
+                    +224 614 488 671
                   </a>
                 </div>
               </li>

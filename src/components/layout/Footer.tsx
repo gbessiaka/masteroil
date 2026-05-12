@@ -22,7 +22,7 @@ export async function Footer() {
     .order('created_at', { ascending: false })
     .limit(4)
   const productLinks = (data ?? []).map((p) => ({ href: `/produits/${p.id}`, label: p.name }))
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '224620000000'
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '224614488671'
   const whatsappLink = getWhatsAppLink('Bonjour Master Oil Guinée, je voudrais avoir des informations.')
 
   return (
