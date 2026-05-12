@@ -173,7 +173,7 @@ export default function AdminProductEditPage() {
         const { error: delErr } = await supabase
           .from('packagings').delete().in('id', toDelete)
         if (delErr) {
-          setError('Impossible de supprimer un conditionnement utilisé dans des commandes existantes.')
+          setError('Erreur lors de la suppression : ' + delErr.message)
           setSaving(false)
           return
         }
@@ -349,7 +349,10 @@ export default function AdminProductEditPage() {
                         placeholder="Ex: SM7-5L"
                         className="w-full bg-white dark:bg-zinc-900 border border-zinc-600 rounded-lg px-3 py-2 text-gray-900 dark:text-brand-cream text-sm focus:border-brand-gold focus:outline-none" />
                     </div>
-                    <button type="button" onClick={() => setPackagings((p) => p.filter((_, j) => j !== i))}
+                    <button type="button" onClick={() => {
+                        if (pkg.id && !confirm('Supprimer ce conditionnement ? Les commandes existantes qui le contiennent conserveront leur historique.')) return
+                        setPackagings((p) => p.filter((_, j) => j !== i))
+                      }}
                       className="mt-5 p-2 text-gray-500 dark:text-zinc-500 hover:text-red-400 transition-colors">
                       <Trash2 className="w-4 h-4" />
                     </button>
